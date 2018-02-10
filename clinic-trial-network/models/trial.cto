@@ -1,0 +1,39 @@
+namespace ro.utcluj.clinictrial.trial
+
+import ro.utcluj.clinictrial.base.Researcher
+import ro.utcluj.clinictrial.base.Patient
+
+/** Enum that describes that contains the possible statuses
+    of a clinic trial */
+enum TrialStatus {
+  o REGISTERED
+	o APPROVED
+	o REJECTED
+	o IN_PROGRES
+	o FINISHED
+}
+
+/** Information about a clinic trial */
+concept TrialDetails{
+	o String trialTitle optional
+	o String trialStartDate
+	o TrialStatus status
+}
+
+/** Clinic trial represented as an asset*/
+asset Trial identified by idTrial{
+	o String idTrial
+	o TrialDetails details
+	o Patient[] participants optional
+	-->Researcher organiser
+}
+
+/** Basic model for a transaction regarding clinical trials*/
+abstract transaction TrialTransaction  {
+  --> Trial trial
+}
+
+/** Transaction for registering a new clinic trial*/
+transaction TrialRegister extends TrialTransaction {
+  o String specialNotes optional
+}

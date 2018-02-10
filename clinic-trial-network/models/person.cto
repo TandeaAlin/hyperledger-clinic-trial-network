@@ -1,0 +1,54 @@
+namespace ro.utcluj.clinictrial.base
+
+enum Gender {
+  	o MALE
+	  o FEMALE
+}
+
+concept Person {
+  	o String firstName  optional
+  	o String lastName  optional
+  	o Gender gender optional
+  	o ContactDetails contactDetails optional
+  	o BirthDetails birthDetails optional
+  	o DeathDetails deathDetails optional
+}
+
+concept ContactDetails {
+  	o String email  optional
+  	o String mobilePhone  optional
+  	o String homePhone optional
+  	o Address address optional
+}
+
+concept BirthDetails {
+  	o DateTime dateOfBirth optional
+  	o String placeOfBirth optional
+}
+
+concept DeathDetails {
+  	o DateTime dateOfDeath optional
+  	o String placeOfDeath optional
+}
+
+concept Address {
+  	o String city optional
+  	o String country optional
+  	o String locality optional
+  	o String region optional
+  	o String street optional
+  	o String postalCode optional
+}
+
+abstract participant ParticipantPerson{
+    o Person person
+}
+
+abstract participant Researcher identified by idResearcher extends ParticipantPerson{
+    o String idResearcher
+}
+
+asset Patient identified by idPatient {
+    o String idPatient
+    o Person person
+}
