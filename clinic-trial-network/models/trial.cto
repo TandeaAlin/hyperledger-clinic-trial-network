@@ -2,38 +2,81 @@ namespace ro.utcluj.clinictrial.trial
 
 import ro.utcluj.clinictrial.base.Researcher
 import ro.utcluj.clinictrial.base.Patient
+import ro.utcluj.clinictrial.base.Address
+import ro.utcluj.clinictrial.organisation.ResearchSite
 
 /** Enum that describes that contains the possible statuses
     of a clinic trial */
 enum TrialStatus {
-  o REGISTERED
+  o NOT_RECRUITING
+  o RECRUITING
+  o RECRUITING_INVITATION
 	o APPROVED
+  o SUSPENDED
 	o REJECTED
 	o IN_PROGRES
 	o FINISHED
 }
 
+enum TrialPhase{
+  o PHASE_1
+  o PHASE_2
+  o PHASE_3
+  o PHASE_4
+}
+
+enum AgeGroup{
+  o CHILD
+  o ADULT
+  o SENIOR
+}
+
+enum Gender{
+  o MALE
+  o FEMALE
+  o ALL
+}
+
 /** Information about a clinic trial */
 concept TrialDetails{
 	o String trialTitle optional
-	o String trialStartDate
-	o TrialStatus status
 }
 
 /** Clinic trial represented as an asset*/
 asset Trial identified by idTrial{
 	o String idTrial
-	o TrialDetails details
-	o Patient[] participants optional
+  o ProtocolEntry[] protocolEntries optional
+	o TrialDetails details optional
+	o TrialStatus status optional
+	-->Patient[] participants optional
 	-->Researcher organiser
 }
 
-/** Basic model for a transaction regarding clinical trials*/
-abstract transaction TrialTransaction  {
-  --> Trial trial
+/** Transaction for registering a new clinic trial*/
+transaction RegisterTrialTransaction  {
+  o String idTrial
+	o TrialDetails details optional
+  -->Researcher organiser
 }
 
-/** Transaction for registering a new clinic trial*/
-transaction TrialRegister extends TrialTransaction {
-  o String specialNotes optional
+/** One entry for the protocol describing the clinical trial procedures*/
+concept ProtocolEntry{
+  o TrialPhase phase
+  o Address location
+  o String protocolContent
+  o Integer enrollNumber
+  o DateTime startDate
+  o DateTime endDate
+}
+/** Content of the protocol */
+concept ProtocolContent{
+  o AgeGroup[] ageGroups
+  o Gender acceptedGenders
+  o Boolean acceptsHealthy
+  //Target medical conditions treated
+  o String[] conditions
+  //Type of treatment
+  o String[] interventions
+  //Realtionship to different research sites where the clinic trial takes place
+  --> ResearchSite[] researchSites
 }

@@ -1,0 +1,12 @@
+namespace ro.utcluj.clinictrial.organisation
+
+import ro.utcluj.clinictrial.base.Address
+
+abstract participant Organisation{
+  o String name
+  o Address orgAddress optional
+}
+
+participant ResearchSite identified by idResearchSite extends Organisation{
+  o String idResearchSite
+}
