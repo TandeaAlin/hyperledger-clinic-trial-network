@@ -8,12 +8,14 @@ import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 import { AppMaterialModule } from './material.module';
 import { DataService } from './service/data.service'
-import { Configuration }     from './service/configuration';
+import { Configuration } from './service/configuration';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +24,7 @@ import { Configuration }     from './service/configuration';
     ReactiveFormsModule,
     HttpModule,
     BrowserAnimationsModule,
-    AppMaterialModule
+    AppMaterialModule,
   ],
   providers: [
     Configuration,

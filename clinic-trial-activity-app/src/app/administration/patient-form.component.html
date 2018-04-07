@@ -1,0 +1,89 @@
+<h3>Patient form</h3>
+<form (ngSubmit)="onSubmit()">
+  <table class="full-width">
+    <tr>
+      <td>
+        <mat-form-field class="full-width">
+          <input matInput type = "text" placeholder="First name"
+            [(value)]="person.firstName">
+        </mat-form-field>
+      </td>
+      <td>
+      <mat-form-field class="full-width">
+          <input matInput type = "text" placeholder="Last name"
+            [(value)]="person.lastName">
+      </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <mat-form-field>
+        <mat-select [(value)]="person.gender" placeholder = "Gender">
+          <mat-option value="MALE">Male</mat-option>
+          <mat-option value="FEMALE">Female</mat-option>
+        </mat-select>
+      </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="full-width">
+            <input matInput type = "text" placeholder="E-mail" [formControl]="email"
+              [(value)]="contactDetails.email">
+            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="full-width">
+            <input matInput type = "text" placeholder="Phone"
+              [(value)]="contactDetails.mobilePhone">
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Birthdate"
+            [(value)]="birthDetails.birthdate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="full-width">
+            <input matInput type = "text" placeholder="Place of birth"
+              [(value)]="birthDetails.placeOfBirth">
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="full-width">
+            <input matInput type = "text" placeholder="City"
+              [(value)]="address.city">
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="full-width">
+            <input matInput type = "text" placeholder="Country"
+              [(value)]="address.country">
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="full-width">
+            <input matInput type = "text" placeholder="Region"
+              [(value)]="address.region">
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="full-width">
+            <input matInput type = "text" placeholder="Street"
+              [(value)]="address.street">
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+  <div style="margin-bottom: 1em">
+    <button type="submit" class="btn btn-success">Save</button>
+  </div>
+</form>
