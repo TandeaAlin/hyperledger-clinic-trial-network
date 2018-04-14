@@ -1,24 +1,31 @@
 <h3>Patient form</h3>
-<form (ngSubmit)="onSubmit()">
+<form [formGroup] = "patientForm" (ngSubmit)="onSubmit()">
   <table class="full-width">
     <tr>
       <td>
         <mat-form-field class="full-width">
-          <input matInput type = "text" placeholder="First name"
-            [(value)]="person.firstName">
+          <input matInput type = "text" formControlName="firstName" 
+          placeholder="First name" [(value)]="patient.person.firstName">
+
+            <mat-error *ngIf="firstNameControl.errors
+                  && (firstNameControl.touched || firstNameControl.dirty)">
+              Field is required and must have at least 2 characters</mat-error>
         </mat-form-field>
       </td>
       <td>
       <mat-form-field class="full-width">
-          <input matInput type = "text" placeholder="Last name"
-            [(value)]="person.lastName">
+          <input matInput type = "text" formControlName="lastName" 
+           placeholder="Last name" [(value)]="patient.person.lastName">
+          <mat-error *ngIf="lastNameControl.errors 
+            && (lastNameControl.touched || lastNameControl.dirty)">
+            Field is required and must have at least 2 characters</mat-error>  
       </mat-form-field>
       </td>
     </tr>
     <tr>
       <td>
       <mat-form-field>
-        <mat-select [(value)]="person.gender" placeholder = "Gender">
+        <mat-select [(value)]="patient.person.gender" placeholder = "Gender">
           <mat-option value="MALE">Male</mat-option>
           <mat-option value="FEMALE">Female</mat-option>
         </mat-select>
@@ -28,62 +35,87 @@
     <tr>
       <td>
         <mat-form-field class="full-width">
-            <input matInput type = "text" placeholder="E-mail" [formControl]="email"
-              [(value)]="contactDetails.email">
-            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+            <input matInput type = "text" formControlName="email" 
+            placeholder="E-mail" [(value)]="patient.person.contactDetails.email">
+        <mat-error *ngIf="emailControl.errors
+            && (emailControl.touched || emailControl.dirty)">
+        Email is invalid</mat-error>      
         </mat-form-field>
       </td>
       <td>
         <mat-form-field class="full-width">
-            <input matInput type = "text" placeholder="Phone"
-              [(value)]="contactDetails.mobilePhone">
+            <input matInput type = "text"  formControlName="phone" 
+             placeholder="Phone" [(value)]="patient.person.contactDetails.mobilePhone">
+        <mat-error *ngIf="phoneControl.errors
+            && (phoneControl.touched || phoneControl.dirty)">
+        Phone number is invalid</mat-error>      
+       
         </mat-form-field>
       </td>
     </tr>
     <tr>
       <td>
         <mat-form-field>
-          <input matInput [matDatepicker]="picker" placeholder="Birthdate"
-            [(value)]="birthDetails.birthdate">
+          <input matInput [matDatepicker]="picker"  formControlName="picker"
+           placeholder="Birthdate" [(value)]="patient.person.birthDetails.birthdate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="pickerControl.errors 
+            && (pickerControl.touched || pickerControl.dirty)">
+            Field is required</mat-error> 
         </mat-form-field>
       </td>
       <td>
         <mat-form-field class="full-width">
-            <input matInput type = "text" placeholder="Place of birth"
-              [(value)]="birthDetails.placeOfBirth">
+            <input matInput type = "text" formControlName="placeOfBirth"
+            placeholder="Place of birth" [(value)]="patient.person.birthDetails.placeOfBirth">
+            <mat-error *ngIf="placeOfBirthControl.errors 
+            && (placeOfBirthControl.touched || placeOfBirthControl.dirty)">
+            Field is required and must have at least 2 characters</mat-error> 
         </mat-form-field>
       </td>
     </tr>
     <tr>
       <td>
         <mat-form-field class="full-width">
-            <input matInput type = "text" placeholder="City"
-              [(value)]="address.city">
+            <input matInput type = "text" formControlName="city"
+            placeholder="City" [(value)]="patient.person.contactDetails.address.city">
+            <mat-error *ngIf="cityControl.errors 
+            && (cityControl.touched || cityControl.dirty)">
+            Field is required and must have at least 2 characters</mat-error>
         </mat-form-field>
       </td>
       <td>
         <mat-form-field class="full-width">
-            <input matInput type = "text" placeholder="Country"
-              [(value)]="address.country">
+            <input matInput type = "text" formControlName="country"
+            placeholder="Country" [(value)]="patient.person.contactDetails.address.country">
+            <mat-error *ngIf="countryControl.errors 
+            && (countryControl.touched || countryControl.dirty)">
+            Field is required and must have at least 2 characters</mat-error>
         </mat-form-field>
       </td>
       <td>
         <mat-form-field class="full-width">
-            <input matInput type = "text" placeholder="Region"
-              [(value)]="address.region">
+            <input matInput type = "text" formControlName="region" 
+            placeholder="Region"  [(value)]="patient.person.contactDetails.address.region">
+            <mat-error *ngIf="regionControl.errors 
+            && (regionControl.touched || regionControl.dirty)">
+            Field is required and must have at least 2 characters</mat-error>
         </mat-form-field>
       </td>
       <td>
         <mat-form-field class="full-width">
-            <input matInput type = "text" placeholder="Street"
-              [(value)]="address.street">
+            <input matInput type = "text" formControlName="street" 
+            placeholder="Street"  [(value)]="patient.person.contactDetails.address.street">
+            <mat-error *ngIf="streetControl.errors 
+            && (streetControl.touched || streetControl.dirty)">
+            Field is required and must have at least 2 characters</mat-error>
         </mat-form-field>
       </td>
     </tr>
   </table>
   <div style="margin-bottom: 1em">
-    <button type="submit" class="btn btn-success">Save</button>
+    <button type="submit" class="btn btn-success" 
+      [disabled]="patientForm.invalid">Save</button>
   </div>
 </form>
