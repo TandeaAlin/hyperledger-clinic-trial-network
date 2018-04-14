@@ -48,7 +48,7 @@
         <ng-container matColumnDef="Edit">
             <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
             <mat-cell *matCellDef="let patient">
-            <a [routerLink] = "['/edit',patient.idPatient]"> 
+            <a [routerLink] = "['new',patient.idPatient]"> 
                   <i class="material-icons">mode_edit</i>
             </a> 
             </mat-cell>

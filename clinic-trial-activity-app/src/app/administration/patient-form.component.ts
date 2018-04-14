@@ -11,9 +11,13 @@ import { PatientService } from '../service/patient.service'
 })
 export class PatientFormComponent implements OnInit{
 
-    //two way binding objects
     patient : Patient = new Patient();
     patientForm : FormGroup;
+    idPatient;
+    title;
+
+    // display the form after the initialisation is done
+    isInitialised = false;
 
     //form controls
     firstNameControl;
@@ -34,32 +38,64 @@ export class PatientFormComponent implements OnInit{
       private _route : ActivatedRoute,
       private _patientService : PatientService
     ){
-        this.buildForm();
+      //check if this is an update operation or a create one
+      var id = this._route.params
+      .subscribe(params =>{
+          var id = params['idPatient'];
+          this.idPatient = id;
+          console.log(id);
+          this.title = id ? 'Edit patient info' : 'New patient'
+          if(!id){
+            this.isInitialised = true;
+            return;
+          }
+          this._patientService.getAsset(id)
+              .subscribe(
+                  (res) =>{     
+                      this.patient = res;
+                      this.buildForm();
+                      this.isInitialised = true;
+                      console.log(this.patient)
+                      console.log(res);
+                  }
+              )
+       
+      });
     }
 
     buildForm(){
       this.patientForm = this.formBuilder.group({
         firstName: this.formBuilder.
-              control(null, [Validators.required, Validators.minLength(2)]),
+              control(this.patient.person.firstName, 
+                [Validators.required, Validators.minLength(2)]),
         lastName: this.formBuilder.
-              control(null, [Validators.required, Validators.minLength(2)]),
+              control(this.patient.person.lastName, 
+                [Validators.required, Validators.minLength(2)]),
         placeOfBirth: this.formBuilder.
-              control(null, [Validators.required, Validators.minLength(2)]),
+              control(this.patient.person.birthDetails.placeOfBirth, 
+                [Validators.required, Validators.minLength(2)]),
         picker: this.formBuilder.
-              control(null, [Validators.required]),
+              control(this.patient.person.birthDetails.dateOfBirth,
+                [Validators.required]),
         email: this.formBuilder.
-              control(null, [Validators.required, Validators.email]),
+              control(this.patient.person.contactDetails.email, 
+                [Validators.required, Validators.email]),
         phone: this.formBuilder.
-              control(null, [Validators.required, Validators.minLength(10),
-              Validators.maxLength(10), Validators.pattern('[0-9]{10}')]),
+              control(this.patient.person.contactDetails.mobilePhone, 
+                [Validators.required, Validators.minLength(10),
+                Validators.maxLength(10), Validators.pattern('[0-9]{10}')]),
         city: this.formBuilder.
-              control(null, [Validators.required, Validators.minLength(2)]),
+              control(this.patient.person.contactDetails.address.city, 
+                [Validators.required, Validators.minLength(2)]),
         country: this.formBuilder.
-              control(null, [Validators.required, Validators.minLength(2)]),
+              control(this.patient.person.contactDetails.address.country, 
+                [Validators.required, Validators.minLength(2)]),
         region: this.formBuilder.
-              control(null, [Validators.required, Validators.minLength(2)]),
+              control(this.patient.person.contactDetails.address.region, 
+                [Validators.required, Validators.minLength(2)]),
         street: this.formBuilder.
-              control(null, [Validators.required, Validators.minLength(2)]),              
+              control(this.patient.person.contactDetails.address.street, 
+                [Validators.required, Validators.minLength(2)]),              
       })
       this.firstNameControl = this.patientForm.get('firstName');
       this.lastNameControl = this.patientForm.get('lastName');
@@ -75,16 +111,22 @@ export class PatientFormComponent implements OnInit{
 
     ngOnInit(){
       this.initBindings();
-      
+   
+
     }
 
     onSubmit(){
       this.fillObject(this.patientForm.value);
-      this.patient.idPatient = this.generatePatientID();
       console.log("Saving object... :");
       console.log(this.patient);
-      this._patientService.addAsset(this.patient).
-        subscribe(
+      var result;
+      if (this.idPatient){
+        result = this._patientService.updateAsset(this.idPatient, this.patient);
+      } else {
+        this.patient.idPatient = this.generatePatientID();
+        result = this._patientService.addAsset(this.patient);
+      }    
+      result.subscribe(
             //saved succesfully - go back to administration
             (data) => {
               this._router.navigate(['administration'])

@@ -1,4 +1,5 @@
-<h3>Patient form</h3>
+<h3>{{title}}</h3>
+<div *ngIf="isInitialised">
 <form [formGroup] = "patientForm" (ngSubmit)="onSubmit()">
   <table class="full-width">
     <tr>
@@ -6,7 +7,6 @@
         <mat-form-field class="full-width">
           <input matInput type = "text" formControlName="firstName" 
           placeholder="First name" [(value)]="patient.person.firstName">
-
             <mat-error *ngIf="firstNameControl.errors
                   && (firstNameControl.touched || firstNameControl.dirty)">
               Field is required and must have at least 2 characters</mat-error>
@@ -57,7 +57,7 @@
       <td>
         <mat-form-field>
           <input matInput [matDatepicker]="picker"  formControlName="picker"
-           placeholder="Birthdate" [(value)]="patient.person.birthDetails.birthdate">
+           placeholder="Birthdate" [(value)]="patient.person.birthDetails.dateOfBirth">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <mat-error *ngIf="pickerControl.errors 
@@ -119,3 +119,4 @@
       [disabled]="patientForm.invalid">Save</button>
   </div>
 </form>
+</div>

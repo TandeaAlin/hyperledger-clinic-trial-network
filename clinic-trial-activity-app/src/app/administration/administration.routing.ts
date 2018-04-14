@@ -5,7 +5,8 @@ import { PatientFormComponent } from './patient-form.component'
 
 const routes: Routes = [
   { path: '', component: AdministrationComponent },
-  { path: 'new', component: PatientFormComponent}
+  { path: 'new', component: PatientFormComponent},
+  { path: 'new/:idPatient', component: PatientFormComponent}
 ];
 
 @NgModule({
