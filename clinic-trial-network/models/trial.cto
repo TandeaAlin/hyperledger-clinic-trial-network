@@ -1,16 +1,11 @@
-namespace ro.utcluj.clinictrial.trial
-
-import ro.utcluj.clinictrial.base.Researcher
-import ro.utcluj.clinictrial.base.Patient
-import ro.utcluj.clinictrial.base.Address
-import ro.utcluj.clinictrial.organisation.ResearchSite
+namespace ro.utcluj.clinictrial
 
 /** Enum that describes that contains the possible statuses
     of a clinic trial */
 enum TrialStatus {
   o NOT_RECRUITING
-  o RECRUITING
-  o RECRUITING_INVITATION
+  o RECRUITING 
+  o RECRUITING_INVITATION 
 	o APPROVED
   o SUSPENDED
 	o REJECTED
@@ -79,4 +74,75 @@ concept ProtocolContent{
   o String[] interventions
   //Realtionship to different research sites where the clinic trial takes place
   --> ResearchSite[] researchSites
+}
+
+abstract participant Organisation{
+  o String name
+  o Address orgAddress optional
+}
+
+participant ResearchSite identified by idResearchSite extends Organisation{
+  o String idResearchSite
+} 
+
+participant SupplyOrganisation identified by idSupplyOrganisation extends Organisation{
+  o String idSupplyOrganisation
+}
+
+concept Person {
+  	o String firstName  optional
+  	o String lastName  optional
+  	o Gender gender optional
+  	o ContactDetails contactDetails optional
+  	o BirthDetails birthDetails optional
+  	o DeathDetails deathDetails optional
+}
+
+concept ContactDetails {
+  	o String email  optional
+  	o String mobilePhone  optional
+  	o String homePhone optional
+  	o Address address optional
+}
+
+concept BirthDetails {
+  	o DateTime dateOfBirth optional
+  	o String placeOfBirth optional
+}
+
+concept DeathDetails {
+  	o DateTime dateOfDeath optional
+  	o String placeOfDeath optional
+}
+
+concept Address {
+  	o String city optional
+  	o String country optional
+  	o String locality optional
+  	o String region optional
+  	o String street optional
+  	o String postalCode optional
+}
+
+abstract participant ParticipantPerson{
+    o Person person
+}
+
+participant Researcher identified by idResearcher extends ParticipantPerson{
+    o String idResearcher
+    --> ResearchSite employer
+}
+
+participant Supplier identified by idSupplier extends ParticipantPerson{
+    o String idSupplier
+    --> SupplyOrganisation employer
+}
+
+asset Patient identified by idPatient {
+    o String idPatient
+    o Person person
+}
+
+transaction CreateResearchSite {
+  --> ResearchSite researchSite
 }
