@@ -10,7 +10,7 @@ enum TrialStatus {
   o SUSPENDED
 	o REJECTED
 	o IN_PROGRES
-	o FINISHED
+	o FINISHED 
 }
 
 enum TrialPhase{
