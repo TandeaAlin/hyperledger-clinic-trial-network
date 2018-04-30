@@ -1,0 +1,21 @@
+\frametitle{Exemplu - Reguli de acces}
+\begin{Verbatim}[fontsize=\tiny]
+/**
+ * Access control rules for clinic trial
+ */
+rule Default {
+  description: "Allow all participants access to all resources"
+  participant: "ANY"
+  operation: ALL
+  resource: "ro.utcluj.clinictrial.*"
+  action: ALLOW
+}
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "ANY"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+	\end{Verbatim}
