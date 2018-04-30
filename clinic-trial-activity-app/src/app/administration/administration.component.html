@@ -74,7 +74,7 @@
     <br/>
 
     <!-- the new organisation button -->
-    <a mat-raised-button routerLink="new/org" style="float: right;"
+    <a mat-raised-button routerLink="neworg" style="float: right;"
     color = "primary">Add Organisation</a>
  
     <br/><br/>
@@ -88,25 +88,45 @@
     </ng-container>      
 
     <!-- Organisation Name column -->
-    <ng-container matColumnDef="OrganisationName">
+    <ng-container matColumnDef="Name">
         <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
         <mat-cell *matCellDef="let organisation"> {{organisation.orgName}} </mat-cell>
     </ng-container>      
 
     <!-- Organisation Address column -->
-    <ng-container matColumnDef="OrganisationAddress">
+    <ng-container matColumnDef="Address">
       <mat-header-cell *matHeaderCellDef> Organisation Address </mat-header-cell>
-      <mat-cell *matCellDef="let organisation"> {{organisation.orgAddress}} </mat-cell>
+      <mat-cell *matCellDef="let organisation"> {{organisation.orgInternalAddress}} </mat-cell>
     </ng-container>
 
     <!-- Organisation Type column -->
-    <ng-container matColumnDef="OrganisationType">
+    <ng-container matColumnDef="Type">
         <mat-header-cell *matHeaderCellDef> Organisation Type </mat-header-cell>
         <mat-cell *matCellDef="let organisation"> {{organisation.orgType}} </mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>  
+    <!-- Edit link column -->
+    <ng-container matColumnDef="Edit">
+          <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
+          <mat-cell *matCellDef="let organisation">
+          <a [routerLink] = "['neworg',organisation.orgID]"> 
+              <i class="material-icons">mode_edit</i>
+          </a> 
+        </mat-cell>
+    </ng-container>
+
+    <!-- Delete link column -->
+    <ng-container matColumnDef="Delete">
+          <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+          <mat-cell *matCellDef="let organisation">
+          <a (click) = "deleteOrganisation(organisation)"> 
+              <i class="material-icons">delete_sweep</i>
+          </a> 
+          </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="organisationColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: organisationColumns;"></mat-row>  
     </mat-table>
     </div>
   </mat-tab>

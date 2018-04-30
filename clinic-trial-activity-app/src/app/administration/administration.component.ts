@@ -22,7 +22,7 @@ export class AdministrationComponent implements OnInit{
   allPatientsDataSource : MatTableDataSource<Patient>;
   allOrganisationsDataSource : MatTableDataSource<OrganisationVO>;
   displayedColumns = ['PatientID', 'Name', 'Gender', 'Birthdate', 'View', 'Edit', 'Delete'];
-  organisationColumns = ['OrganisationID','Name','Address'];
+  organisationColumns = ['OrganisationID','Name','Address', 'Type', 'Edit', 'Delete'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private _patientService : PatientService,
@@ -53,7 +53,38 @@ export class AdministrationComponent implements OnInit{
   }
 
   loadAllOrganisations(){
+    this.allOrg = [];
     this.loadAllReasearchSites();
+    
+  }
+
+  loadAllSupplyOrgs(){
+    return this._supplyOrganisationService.getAll()
+    .toPromise()
+    .then((result) => {
+			this.errorMessage = null;
+      result.forEach(participant => {
+        let org = new OrganisationVO();
+        org.orgID = participant.idSupplyOrganisation;
+        org.orgName = participant.name;
+        org.orgInternalAddress = participant.orgAddress.city + ', ' + participant.orgAddress.street; 
+        org.orgType = "SUPPLIER";
+        this.allOrg.push(org);
+      });
+      // build the table data source
+      this.allOrganisationsDataSource = new MatTableDataSource<OrganisationVO>(this.allOrg);
+    })
+    .catch((error) => {
+        if(error == 'Server error'){
+            this.errorMessage = "Could not connect to REST server. Please check your configuration details";
+        }
+        else if(error == '404 - Not Found'){
+				this.errorMessage = "404 - Could not find API route. Please check your available APIs."
+        }
+        else{
+            this.errorMessage = error;
+        }
+    });
   }
 
   loadAllReasearchSites(): Promise<any> {
@@ -65,9 +96,13 @@ export class AdministrationComponent implements OnInit{
         let org = new OrganisationVO();
         org.orgID = participant.idResearchSite;
         org.orgName = participant.name;
-        org.orgAddress = participant.orgAddress.city + ', ' + participant.orgAddress.street; 
+        org.orgInternalAddress = participant.orgAddress.city + ', ' + participant.orgAddress.street; 
+        org.orgType = "RESEARCH SITE";
         this.allOrg.push(org);
       });
+      //load suppliers after all research sites have been added
+      this.loadAllSupplyOrgs();
+      this.allOrganisationsDataSource = new MatTableDataSource<OrganisationVO>(this.allOrg);
     })
     .catch((error) => {
         if(error == 'Server error'){

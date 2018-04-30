@@ -9,6 +9,7 @@ import { PatientService } from '../service/patient.service'
 import { ResearchSiteService } from '../service/research-site.service';
 import { SupplyOrganisationService } from '../service/supply-organisation.service';
 import { PatientFormComponent } from './patient/patient-form.component';
+import { OrganisationFormComponent } from './organisation/organisation-form.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { PatientFormComponent } from './patient/patient-form.component';
   ],
   declarations: [
     AdministrationComponent,
-    PatientFormComponent
+    PatientFormComponent,
+    OrganisationFormComponent
   ]
 })
 export class AdministrationModule { }

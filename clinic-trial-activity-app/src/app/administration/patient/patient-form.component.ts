@@ -117,8 +117,6 @@ export class PatientFormComponent implements OnInit{
 
     ngOnInit(){
       this.initBindings();
-   
-
     }
 
     onSubmit(){
