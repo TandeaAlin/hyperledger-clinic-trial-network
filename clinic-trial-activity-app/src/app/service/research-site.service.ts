@@ -1,39 +1,39 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
 import { Observable } from 'rxjs/Observable';
-import { Patient } from '../model/ro.utcluj.clinictrial.base';
+import { ResearchSite } from '../model/ro.utcluj.clinictrial.organisation';
 import 'rxjs/Rx';
 
 // Can be injected into a constructor
 @Injectable()
-export class PatientService {
+export class ResearchSiteService {
 
 	
-		private NAMESPACE: string = 'Patient';
+		private NAMESPACE: string = 'ResearchSite';
 	
 
 
 
-    constructor(private dataService: DataService<Patient>) {
+    constructor(private dataService: DataService<ResearchSite>) {
     };
 
-    public getAll(): Observable<Patient[]> {
+    public getAll(): Observable<ResearchSite[]> {
         return this.dataService.getAll(this.NAMESPACE);
     }
 
-    public getAsset(id: any): Observable<Patient> {
+    public getparticipant(id: any): Observable<ResearchSite> {
       return this.dataService.getSingle(this.NAMESPACE, id);
     }
 
-    public addAsset(itemToAdd: any): Observable<Patient> {
+    public addParticipant(itemToAdd: any): Observable<ResearchSite> {
       return this.dataService.add(this.NAMESPACE, itemToAdd);
     }
 
-    public updateAsset(id: any, itemToUpdate: any): Observable<Patient> {
+    public updateParticipant(id: any, itemToUpdate: any): Observable<ResearchSite> {
       return this.dataService.update(this.NAMESPACE, id, itemToUpdate);
     }
 
-    public deleteAsset(id: any): Observable<Patient> {
+    public deleteParticipant(id: any): Observable<ResearchSite> {
       return this.dataService.delete(this.NAMESPACE, id);
     }
 

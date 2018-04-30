@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Patient, Person, Gender, BirthDetails, Address, ContactDetails } from '../model/ro.utcluj.clinictrial.base';
-import { PatientService } from '../service/patient.service'
+import { Patient, Person, Gender, BirthDetails, Address, ContactDetails } from '../../model/ro.utcluj.clinictrial.base';
+import { PatientService } from '../../service/patient.service'
 
 
 @Component({
@@ -44,11 +44,17 @@ export class PatientFormComponent implements OnInit{
           var id = params['idPatient'];
           this.idPatient = id;
           console.log(id);
+          //decide if the user wants to edit an existing patient or add a new one
           this.title = id ? 'Edit patient info' : 'New patient'
           if(!id){
+            //instantiate the patient binding object
+            this.initBindings();
+            //create the form and it's validators
+            this.buildForm(); 
             this.isInitialised = true;
             return;
           }
+          //update an existing patient => fetch it from data service
           this._patientService.getAsset(id)
               .subscribe(
                   (res) =>{     
@@ -138,7 +144,7 @@ export class PatientFormComponent implements OnInit{
         );
     }
 
-
+    //generate a random id for new patients
     generatePatientID() {
       return Math.floor((1 + Math.random()) * 0x10000)
         .toString(16)

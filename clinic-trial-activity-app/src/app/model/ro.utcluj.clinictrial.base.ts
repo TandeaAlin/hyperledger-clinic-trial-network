@@ -2,7 +2,7 @@ import {Asset} from './org.hyperledger.composer.system';
 import {Participant} from './org.hyperledger.composer.system';
 import {Transaction} from './org.hyperledger.composer.system';
 import {Event} from './org.hyperledger.composer.system';
-import {Organisation} from './ro.utcluj.clinictrial.organisation';
+import {ResearchSite,SupplyOrganisation} from './ro.utcluj.clinictrial.organisation';
 // export namespace ro.utcluj.clinictrial.base{
    export enum Gender {
       MALE,
@@ -43,10 +43,11 @@ import {Organisation} from './ro.utcluj.clinictrial.organisation';
    }
    export class Researcher extends ParticipantPerson {
       idResearcher: string;
-      employer: Organisation;
+      employer: ResearchSite;
    }
    export class Supplier extends ParticipantPerson {
       idSupplier: string;
+      employer: SupplyOrganisation;
    }
    export class Patient extends Asset {
       idPatient: string;

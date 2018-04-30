@@ -6,7 +6,9 @@ import { AdministrationRoutingModule } from './administration.routing';
 import { AdministrationComponent } from './administration.component';
 import { AppMaterialModule } from '../material.module';
 import { PatientService } from '../service/patient.service'
-import { PatientFormComponent } from './patient-form.component'
+import { ResearchSiteService } from '../service/research-site.service';
+import { SupplyOrganisationService } from '../service/supply-organisation.service';
+import { PatientFormComponent } from './patient/patient-form.component';
 
 @NgModule({
   imports: [
@@ -17,7 +19,9 @@ import { PatientFormComponent } from './patient-form.component'
     CommonModule,
   ],
   providers: [
-    PatientService
+    PatientService,
+    ResearchSiteService,
+    SupplyOrganisationService
   ],
   declarations: [
     AdministrationComponent,

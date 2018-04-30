@@ -71,7 +71,43 @@
     </div>
   </mat-tab>
   <mat-tab label="Organisations">
-    <h1>Some more tab content</h1>
-    <p>...</p>
+    <br/>
+
+    <!-- the new organisation button -->
+    <a mat-raised-button routerLink="new/org" style="float: right;"
+    color = "primary">Add Organisation</a>
+ 
+    <br/><br/>
+    <div class="table-container mat-elevation-z8">
+    <mat-table #table [dataSource]="allOrganisationsDataSource">
+
+    <!-- Organisation ID column -->
+    <ng-container matColumnDef="OrganisationID">
+        <mat-header-cell *matHeaderCellDef> OrganisationID </mat-header-cell>
+        <mat-cell *matCellDef="let organisation"> {{organisation.orgID}} </mat-cell>
+    </ng-container>      
+
+    <!-- Organisation Name column -->
+    <ng-container matColumnDef="OrganisationName">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let organisation"> {{organisation.orgName}} </mat-cell>
+    </ng-container>      
+
+    <!-- Organisation Address column -->
+    <ng-container matColumnDef="OrganisationAddress">
+      <mat-header-cell *matHeaderCellDef> Organisation Address </mat-header-cell>
+      <mat-cell *matCellDef="let organisation"> {{organisation.orgAddress}} </mat-cell>
+    </ng-container>
+
+    <!-- Organisation Type column -->
+    <ng-container matColumnDef="OrganisationType">
+        <mat-header-cell *matHeaderCellDef> Organisation Type </mat-header-cell>
+        <mat-cell *matCellDef="let organisation"> {{organisation.orgType}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>  
+    </mat-table>
+    </div>
   </mat-tab>
 </mat-tab-group>

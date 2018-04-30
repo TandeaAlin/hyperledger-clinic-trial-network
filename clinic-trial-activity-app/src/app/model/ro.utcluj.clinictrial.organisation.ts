@@ -11,4 +11,7 @@ import {Address} from './ro.utcluj.clinictrial.base';
    export class ResearchSite extends Organisation {
       idResearchSite: string;
    }
+   export class SupplyOrganisation extends Organisation {
+      idSupplyOrganisation: string;
+   }
 // }
