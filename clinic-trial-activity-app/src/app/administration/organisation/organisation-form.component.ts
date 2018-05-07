@@ -87,7 +87,38 @@ import { Address } from '../../model/ro.utcluj.clinictrial.base';
     }
 
     onSubmit(){
+      var type = this.organisationForm.value.orgType;
       this.fillObject(this.organisationForm.value, this.organisationForm.value.orgType);
+      var result;
+      if(type == "SUPPLIER"){
+        if(this.idOrg){
+          result = this._supplyOrganisationService
+                  .updateParticipant(this.idOrg, this.supplyOrg);
+        }else{
+          this.supplyOrg.idSupplyOrganisation = this.generateID();
+          result = this._supplyOrganisationService
+                  .addParticipant(this.supplyOrg);
+        }
+      }else if(type == "RESEARCH"){
+        if(this.idOrg){
+          result = this._researchSiteService
+                  .updateParticipant(this.idOrg, this.researchSite);
+        }else{
+          this.researchSite.idResearchSite = this.generateID();
+          result = this._researchSiteService
+                  .addParticipant(this.researchSite);
+        }
+      }
+      result.subscribe(
+        //saved succesfully - go back to administration
+        (data) => {
+          this._router.navigate(['administration'])
+        },
+        //error - notify user
+        (err) => {
+          alert("Error while saving. Please try again.")
+        }
+      );
     }
 
     //generate a random id for new patients
@@ -107,7 +138,6 @@ import { Address } from '../../model/ro.utcluj.clinictrial.base';
 
     fillObject(org, orgType){
       if(orgType == "SUPPLIER"){
-        this.supplyOrg.idSupplyOrganisation = this.generateID();
         this.supplyOrg.name = org.orgName;
         this.supplyOrg.orgAddress.city = org.city;
         this.supplyOrg.orgAddress.country = org.country;

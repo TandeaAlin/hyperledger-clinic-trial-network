@@ -7,10 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 import { AppMaterialModule } from './material.module';
-import { DataService } from './service/data.service'
+import { DataService } from './service/data.service';
+import { IdProviderService } from './utils/id-provider.service';
 import { Configuration } from './service/configuration';
 import { NavbarComponent } from './navbar/navbar.component';
-
 
 @NgModule({
   declarations: [
@@ -28,7 +28,8 @@ import { NavbarComponent } from './navbar/navbar.component';
   ],
   providers: [
     Configuration,
-    DataService
+    DataService,
+    IdProviderService
   ],
   bootstrap: [AppComponent]
 })

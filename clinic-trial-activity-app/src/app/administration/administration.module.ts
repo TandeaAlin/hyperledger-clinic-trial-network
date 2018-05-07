@@ -8,8 +8,10 @@ import { AppMaterialModule } from '../material.module';
 import { PatientService } from '../service/patient.service'
 import { ResearchSiteService } from '../service/research-site.service';
 import { SupplyOrganisationService } from '../service/supply-organisation.service';
+import { ResearcherService } from '../service/researcher.service';
 import { PatientFormComponent } from './patient/patient-form.component';
 import { OrganisationFormComponent } from './organisation/organisation-form.component';
+import { ResearcherFormComponent } from './researcher/researcher-from.component';
 
 @NgModule({
   imports: [
@@ -22,12 +24,14 @@ import { OrganisationFormComponent } from './organisation/organisation-form.comp
   providers: [
     PatientService,
     ResearchSiteService,
-    SupplyOrganisationService
+    SupplyOrganisationService,
+    ResearcherService
   ],
   declarations: [
     AdministrationComponent,
     PatientFormComponent,
-    OrganisationFormComponent
+    OrganisationFormComponent,
+    ResearcherFormComponent
   ]
 })
 export class AdministrationModule { }

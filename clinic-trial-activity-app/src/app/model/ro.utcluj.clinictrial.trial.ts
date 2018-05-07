@@ -63,4 +63,13 @@ import {ResearchSite} from './ro.utcluj.clinictrial.organisation';
       interventions: string[];
       researchSites: ResearchSite[];
    }
+   export class TableRow {
+      cell: string[];
+      timestamp: string;
+   }
+   export class Crf extends Asset {
+      idCrf: string;
+      rows: TableRow[];
+      columnHeader: string[];
+   }
 // }

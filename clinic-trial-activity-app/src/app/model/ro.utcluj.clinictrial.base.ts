@@ -7,6 +7,7 @@ import {ResearchSite,SupplyOrganisation} from './ro.utcluj.clinictrial.organisat
    export enum Gender {
       MALE,
       FEMALE,
+      ALL,
    }
    export class Person {
       firstName: string;
