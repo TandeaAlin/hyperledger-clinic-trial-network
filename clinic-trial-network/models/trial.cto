@@ -1,4 +1,9 @@
-namespace ro.utcluj.clinictrial
+namespace ro.utcluj.clinictrial.trial
+
+import ro.utcluj.clinictrial.base.Researcher	
+import ro.utcluj.clinictrial.base.Patient	
+import ro.utcluj.clinictrial.base.Address	
+import ro.utcluj.clinictrial.organisation.ResearchSite
 
 /** Enum that describes that contains the possible statuses
     of a clinic trial */
@@ -56,7 +61,7 @@ transaction RegisterTrialTransaction  {
 
 /** One entry for the protocol describing the clinical trial procedures*/
 concept ProtocolEntry{
-  o TrialPhase phase
+  o TrialPhase phase 
   o Address location
   o String protocolContent
   o Integer enrollNumber
@@ -76,73 +81,13 @@ concept ProtocolContent{
   --> ResearchSite[] researchSites
 }
 
-abstract participant Organisation{
-  o String name
-  o Address orgAddress optional
+concept TableRow{
+  o String[] cell
+  o String timestamp
 }
 
-participant ResearchSite identified by idResearchSite extends Organisation{
-  o String idResearchSite
-} 
-
-participant SupplyOrganisation identified by idSupplyOrganisation extends Organisation{
-  o String idSupplyOrganisation
-}
-
-concept Person {
-  	o String firstName  optional
-  	o String lastName  optional
-  	o Gender gender optional
-  	o ContactDetails contactDetails optional
-  	o BirthDetails birthDetails optional
-  	o DeathDetails deathDetails optional
-}
-
-concept ContactDetails {
-  	o String email  optional
-  	o String mobilePhone  optional
-  	o String homePhone optional
-  	o Address address optional
-}
-
-concept BirthDetails {
-  	o DateTime dateOfBirth optional
-  	o String placeOfBirth optional
-}
-
-concept DeathDetails {
-  	o DateTime dateOfDeath optional
-  	o String placeOfDeath optional
-}
-
-concept Address {
-  	o String city optional
-  	o String country optional
-  	o String locality optional
-  	o String region optional
-  	o String street optional
-  	o String postalCode optional
-}
-
-abstract participant ParticipantPerson{
-    o Person person
-}
-
-participant Researcher identified by idResearcher extends ParticipantPerson{
-    o String idResearcher
-    --> ResearchSite employer
-}
-
-participant Supplier identified by idSupplier extends ParticipantPerson{
-    o String idSupplier
-    --> SupplyOrganisation employer
-}
-
-asset Patient identified by idPatient {
-    o String idPatient
-    o Person person
-}
-
-transaction CreateResearchSite {
-  --> ResearchSite researchSite
+asset Crf identified by idCrf{
+  o String idCrf
+  o TableRow[] rows
+  o String[] columnHeader
 }
