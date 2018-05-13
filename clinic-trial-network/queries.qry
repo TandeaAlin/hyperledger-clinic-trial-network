@@ -1,0 +1,6 @@
+query selectFilesByTrial {
+  description: "Select all files associated to a clinical study"
+  statement:
+      SELECT ro.utcluj.clinictrial.trial.ProtocolFile
+          WHERE (trial == _$trial)
+}

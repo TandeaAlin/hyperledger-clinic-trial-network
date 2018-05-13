@@ -8,6 +8,7 @@ import ro.utcluj.clinictrial.organisation.ResearchSite
 /** Enum that describes that contains the possible statuses
     of a clinic trial */
 enum TrialStatus {
+  o REGISTERED
   o NOT_RECRUITING
   o RECRUITING 
   o RECRUITING_INVITATION 
@@ -37,48 +38,26 @@ enum Gender{
   o ALL
 }
 
-/** Information about a clinic trial */
-concept TrialDetails{
-	o String trialTitle optional
-}
-
 /** Clinic trial represented as an asset*/
 asset Trial identified by idTrial{
 	o String idTrial
-  o ProtocolEntry[] protocolEntries optional
-	o TrialDetails details optional
+  o String studyName
 	o TrialStatus status optional
-	-->Patient[] participants optional
-	-->Researcher organiser
+  o ResearchSite[] researchSites optional
+  --> ResearchSite organiser
+	--> Patient[] participants optional
+	--> Researcher[] responsibles optional
 }
 
 /** Transaction for registering a new clinic trial*/
 transaction RegisterTrialTransaction  {
   o String idTrial
-	o TrialDetails details optional
-  -->Researcher organiser
-}
-
-/** One entry for the protocol describing the clinical trial procedures*/
-concept ProtocolEntry{
-  o TrialPhase phase 
-  o Address location
-  o String protocolContent
-  o Integer enrollNumber
-  o DateTime startDate
-  o DateTime endDate
-}
-/** Content of the protocol */
-concept ProtocolContent{
-  o AgeGroup[] ageGroups
-  o Gender acceptedGenders
-  o Boolean acceptsHealthy
-  //Target medical conditions treated
-  o String[] conditions
-  //Type of treatment
-  o String[] interventions
-  //Realtionship to different research sites where the clinic trial takes place
-  --> ResearchSite[] researchSites
+  o String studyName
+	o TrialStatus status optional
+  o ResearchSite[] researchSites optional
+  --> ResearchSite organiser
+	--> Patient[] participants optional
+	--> Researcher[] responsibles optional
 }
 
 concept TableRow{
@@ -90,4 +69,12 @@ asset Crf identified by idCrf{
   o String idCrf
   o TableRow[] rows
   o String[] columnHeader
+}
+
+asset ProtocolFile identified by fileID{
+  o String fileID
+  o String fileContent
+  o String fileType
+  o String fileTimestamp
+  --> Trial trial
 }
