@@ -14,40 +14,40 @@
 
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
-import { Observable } from 'rxjs';
-import { Crf } from '../model/ro.utcluj.clinictrial.trial';
+import { Observable } from 'rxjs/Observable';
+import { ProtocolFile } from '../model/ro.utcluj.clinictrial.trial';
 import 'rxjs/Rx';
 
 // Can be injected into a constructor
 @Injectable()
-export class CrfService {
+export class ProtocolFileService {
 
 	
-		private NAMESPACE: string = 'Crf';
+		private NAMESPACE: string = 'ProtocolFile';
 	
 
 
 
-    constructor(private dataService: DataService<Crf>) {
+    constructor(private dataService: DataService<ProtocolFile>) {
     };
 
-    public getAll(): Observable<Crf[]> {
+    public getAll(): Observable<ProtocolFile[]> {
         return this.dataService.getAll(this.NAMESPACE);
     }
 
-    public getAsset(id: any): Observable<Crf> {
+    public getAsset(id: any): Observable<ProtocolFile> {
       return this.dataService.getSingle(this.NAMESPACE, id);
     }
 
-    public addAsset(itemToAdd: any): Observable<Crf> {
+    public addAsset(itemToAdd: any): Observable<ProtocolFile> {
       return this.dataService.add(this.NAMESPACE, itemToAdd);
     }
 
-    public updateAsset(id: any, itemToUpdate: any): Observable<Crf> {
+    public updateAsset(id: any, itemToUpdate: any): Observable<ProtocolFile> {
       return this.dataService.update(this.NAMESPACE, id, itemToUpdate);
     }
 
-    public deleteAsset(id: any): Observable<Crf> {
+    public deleteAsset(id: any): Observable<ProtocolFile> {
       return this.dataService.delete(this.NAMESPACE, id);
     }
 

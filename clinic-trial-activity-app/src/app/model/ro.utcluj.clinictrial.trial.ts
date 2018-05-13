@@ -2,10 +2,11 @@ import {Asset} from './org.hyperledger.composer.system';
 import {Participant} from './org.hyperledger.composer.system';
 import {Transaction} from './org.hyperledger.composer.system';
 import {Event} from './org.hyperledger.composer.system';
-import {Patient,Researcher,Address} from './ro.utcluj.clinictrial.base';
+import {Patient,Researcher} from './ro.utcluj.clinictrial.base';
 import {ResearchSite} from './ro.utcluj.clinictrial.organisation';
 // export namespace ro.utcluj.clinictrial.trial{
    export enum TrialStatus {
+      REGISTERED,
       NOT_RECRUITING,
       RECRUITING,
       RECRUITING_INVITATION,
@@ -31,37 +32,23 @@ import {ResearchSite} from './ro.utcluj.clinictrial.organisation';
       FEMALE,
       ALL,
    }
-   export class TrialDetails {
-      trialTitle: string;
-   }
    export class Trial extends Asset {
       idTrial: string;
-      protocolEntries: ProtocolEntry[];
-      details: TrialDetails;
+      studyName: string;
       status: TrialStatus;
+      researchSites: ResearchSite[];
+      organiser: ResearchSite;
       participants: Patient[];
-      organiser: Researcher;
+      responsibles: Researcher[];
    }
    export class RegisterTrialTransaction extends Transaction {
       idTrial: string;
-      details: TrialDetails;
-      organiser: Researcher;
-   }
-   export class ProtocolEntry {
-      phase: TrialPhase;
-      location: Address;
-      protocolContent: string;
-      enrollNumber: number;
-      startDate: Date;
-      endDate: Date;
-   }
-   export class ProtocolContent {
-      ageGroups: AgeGroup[];
-      acceptedGenders: Gender;
-      acceptsHealthy: boolean;
-      conditions: string[];
-      interventions: string[];
+      studyName: string;
+      status: TrialStatus;
       researchSites: ResearchSite[];
+      organiser: ResearchSite;
+      participants: Patient[];
+      responsibles: Researcher[];
    }
    export class TableRow {
       cell: string[];
@@ -71,5 +58,12 @@ import {ResearchSite} from './ro.utcluj.clinictrial.organisation';
       idCrf: string;
       rows: TableRow[];
       columnHeader: string[];
+   }
+   export class ProtocolFile extends Asset {
+      fileID: string;
+      fileContent: string;
+      fileType: string;
+      fileTimestamp: string;
+      trial: Trial;
    }
 // }

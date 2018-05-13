@@ -10,3 +10,12 @@ export class OrganisationVO {
     street: string;
     postalCode: string;
 }
+
+export class FileVO{
+    fileID : string
+    fileContent : string
+    fileType : string
+    fileTimestamp : string
+    fileVersion : string
+    trial : string
+}

@@ -1,8 +1,10 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import { HttpClient }from '@angular/common/http';
+
+
 import { Configuration } from './configuration';
 
 @Injectable()
@@ -11,7 +13,7 @@ export class DataService<Type> {
     private actionUrl: string;
     private headers: Headers;
 
-    constructor(private http: Http, private _configuration: Configuration) {
+    constructor(private http: HttpClient, private _configuration: Configuration) {
         this.actionUrl = _configuration.ServerWithApiUrl;
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
@@ -20,17 +22,13 @@ export class DataService<Type> {
 
     public getAll(ns: string): Observable<Type[]> {
         console.log('GetAll ' + ns + ' to ' + this.actionUrl + ns);
-        return this.http.get(`${this.actionUrl}${ns}`)
-          .map(this.extractData)
-          .catch(this.handleError);
+        return this.http.get<Type[]>(`${this.actionUrl}${ns}`);
     }
 
     public getSingle(ns: string, id: string): Observable<Type> {
         console.log('GetSingle ' + ns);
 
-        return this.http.get(this.actionUrl + ns + '/' + id + this.resolveSuffix)
-          .map(this.extractData)
-          .catch(this.handleError);
+        return this.http.get<Type>(this.actionUrl + ns + '/' + id + this.resolveSuffix);
     }
 
     public add(ns: string, asset: Type): Observable<Type> {
@@ -38,9 +36,7 @@ export class DataService<Type> {
         console.log('Add ' + ns);
         console.log('asset', asset);
 
-        return this.http.post(this.actionUrl + ns, asset)
-          .map(this.extractData)
-          .catch(this.handleError);
+        return this.http.post<Type>(this.actionUrl + ns, asset);
     }
 
     public update(ns: string, id: string, itemToUpdate: Type): Observable<Type> {
@@ -48,17 +44,13 @@ export class DataService<Type> {
         console.log('what is the id?', id);
         console.log('what is the updated item?', itemToUpdate);
         console.log('what is the updated item?', JSON.stringify(itemToUpdate));
-        return this.http.put(`${this.actionUrl}${ns}/${id}`, itemToUpdate)
-          .map(this.extractData)
-          .catch(this.handleError);
+        return this.http.put<Type>(`${this.actionUrl}${ns}/${id}`, itemToUpdate);
     }
 
     public delete(ns: string, id: string): Observable<Type> {
         console.log('Delete ' + ns);
 
-        return this.http.delete(this.actionUrl + ns + '/' + id)
-          .map(this.extractData)
-          .catch(this.handleError);
+        return this.http.delete<Type>(this.actionUrl + ns + '/' + id);
     }
 
     private handleError(error: any): Observable<string> {
@@ -67,7 +59,7 @@ export class DataService<Type> {
         let errMsg = (error.message) ? error.message :
           error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
-        return Observable.throw(errMsg);
+        return observableThrowError(errMsg);
     }
 
     private extractData(res: Response): any {
