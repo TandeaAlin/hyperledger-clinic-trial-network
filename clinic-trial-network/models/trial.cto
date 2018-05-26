@@ -71,6 +71,32 @@ asset Crf identified by idCrf{
   o String[] columnHeader
 }
 
+asset CustomForm identified by idForm{
+  o String idForm
+  o String name  
+  o String dateCreated
+  o FormEntry[] formMeta
+  o FormValue[] formValues
+  -->Trial trial
+}
+
+enum EntryType{
+  o FORM_FIELD
+  o CHOICE_FIELD
+  o SELECTOR_FIELD
+}
+
+concept FormValue{
+  o String[] entries
+}
+
+concept FormEntry{
+  o String entryName
+  o Integer entryType
+  o String[] entryOptions
+  o String value
+}
+
 asset ProtocolFile identified by fileID{
   o String fileID
   o String fileContent

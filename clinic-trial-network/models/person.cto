@@ -2,6 +2,7 @@ namespace ro.utcluj.clinictrial.base
 
 import ro.utcluj.clinictrial.organisation.ResearchSite
 import ro.utcluj.clinictrial.organisation.SupplyOrganisation
+import ro.utcluj.clinictrial.trial.Trial
 
 enum Gender{
   o MALE
@@ -61,4 +62,5 @@ participant Supplier identified by idSupplier extends ParticipantPerson{
 asset Patient identified by idPatient {
     o String idPatient
     o Person person
+	-->Trial trial optional
 }

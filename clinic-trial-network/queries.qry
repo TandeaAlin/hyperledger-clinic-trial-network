@@ -1,6 +1,20 @@
 query selectFilesByTrial {
-  description: "Select all files associated to a clinical study"
+  description: "Select all files asociated to a clinical study"
   statement:
       SELECT ro.utcluj.clinictrial.trial.ProtocolFile
+          WHERE (trial == _$trial)
+}
+
+query selectCustomFormsByTrial{
+    description: "Select custom forms asociated to a clinical study "
+    statement:
+      SELECT ro.utcluj.clinictrial.trial.CustomForm
+          WHERE (trial == _$trial)
+}
+
+query selectPatientsForTrial{
+    description: "Select the patients asociated to a clinical study "
+    statement:
+      SELECT ro.utcluj.clinictrial.base.Patient
           WHERE (trial == _$trial)
 }
