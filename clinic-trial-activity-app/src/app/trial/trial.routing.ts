@@ -8,7 +8,7 @@ import { TrialViewComponent } from './overview-page/trial-view.component';
 const routes: Routes = [
   { path: '', component: TrialComponent },
   { path: 'new', component: TrialFormComponent },
-  { path: 'view/:idTrial', component: TrialViewComponent }
+  { path: 'view/:idTrial', component: TrialViewComponent },
 
 ];
 

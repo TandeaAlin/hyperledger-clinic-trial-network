@@ -53,5 +53,6 @@ import {ResearchSite,SupplyOrganisation} from './ro.utcluj.clinictrial.organisat
    export class Patient extends Asset {
       idPatient: string;
       person: Person;
+      trial: string;
    }
 // }

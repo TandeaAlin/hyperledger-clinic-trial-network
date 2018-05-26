@@ -19,3 +19,15 @@ export class FileVO{
     fileVersion : string
     trial : string
 }
+export enum EntryType{
+    FORM_FIELD,
+    CHOICE_FIELD,
+    SELECTOR_FIELD
+}
+
+export class FormVO{
+    entryName : string
+    entryType : number
+    entryOptions : string[]
+    value : string
+}

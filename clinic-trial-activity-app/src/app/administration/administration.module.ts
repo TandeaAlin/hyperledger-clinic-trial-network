@@ -12,6 +12,7 @@ import { ResearcherService } from '../service/researcher.service';
 import { PatientFormComponent } from './patient/patient-form.component';
 import { OrganisationFormComponent } from './organisation/organisation-form.component';
 import { ResearcherFormComponent } from './researcher/researcher-from.component';
+import { ComponentModule } from '../components/component.module'
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { ResearcherFormComponent } from './researcher/researcher-from.component'
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    ComponentModule
   ],
   providers: [
     PatientService,

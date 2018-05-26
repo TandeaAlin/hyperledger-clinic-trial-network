@@ -1,0 +1,19 @@
+<table width="100%">
+    <tbody>
+        <tr>
+            <td width="60%">
+                <mat-form-field class="input-field-full-width">
+                    <input matInput placeholder="Search patients..." [(ngModel)]="searchQuery">
+                </mat-form-field>
+            </td>
+            <td width="40%">
+                <button mat-raised-button (click)="search()" color="primary">Search</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br/>
+
+<patient-table [allPatientsDataSource]="allPatientsDataSource" [adminMode]=false [idTrial]="idTrial"></patient-table>
+<br/>
+<button mat-raised-button (click)="cancel()" style="float: right, down;" color="primary">Cancel</button>

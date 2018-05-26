@@ -13,12 +13,14 @@ import { ProtocolFileService } from './service/ProtocolFile.service';
 import { Configuration } from './service/configuration';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FilesQueryService } from './service/queries/files-query-service';
+import { FormQueryService } from './service/queries/forms-query-service'
 import { QueryService } from './service/queries/query-service'
-
+import { CustomFormService } from './service/CustomForm.service'
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent
+    NavbarComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -35,7 +37,9 @@ import { QueryService } from './service/queries/query-service'
     IdProviderService,
     ProtocolFileService,
     FilesQueryService,
-    QueryService
+    QueryService,
+    CustomFormService,
+    FormQueryService
   ],
   bootstrap: [AppComponent]
 })

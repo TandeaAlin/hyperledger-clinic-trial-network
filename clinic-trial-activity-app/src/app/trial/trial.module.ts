@@ -10,7 +10,9 @@ import { ResearchSiteService } from '../service/research-site.service';
 import { TrialFormComponent } from '../trial/new-page/trial-form.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IdProviderService } from '../utils/id-provider.service';
-
+import { CRFModule } from '../crf/crf.module'
+import { PatientQueryService } from '../service/queries/patient-query-service'
+import { ComponentModule } from '../components/component.module'
 @NgModule({
     imports: [
         AppMaterialModule,
@@ -18,16 +20,19 @@ import { IdProviderService } from '../utils/id-provider.service';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        CRFModule,
+        ComponentModule
     ],
     providers: [
         TrialService,
         ResearchSiteService,
-        IdProviderService
+        IdProviderService,
+        PatientQueryService
     ],
     declarations: [
         TrialComponent,
         TrialFormComponent,
-        TrialViewComponent
+        TrialViewComponent,
     ]
 })
 export class TrialModule { }
