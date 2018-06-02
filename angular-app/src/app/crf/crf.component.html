@@ -1,0 +1,136 @@
+<div class="center-div">
+    <mat-card class="description-card">
+        <mat-card-header>
+            <div class="marginAutoLR">
+                <h1>
+                    Form builder
+                </h1>
+            </div>
+            <br/>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-divider></mat-divider>
+            <br/>
+            <mat-form-field class="input-field-width">
+                <input matInput placeholder="Enter a name for the custom form..." [(ngModel)]="customForm.name">
+            </mat-form-field>
+            <mat-divider></mat-divider>
+            <mat-divider></mat-divider>
+            <div align="center">
+                <h3>
+                    Form fields:
+                </h3>
+            </div>
+            <mat-divider></mat-divider>
+            <br/>
+            <div>
+                <div *ngFor="let formEntry of formFields">
+                    <mat-divider></mat-divider>
+                    <div *ngIf="formEntry.entryType == 0">
+                        <mat-form-field class="input-field-width">
+                            <input matInput placeholder="{{formEntry.entryName}}">
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="formEntry.entryType == 1">
+                        <mat-radio-group>
+                            <table>
+                                <thead>{{formEntry.entryName}}</thead>
+                                <tbody>
+                                    <tr>
+                                        <div>
+                                            <td *ngFor="let option of formEntry.entryOptions">
+                                                <mat-radio-button value="{{option}}">{{option}}</mat-radio-button>
+                                            </td>
+                                        </div>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </mat-radio-group>
+                    </div>
+                    <div *ngIf="formEntry.entryType == 2">
+                        <mat-form-field>
+                            <mat-select placeholder="{{formEntry.entryName}}" [(ngModel)]="formEntry.value">
+                                <mat-option *ngFor="let option of formEntry.entryOptions" [value]="option">
+                                    {{option}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+            </div>
+
+            <br/>
+            <div *ngIf="displayFormField">
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <td width="70%">
+                                <mat-form-field class="input-field-width">
+                                    <input matInput placeholder="New field name" [(ngModel)]="formField.entryName">
+                                </mat-form-field>
+                            </td>
+                            <td width="30%">
+                                <button mat-raised-button (click)="addField()" color="primary">Add</button>
+                            </td>
+                        </tr>
+                        <div *ngIf="displayChoice || displaySelector">
+                            <tr>
+                                <td width=100%>
+                                    <mat-form-field class="max-width">
+                                        <mat-chip-list #chipList>
+                                            <mat-chip *ngFor="let header of dataHeaders" [selectable]="selectable" [removable]="removable" (removed)="remove(header)">
+                                                {{header}}
+                                                <mat-icon matChipRemove>cancel</mat-icon>
+                                            </mat-chip>
+                                            <input placeholder="Possible values for choice..." [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)" />
+                                        </mat-chip-list>
+                                    </mat-form-field>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </div>
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+            <div align="center">
+                <h4>
+                    Choose the type of the new field
+                </h4>
+            </div>
+
+
+            <!-- Container with the types of form fields -->
+            <div align="center">
+                <button mat-raised-button [matMenuTriggerFor]="menu" color="primary">New input field</button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="formFieldSelect()">Text Field</button>
+                    <button mat-menu-item (click)="choiceSelect()">Choice</button>
+                    <button mat-menu-item (click)="selectorSelect()">Selector</button>
+                </mat-menu>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+<br/>
+<div>
+
+</div>
+<div>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <button mat-raised-button (click)="saveForm()" style="float: right, top;" color="primary">Save</button>
+                </td>
+                <td>
+                    <button mat-raised-button (click)="cancelForm()" style="float: right, top;" color="primary">Cancel</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
