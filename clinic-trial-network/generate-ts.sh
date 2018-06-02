@@ -1,1 +1,1 @@
-composer generator create --archiveFile clinic-trial-network@0.0.12.bna --format Typescript --outputDir ./ts-files
+composer generator create --archiveFile clinic-trial-network@0.0.21.bna --format Typescript --outputDir ./ts-files

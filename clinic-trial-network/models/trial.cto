@@ -53,11 +53,8 @@ asset Trial identified by idTrial{
 transaction RegisterTrialTransaction  {
   o String idTrial
   o String studyName
-	o TrialStatus status optional
-  o ResearchSite[] researchSites optional
   --> ResearchSite organiser
-	--> Patient[] participants optional
-	--> Researcher[] responsibles optional
+  --> Researcher[] responsibles 
 }
 
 concept TableRow{
@@ -103,4 +100,23 @@ asset ProtocolFile identified by fileID{
   o String fileType
   o String fileTimestamp
   --> Trial trial
+}
+
+transaction EnrolPatientTransaction{
+  --> Patient patient
+  --> Trial trial
+}
+
+transaction RemoveResearcherFromTrial{
+  --> Trial trial 
+  --> Researcher researcher
+}
+
+transaction AddResearcherToTrial{
+  --> Trial trial
+  --> Researcher researcher
+}
+
+transaction SetupMockData{
+  o String param optional
 }

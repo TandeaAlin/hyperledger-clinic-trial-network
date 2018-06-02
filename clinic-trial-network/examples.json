@@ -1,0 +1,10 @@
+{
+    "$class": "ro.utcluj.clinictrial.trial.RegisterTrialTransaction",
+    "idTrial": "4",
+    "studyName": "test name",
+    "organiser": "resource:ro.utcluj.clinictrial.organisation.ResearchSite#0001",
+    "responsibles": [
+   "resource:ro.utcluj.clinictrial.base.Researcher#res",
+    "resource:ro.utcluj.clinictrial.base.Researcher#res1"
+    ]
+  }

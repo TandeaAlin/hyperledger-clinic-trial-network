@@ -27,12 +27,12 @@ concept ContactDetails {
 }
 
 concept BirthDetails {
-  	o DateTime dateOfBirth optional
+  	o String dateOfBirth optional
   	o String placeOfBirth optional
 }
 
 concept DeathDetails {
-  	o DateTime dateOfDeath optional
+  	o String dateOfDeath optional
   	o String placeOfDeath optional
 }
 
@@ -51,7 +51,7 @@ abstract participant ParticipantPerson{
 
 participant Researcher identified by idResearcher extends ParticipantPerson{
     o String idResearcher
-    o ResearchSite employer
+    --> ResearchSite employer
 }
 
 participant Supplier identified by idSupplier extends ParticipantPerson{
