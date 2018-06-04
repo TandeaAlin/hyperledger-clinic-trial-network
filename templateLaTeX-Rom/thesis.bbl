@@ -21,9 +21,15 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
-\bibitem{topologies}
-P.~Baran, ``On distributed communications networks,'' \emph{IEEE Transactions
-  on Communications Systems}, vol.~12, no.~1, pp. 1--9, March 1964.
+\bibitem{bndef}
+L.~Lewis, \emph{Managing Business and Service Networks}.\hskip 1em plus 0.5em
+  minus 0.4em\relax Norwell, MA, USA: Kluwer Academic Publishers, 2001.
+
+\bibitem{fabricdoc}
+\BIBentryALTinterwordspacing
+Hyperledger. (2018) {Hyperledger Fabric} documentation. [Online]. Available:
+  \url{http://hyperledger-fabric.readthedocs.io/en/latest/}
+\BIBentrySTDinterwordspacing
 
 \bibitem{ctms}
 \BIBentryALTinterwordspacing
@@ -32,5 +38,17 @@ G.~W. Fegan and T.~A. Lang, ``Could an open-source clinical trial
   Medicine}, vol.~5, no.~3, pp. 1--3, 03 2008. [Online]. Available:
   \url{https://doi.org/10.1371/journal.pmed.0050006}
 \BIBentrySTDinterwordspacing
+
+\bibitem{p2p}
+A.~Davison, \emph{Killer Game Programming in Java}.\hskip 1em plus 0.5em minus
+  0.4em\relax O'Reilly Media, Inc., 2005.
+
+\bibitem{bitcoin}
+S.~Nakamoto, ``Bitcoin: A peer-to-peer electronic cash system,”
+  http://bitcoin.org/bitcoin.pdf.''
+
+\bibitem{topologies}
+P.~Baran, ``On distributed communications networks,'' \emph{IEEE Transactions
+  on Communications Systems}, vol.~12, no.~1, pp. 1--9, March 1964.
 
 \end{thebibliography}

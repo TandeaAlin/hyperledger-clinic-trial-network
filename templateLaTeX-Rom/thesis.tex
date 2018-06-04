@@ -279,33 +279,69 @@ Reprezint'a cca. 10\% din lucrare.
 \chapter{Studiu Bibliografic}
 
 	Managementul 'si reglementarea proceselor din cadrul unui studiu clinic reprezint'a o provocare datorit'a num'arului mare de entit'ati implicate in organizarea unui studiu clinic. \\
-	Acest capitol prezint'a starea curent'a a sistemelor pentru managementul studiilor clinice precum 'si unele concepte folosite in cadrul sistemului descris in lucrare. 
+	Acest capitol prezint'a unele concepte necesare pentru o mai bun'a in'telegere a solu'tiei propuse si a avantajelor acesteia. Capitolul continu'a cu o prezentare a solu'tiilor existente pentru managementul studiilor clinice, oferind o analiz'a a avantajelor 'si dezavantajelor oferite de aceste abord'ari.
+
+\section{Re'tea de afaceri}
+\subsection{Definitie}
+	O retea de afaceri reprezint'a o re'tea complex'a de companii "unde scopul este de a sus'tine cerintele informationale 'si opera'tionale ale afacerii cum ar fi cele de marketing, contabilitate ..."\cite{bndef}. Un alt aspect important al unei retele de afaceri este ca aceasta nu inglobeaza doar afacerea in sine ci implic'a 'si unele entitati din exterior care sus'tin activitatea re'telei cum ar fi furnizorii sau distribuitorii. \\
+	In cazul studiilor clinice o retea de afaceri poate fi format'a din participan'tii direc'ti la activita'ti(ex. centrele medicale in care se desfasoar'a studiile clinice), precum si partile care sustin activitatea studiilor clinice(ex. furnizori, institutii de reglementare...)
+\subsection{Starea actual'a}
+	Re'telele existente de afaceri folosesc in prezent metode similare pentru stocarea informa'tiilor. Entit'atile implicate tranzactioneaza intre ele, 'ins'a men'tin inregistrari proprii referitoare la tranzactiile efectuate. In cele mai multe cazuri o autoritate central'a in care toate partile implicate au incredere intermediaz'a tranzactiile 'si schimbul de informa'tii din cadrul re'telei. Conceptul descris mai sus este ilustrat in figura \ref{fig:centralised}.\\
+	
+		\begin{figure}[!ht]
+		\begin{center}
+			\includegraphics[scale=1.60]{img/current_network.png}
+			\caption{Re'tele de afaceri centralizate\cite{fabricdoc}}
+  			\label{fig:centralised}
+  		\end{center}
+  		\end{figure}
+	Aceasta metod'a prezint'a o complexitate redus'a dar produce in acelasi timp unele dezavantaje. Partajarea informatiilor este efectuata indirect, responsabila de acest lucru fiind autoritatea centrala. Din acest motiv procesul este incetinit, implicand costuri suplimentare. Stabilirea corectitudinii informatiilor devine dificila in momentul in care partile implicate detin inregistrari diferite referitoare la tranzactii.\\
+		Printre sistemele care folosesc o astfel de abordare se numar'a Oracle Siebel Clinical Trial Management System\cite{ctms}. Sistemul ofer'a posibilitatea cercetatorilor de a organiza si colecta date in cadrul uni studiu clinic, fiind astfel simplificat'a activitatea acestora. Datele sunt colectate intr-o baza de date central'a . Partajarea datelor intre participan'ti are loc fie prin implicarea unei autorit'a'ti centrale, fie prin folosirea unor mijloace nesigure. Aceste mijloace sunt ineficiente si reprezint'a un risc in ce prive'ste protejarea datelor cu caracter sensibil.\\	
+
+\subsection{Retele de afaceri decentralizate}
+O alta abordare pentru realizarea unei retele de afaceri reprezinta utilizarea unei retele decentralizate. O astfel de metoda presupune folosirea unui registru comun, replicat de catre fiecare participant din reteaua de afaceri. Procesul de salvare a tranzactiilor in cadrul registrului este de asemenea partajat, fiecare participant la retea participand la procesul de validare si memorare a tranzactiilor efectuate. Este eliminata astfel nevoia unei autoritati centrale, partile implicate avand incredere ca tranzactiile salvate in registrul comun sunt valide. \\
+Figura \ref{fig:decentralised} ilustreaza structura unei retele de afaceri decentralizate. O astfel de retea este similara cu o retea blockchain.
+		\begin{figure}[H]
+		\begin{center}
+			\includegraphics[scale=0.3]{img/future_net.png}
+			\caption{Re'tele de afaceri decentralizate\cite{fabricdoc}}
+  			\label{fig:decentralised}
+  		\end{center}
+  		\end{figure}
+  		
+\section{Blockchain}
+Termenul de blockchain a devenit cunoscut odata cu cresterea in popularitate a monedelor virtuale, in special a monedei virtuale Bitcoin. O retea blockchain poate fi definita ca fiind o baza de date distribuita, intretinuta de o serie de participanti care valideaza inregistrarile din cadrul retelei folosind o comunicare de tip peer-to-peer. Inregistrarile din cadrul retelei sunt securizate prin metode criptografice care asigura imutabilitatea datelor. Rezolvarea conflictelor din inregistrari se rezolva folosind algoritmi de conses.
+
+\subsection{Baza de date distribuit'a}
+Tehnologia blockchain foloseste o retea de tip peer-to-peer pentru a valida si propaga tranzactiile intre participantii din retea. Spre deosebire de abordarea client-server intr-o retea de tip peer-to-peer entitatile implicate au aceleasi privilegii si responsabilitati\cite{p2p}. Figura \ref{fig:p2p} ilustreaza descrierea de mai sus. Spre deosebire de arhitectura client-server, arhitectura peer-to-peer ofera o toleranta la esec ridicata, oferita prin eliminarea punctului unic de e'sec.\\
+
+		\begin{figure}[H]
+		\begin{center}
+			\includegraphics[scale=2]{img/p2p.png}
+			\caption{Retea client-server vs peer-to-peer\cite{fabricdoc}}
+  			\label{fig:p2p}
+  		\end{center}
+  		\end{figure}
+
+O alta caracteristica a tehnologiei blockchain este replicarea datelor la fiecare peer din retea. Este eliminata astfel necesitatea de a avea o autoritate centrala care sa asigure corectitudinea datelor.   		
+
+\subsection{Securizarea datelor prin criptografie}
+Structura de date folosita pentru moneda virtuala Bitcoin este o lista invers inlantuita in care fiecare inregistrare, numita bloc, contine hash-ul blocului anterior, un timestamp si radacina Merkle a tranzactiilor, folosita pentru a verifica integritatea acestora\cite{bitcoin}. 
+Este asigurata astfel integritatea si imutabilitatea datelor stocate pentru structura de date. Modificarea unui bloc nu poate aavea loc fara a fi modificate si blocurile anterioare din lista inlantuita.
+\subsection{Algoritmi de consens}
 
 \section{Topologii re'tele}
-	Pentru o mai buna intelegere a solu'tiilor existente pentru managementul este necesara introducerea unor concepte legate de topologii de re'tele.
-\\
 	'In lucrarea \cite{topologies}, Paul Baran propune 3 tipuri de topologii pentru structura internetului avand ca scop optimizarea acesteia. Figura \ref{fig:topologies} ilustreaz'a cele trei topologii propuse de Baran pentru structura internetului: centralizat(a), decentralizat(b) si distribuit(c).
 	
-		\begin{figure}[!h]
+		\begin{figure}[H]
 		\begin{center}
-			\includegraphics[scale=0.55]{img/topologies.jpg}
+			\includegraphics[scale=0.50]{img/topologies.jpg}
 			\caption{Topologii propuse\cite{topologies}}
   			\label{fig:topologies}
   		\end{center}
   		\end{figure}
- 	'In cazul internetului, Baran propune folosirea unei structuri distribuite ar'atand c'a o structur'a centralizat'a sau decentralizat'a ar fi vulnerabile in cazul unor atacuri.
- 	
-\section{Starea curent'a} 
-	Sistemele curente pentru managementul studiilor clinice folosesc o structura centralizat'a. Participan'tii la procesul de reglementare si organizare a studiilor clinice realizeaz'a schimburi de informa'tii dar fiecare mentine un registru propriu cu informatii. Partajarea datelor intre participan'ti are loc fie prin implicarea unei autoritati centrale, fie prin folosirea unor mijloace nesigure. Aceste mijloace sunt ineficiente si reprezint'a un risc in ce prive'ste protejarea datelor cu caracter sensibil.
+ 	'In cazul internetului, Baran propune folosirea unei structuri distribuite ar'atand c'a o structur'a centralizat'a sau decentralizat'a ar fi vulnerabil'a in cazul unor atacuri.
 	
-	Printre sistemele care folosesc o astfel de abordare se numar'a Oracle Siebel Clinical Trial Management System\cite{ctms}. Sistemul ofer'a posibilitatea cercetatorilor de a organiza si colecta date in cadrul uni studiu clinic, fiind astfel simplificat'a activitatea acestora. Datele sunt colectate intr-o baza de date centrala 
- 	
-
-
-\section{Sisteme existente}
-	
-
-\section{Alt titlu}
 
 
 \chapter{Analiz'a 'si Fundamentare Teoretic'a}
