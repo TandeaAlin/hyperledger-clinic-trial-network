@@ -345,6 +345,7 @@ function copyPerson(target, src) {
 
     target.person.firstName = src.person.firstName;
     target.person.lastName = src.person.lastName;
+    target.person.gender = src.person.gender;
     target.person.contactDetails.email = src.person.contactDetails.email;
     target.person.contactDetails.mobilePhone = src.person.contactDetails.phone;
     target.person.birthDetails.dateOfBirth = src.person.birthDetails.dateOfBirth;

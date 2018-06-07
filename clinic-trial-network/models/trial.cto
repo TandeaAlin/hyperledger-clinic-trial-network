@@ -84,7 +84,7 @@ enum EntryType{
 }
 
 concept FormValue{
-  o String[] entries
+  o String[] data
 }
 
 concept FormEntry{
