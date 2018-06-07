@@ -73,7 +73,7 @@ export enum EntryType {
     SELECTOR_FIELD,
 }
 export class FormValue {
-    entries: string[];
+    data: string[];
 }
 export class FormEntry {
     entryName: string;

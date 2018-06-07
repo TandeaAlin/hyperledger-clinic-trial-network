@@ -6,8 +6,8 @@ import { Patient, Researcher } from './ro.utcluj.clinictrial.base';
 import { ResearchSite } from './ro.utcluj.clinictrial.organisation';
 import { Trial } from './ro.utcluj.clinictrial.trial'
 export class EnrolPatientTransaction extends Transaction {
-    patient: Patient;
-    trial: Trial;
+    patient: string;
+    trial: string;
 }
 export class RemoveResearcherFromTrial extends Transaction {
     trial: Trial;

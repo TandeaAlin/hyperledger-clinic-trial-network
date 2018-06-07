@@ -1,12 +1,13 @@
-import { Component, ViewChild, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, Inject } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { Patient, Researcher } from '../../model/ro.utcluj.clinictrial.base';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Patient } from '../../model/ro.utcluj.clinictrial.base';
+import { EnrolPatientTransaction } from '../../model/transaction';
 import { PatientService } from '../../service/patient.service';
-import { PatientQueryService } from '../../service/queries/patient-query-service'
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { OnChanges } from '@angular/core';
-import { TrialVO } from '../../model/ro.utcluj.trial.vo';
-
+import { TransactionService } from '../../service/transaction-service';
+import { ResourceProvider } from '../../utils/resource-provider';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { FormQueryService } from '../../service/queries/forms-query-service';
 
 @Component({
     selector: 'patient-table',
@@ -16,35 +17,54 @@ export class PatientTableComponent implements OnInit {
     private errorMessage;
     navigationSubscription;
     allPatients: Patient[] = [];
+    enrolPatientTransaction: EnrolPatientTransaction;
+    forms: any[] = [];
+    formSelection;
+    patientSelection;
+
+    displayTable = true;
+    displayForm = false;
 
     @Input() allPatientsDataSource: MatTableDataSource<Patient>;
     @Input() adminMode: boolean;
     @Input() idTrial: string;
     adminDisplayedColumns = ['PatientID', 'Name', 'Gender', 'Birthdate', 'View', 'Edit', 'Delete'];
-    userDisplayedColumns = ['PatientID', 'Name', 'Gender', 'Birthdate', 'View'];
+    userDisplayedColumns = ['PatientID', 'Name', 'Gender', 'Birthdate', 'View', 'Complete Form'];
     displayedColumns: string[] = [];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     constructor(
         private _patientService: PatientService,
         private _router: Router,
         private _route: ActivatedRoute,
+        private _transactionService: TransactionService,
+        private dialog: MatDialog,
+        private _formQueryService: FormQueryService
     ) {
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
             // If it is a NavigationEnd event re-initalise the component
             if (e instanceof NavigationEnd) {
                 console.log("Loading table patient data....")
                 console.log(this.allPatientsDataSource);
+                this.displayTable = true;
+                this.displayForm = false;
             }
         });
     }
 
     ngOnInit() {
         console.log(this.idTrial)
-        if(this.adminMode){
+        this._formQueryService.findCustomFormsByTrial(ResourceProvider.newTrialQueryResource(this.idTrial))
+            .subscribe(
+                (res) => {
+                    console.log(res)
+                    this.forms = res;
+                }
+            )
+        if (this.adminMode) {
             this.displayedColumns = this.adminDisplayedColumns;
-        }else{
+        } else {
             this.displayedColumns = this.userDisplayedColumns;
-            if(this.idTrial != null){
+            if (this.idTrial != null) {
                 this.displayedColumns.push('Enroll');
             }
         }
@@ -58,10 +78,12 @@ export class PatientTableComponent implements OnInit {
         //  this.allPatientsDataSource.paginator = this.paginator;
     }
 
-    enrollPatient(patient: Patient){
-        patient.trial = TrialVO.TRIAL + this.idTrial;
+    enrollPatient(patient: Patient) {
+        this.enrolPatientTransaction = new EnrolPatientTransaction();
+        this.enrolPatientTransaction.patient = ResourceProvider.newPatientResource(patient.idPatient);
+        this.enrolPatientTransaction.trial = ResourceProvider.newTrialResource(this.idTrial);
         console.log(patient.trial);
-        this._patientService.updateAsset(patient.idPatient, patient).subscribe(
+        this._transactionService.enrolPatientTransaction(this.enrolPatientTransaction).subscribe(
             (res) => this._router.navigate([this._router.url])
         )
     }
@@ -87,6 +109,47 @@ export class PatientTableComponent implements OnInit {
             });
     }
 
+    openFormSelection(patient): void {
+        console.log('Opening dialog')
+        console.log(this.forms);
+        let dialogRef = this.dialog.open(CustomFormSelectDialog, {
+            width: '25%',
+            data: { forms: this.forms }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+            console.log(result);
+            this.formSelection = result;
+            this.patientSelection = patient.idPatient;
+            this.onFormSelect();
+        });
+
+    }
+
+    onFormSelect() {
+        if (this.formSelection) {
+            this.displayForm = true;
+            this.displayTable = false;
+        }
+    }
+}
+
+@Component({
+    selector: 'custom-from-select-dialog',
+    templateUrl: 'custom-from-select-dialog.html',
+})
+export class CustomFormSelectDialog {
+
+    constructor(
+        public dialogRef: MatDialogRef<CustomFormSelectDialog>,
+        @Inject(MAT_DIALOG_DATA) public data: any) {
+        console.log(data.forms);
+    }
+
+    onNoClick(): void {
+        this.dialogRef.close();
+    }
 
 }
 

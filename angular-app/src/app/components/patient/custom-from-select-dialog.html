@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Select the form to complete:</h1>
+<mat-dialog-content>
+    <table>
+        <tbody>
+            <tr *ngFor="let form of data.forms">
+                <td>
+                    {{form.name}}
+                </td>
+                <td>
+                 
+                        <button mat-button [mat-dialog-close]="form.idForm">Select</button>
+                 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</mat-dialog-content>
+<mat-dialog-actions>
+<button mat-button (click)="onNoClick()">Cancel</button>
+</mat-dialog-actions>

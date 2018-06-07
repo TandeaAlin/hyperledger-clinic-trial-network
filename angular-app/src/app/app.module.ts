@@ -16,6 +16,8 @@ import { FilesQueryService } from './service/queries/files-query-service';
 import { FormQueryService } from './service/queries/forms-query-service'
 import { QueryService } from './service/queries/query-service'
 import { CustomFormService } from './service/CustomForm.service'
+import { TransactionService } from './service/transaction-service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +41,8 @@ import { CustomFormService } from './service/CustomForm.service'
     FilesQueryService,
     QueryService,
     CustomFormService,
-    FormQueryService
+    FormQueryService,
+    TransactionService
   ],
   bootstrap: [AppComponent]
 })

@@ -225,7 +225,7 @@
                 <patient-page [idTrial]="idTrial"></patient-page>
             </div>
             <div *ngIf="!patientSelect">
-                <patient-table [allPatientsDataSource]="allPatientsDataSource" [adminMode]=false></patient-table>
+                <patient-table [allPatientsDataSource]="allPatientsDataSource" [adminMode]=false [idTrial] = "trial.idTrial"></patient-table>
                 <div class="floating-button">
 
                     <button mat-fab color="primary" (click)="patientSelection()">

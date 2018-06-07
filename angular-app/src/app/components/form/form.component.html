@@ -1,0 +1,52 @@
+<div *ngIf="isInitialised">
+    <div *ngFor="let formEntry of customForm.formMeta">
+        <mat-divider></mat-divider>
+        <br/>
+        <br/>
+        <div *ngIf="formEntry.entryType == 0">
+            <mat-form-field class="input-field-width">
+                <input matInput placeholder="{{formEntry.entryName}}" [(ngModel)]="formEntry.value" ngDefaultControl>
+            </mat-form-field>
+        </div>
+        <div *ngIf="formEntry.entryType == 1">
+            <mat-radio-group>
+                <table>
+                    <thead>{{formEntry.entryName}}</thead>
+                    <tbody>
+                        <tr>
+                            <div>
+                                <mat-radio-group [(ngModel)]=formEntry.value>
+                                    <td *ngFor="let option of formEntry.entryOptions">
+                                        <mat-radio-button value="{{option}}">{{option}}</mat-radio-button>
+                                    </td>
+                                </mat-radio-group>
+                            </div>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-radio-group>
+        </div>
+        <div *ngIf="formEntry.entryType == 2">
+            <mat-form-field class="input-field-width">
+                <mat-select placeholder="{{formEntry.entryName}}" [(ngModel)]="formEntry.value">
+                    <mat-option *ngFor="let option of formEntry.entryOptions" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <br/>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <button mat-raised-button (click)="save()" style="float: right, down;" color="primary">Save</button>
+                </td>
+                <td>
+                    <button mat-raised-button (click)="cancel()" style="float: right, down;" color="primary">Cancel</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

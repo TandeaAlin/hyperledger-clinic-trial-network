@@ -33,7 +33,7 @@ export class TrialViewComponent implements OnInit {
     idTrialLoaded = false;
 
     //relationship string;
-    trialRelation ; 
+    trialRelation;
 
     //for protcol uploading
     selectedFile;
@@ -47,7 +47,7 @@ export class TrialViewComponent implements OnInit {
 
     fileColumns = ['FileID', 'FileVersion', 'FileDate', 'Download', 'Delete'];
     customFormColumns = ['FormName', 'LastModified', 'Edit', 'Delete'];
-    patientColumns = ['PatientID', 'Name',  'View', 'Remove'];
+    patientColumns = ['PatientID', 'Name', 'View', 'Remove'];
     allFilesDataSource: MatTableDataSource<ProtocolFile>;
     allCustomFormsDataSource: MatTableDataSource<CustomForm>;
     allPatientsDataSource: MatTableDataSource<Patient>;
@@ -70,7 +70,8 @@ export class TrialViewComponent implements OnInit {
                 console.log("loading table data....")
                 //reset the tab components
                 this.formBuilder = false;
-                this.patientSelect= false;
+                this.patientSelect = false;
+                this.loadTableData();
             }
         });
         var id = this._route.params
@@ -83,37 +84,41 @@ export class TrialViewComponent implements OnInit {
                 if (!id) {
                     alert("Something went wrong! Please try again!")
                 }
-                this._trialService.getAsset(this.idTrial)
-                    .subscribe(
-                        (res) => {
-                            console.log("Received from server: ");
-                            this.trial = res;
-                            console.log(this.trial);
-                        }
-                    )
-                this._fileQueryService.findFileByTrial(this.trialRelation)
-                    .subscribe(
-                        (res) => {
-                            console.log(res);
-                            this.allFilesDataSource = new MatTableDataSource<ProtocolFile>(res);
-                        }
-                    )
-                this._formQueryService.findCustomFormsByTrial(this.trialRelation)
-                    .subscribe(
-                        (res) => {
-                            console.log(res)
-                            this.allCustomFormsDataSource = new MatTableDataSource<CustomForm>(res);
-                        }
-                    )
-                this._patientQueryService.selectPatientsForTrial(this.trialRelation).subscribe(
-                        (res) => {
-                            console.log(res);
-                            this.allPatientsDataSource = new MatTableDataSource<Patient>(res);
-                        }
-                )
+                this.loadTableData();
                 this.idTrialLoaded = true;
             })
 
+    }
+
+    loadTableData() {
+        this._trialService.getAsset(this.idTrial)
+            .subscribe(
+                (res) => {
+                    console.log("Received from server: ");
+                    this.trial = res;
+                    console.log(this.trial);
+                }
+            )
+        this._fileQueryService.findFileByTrial(this.trialRelation)
+            .subscribe(
+                (res) => {
+                    console.log(res);
+                    this.allFilesDataSource = new MatTableDataSource<ProtocolFile>(res);
+                }
+            )
+        this._formQueryService.findCustomFormsByTrial(this.trialRelation)
+            .subscribe(
+                (res) => {
+                    console.log(res)
+                    this.allCustomFormsDataSource = new MatTableDataSource<CustomForm>(res);
+                }
+            )
+        this._patientQueryService.selectPatientsForTrial(this.trialRelation).subscribe(
+            (res) => {
+                console.log(res);
+                this.allPatientsDataSource = new MatTableDataSource<Patient>(res);
+            }
+        )
     }
 
     displayFormBuilder() {
@@ -122,8 +127,8 @@ export class TrialViewComponent implements OnInit {
     hideFormBuilder() {
         this.formBuilder = false;
     }
-    
-    patientSelection(){
+
+    patientSelection() {
         console.log(this.idTrial)
         this.patientSelect = true;
 
