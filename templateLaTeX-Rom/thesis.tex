@@ -275,19 +275,145 @@ Reprezint'a cca. 10\% din lucrare.
 \section{Titlu}
 \section{Alt titlu}
 
-
 \chapter{Studiu Bibliografic}
+	In acest capitol sunt prezentate o serie de concepte si tehnologii necesare pentru o mai buna intelegere a temei alese si a modului in care au fost utilizate pentru implementarea acesteia. Capitolul continua prin descrierea aplicarii acestor concepte in anumite domenii precum si in domeniul studiilor clinice. Sunt prezentate unele beneficii aduse de aceste tehnologii, alaturi de o comparatie a implementarilor existente ale acesteia.
+	\section{Blockchain}	
+	Termenul de blockchain a devenit cunoscut odata cu cresterea in popularitate a monedelor virtuale, in special a monedei virtuale Bitcoin. O retea blockchain poate fi definita ca fiind o baza de date distribuita, intretinuta de o serie de participanti care valideaza inregistrarile din cadrul retelei folosind o comunicare de tip peer-to-peer. Inregistrarile din cadrul retelei sunt securizate prin metode criptografice care asigura imutabilitatea datelor. Rezolvarea conflictelor care pot aparea intre inregistrarile din retea are loc prin utilizarea unor algoritmi de consens. Aceasta sectiune analizeaza urmatoarele aspecte ale tehnologiei: structura de date, aspecte legate de criptografie, topologia retelei, algoritmi de consens, smart contracts, permisiuni si implementari ale tehnologiei.
 
-	Managementul 'si reglementarea proceselor din cadrul unui studiu clinic reprezint'a o provocare datorit'a num'arului mare de entit'ati implicate in organizarea unui studiu clinic. \\
-	Acest capitol prezint'a unele concepte necesare pentru o mai bun'a in'telegere a solu'tiei propuse si a avantajelor acesteia. Capitolul continu'a cu o prezentare a solu'tiilor existente pentru managementul studiilor clinice, oferind o analiz'a a avantajelor 'si dezavantajelor oferite de aceste abord'ari.
-
-\section{Re'tea de afaceri}
-\subsection{Definitie}
-	O retea de afaceri reprezint'a o re'tea complex'a de companii "unde scopul este de a sus'tine cerintele informationale 'si opera'tionale ale afacerii cum ar fi cele de marketing, contabilitate ..."\cite{bndef}. Un alt aspect important al unei retele de afaceri este ca aceasta nu inglobeaza doar afacerea in sine ci implic'a 'si unele entitati din exterior care sus'tin activitatea re'telei cum ar fi furnizorii sau distribuitorii. \\
-	In cazul studiilor clinice o retea de afaceri poate fi format'a din participan'tii direc'ti la activita'ti(ex. centrele medicale in care se desfasoar'a studiile clinice), precum si partile care sustin activitatea studiilor clinice(ex. furnizori, institutii de reglementare...)
-\subsection{Starea actual'a}
-	Re'telele existente de afaceri folosesc in prezent metode similare pentru stocarea informa'tiilor. Entit'atile implicate tranzactioneaza intre ele, 'ins'a men'tin inregistrari proprii referitoare la tranzactiile efectuate. In cele mai multe cazuri o autoritate central'a in care toate partile implicate au incredere intermediaz'a tranzactiile 'si schimbul de informa'tii din cadrul re'telei. Conceptul descris mai sus este ilustrat in figura \ref{fig:centralised}.\\
+	\subsection{Structura de date}
+	Structura de date folosita reprezinta unul dintre mijloacele care asigura integritatea datelor din reteaua blockchain. Documentatia monedei virtuale Bitcoin descrie structura de date folosita ca fiind o lista invers inlantuita in care fiecare element, numit bloc, contine contine hash-ul blocului anterior, un timestamp si radacina Merkle a tranzactiilor, folosita pentru a verifica integritatea acestora. Figura \ref{fig:btc} prezinta structura de date folosita de Bitcoin\cite{bitcoin}. \\
 	
+		\begin{figure}[H]
+		\begin{center}
+			\includegraphics[scale=2.5]{img/btc.png}
+			\caption{Cel mai lung lan't proof-of-work folosit de Bitcoin\cite{bitcoin}}
+  			\label{fig:btc}
+  		\end{center}
+  		\end{figure} 
+	
+	Fiecare bloc din structura de date este identificat prin functia hash a header-ului blocului curent si a blocului anterior. Conceptul implementat de moneda virtuala Bitcoin este urmat de alte implementari care au adus unele modificari acestei structuri, dar pastreaza unele concepte de baza introduse de Bitcoin. 
+	\subsection{Topologia re'telei}
+	O caracteristica importanta a unei retele blockchain este lipsa unei autoritati centrale care sa intermedieze tranzactiile din cadrul retelei. Pentru validarea si propagarea tranzactiilor este folosita o retea peer-to-peer de participanti\cite{p2p}. In cadrul unei astfel de retele fiecare participant are aceleasi responsabilitati si privilegii, spre deosebire de o topologie client-server unde reteaua are un nod central cu capabilitati si responsabilitati diferite fata de clientii din retea. Figura \ref{fig:p2p} ilustreaza diferenta dintre cele doua toplogii.
+			\begin{figure}[H]
+		\begin{center}
+			\includegraphics[scale=2]{img/p2p.png}
+			\caption{Retea client-server vs peer-to-peer\cite{fabricdoc}}
+  			\label{fig:p2p}
+  		\end{center}
+  		\end{figure}
+Fiecare peer detine o copie a informatiilor din retea. Acest lucru face dificila modificarea abuziva a datelor, orice modificare fiind vizibila pentru ceilalti participanti.   
+\subsection{Func'tii de hash si criptografie}
+	O functie de hash reprezinta o metoda unidirectionala de mapare a unui sir de caractere de lungime arbitrara la un sir de caractere cu lungime fixa. Proprietatile necesare pentru o functie de hash sunt:
+	\begin{itemize}
+		\item Calcul rapid: efortul computational pentru calcularea rezultatului trebuie sa fie mic indiferent de sirul de intrare.
+		\item Unidirectionala: obtinerea sirului original din hash nefezabila
+		\item Determinista: rezultatul pentru un anumit sir de intrare este acelasi indiferent de cate ori este calculat. 
+		\item Rezistent la coliziuni: oricare ar fi sirurile de intrare a,b functia de hash h(a) = h(b) doar daca a = b. Cu alte cuvinte un sir de intrare produce intotdeauna un rezultat unic.
+		\item Schimbarile mici din sirul de intrare produc schimbari majore in rezultatul functiei de hash
+\end{itemize}		
+	 Printre algoritmii de hash folositi de diferitele implementari ale tehnologie blockchain se numara SHA256(Bitcoin) sau Keccak-256(Ethereum). Aceste functii sunt folosite si de catre algoritmii pentru stabilirea consensului.\\
+		Pentru controlarea accesului in reteaua blockchain este folosita metoda de criptografie cu cheie publica. Aceasta presupune folosirea unei perechi de chei formata dintr-o cheie privata si o cheie publica, derivata din cheia privata. Pentru autorizarea tranzactiilor este folosita partea privata a cheii. Identitatea unui utilizator este data de partea publica a cheii. 
+		\subsection{Mecanism de consens}
+		O proprietate importanta a unei retele blockchain este lipsa unei autoritati centrale care sa valideze tranzactiile efectuate de participanti. Din aceasta cauza apare nevoia existentei unor mecanisme responsabile de rezolvarea conflictelor care apar in cadrul retelei intre inregistrarile detinute de participantii din retea. Algorimii de consens cei mai folositi sunt: Proof of Work(PoW) si Bizantine Fault Tolerance(BFT).
+	
+		PoW este algoritmul aflat in spatele unor monede virtuale precum Bitcoin si Ethereum. Algoritmul este conceput sub forma unei competitii in care participantii din retea isi folosesc puterea de calcul pentru rezolvarea unei probleme. Primul participant care rezolva problema primeste dreptul de a crea urmatorul bloc din structura de date alaturi de o anumita recompensa. Rezolvarea problemei presupune efort masiv de calcul si din acest motiv este folosita drept masura de siguranta. Pentru a modifica intrarile deja salvate in blockchain un atacator are nevoie de mai mult de 50\% din puterea de calcul a intregii retele, un astfel de atac fiind nefezabil. In acest mod este asigurata corectitudinea informatiilor insa metoda folosita este ineficienta.
+		
+		BFT asigura ajungerea la consens in cazul in care o parte din patricipanti sunt atacatori. Un algorimt pentru problema  cunoscuta sub numele de "Problema generalilor bizantini" a fost implementat in anul 1999 Miguel Castro and Barbara Liskov sub numele de Practical Bizantine Fault Tolerance(PBFT). Algoritmul incearca ajungerea la un consens in cadrul sistemului, pastrand in acelasi timp o laten'ta scazuta si eficienta ridicata. Pasii algoritmului sunt urmatorii:
+		\begin{itemize}
+			\item Un client trimite o cerere 
+			\item Cererea este transmisa celorlalti clienti
+			\item Ceilalti clienti executa cererea si transmit raspunsul clientului care a initiat cererea
+			\item Clientul asteapta pana cand primeste F + 1 raspunsuri identice, unde F este numarul maxim de noduri malitioase tolerate
+			
+		\end{itemize}
+		Conditia pentru functionarea corecta a sistemului este ca numarul de noduri malitioase din sistem sa fie mai mic decat 1/3 din numarul total de noduri din sistem.
+		
+		O comparatie la nivel inalt a celor doua mecanisme de stabilire a consensului este prezentata in tabelul \ref{table1}. Tabelul prezinta o comparatie a celor doi algoritmi luand in considerare unele proprietati importante ale unei retele blockchain: identitatea nodurilor, performanta, scalabilitatea, rezistenta la atacuri sau puterea consmata.
+	 
+	% Please add the following required packages to your document preamble:
+% \usepackage[normalem]{ulem}
+% \useunder{\uline}{\ul}{}
+\begin{table}[H]
+\centering
+\caption{Comparatie la nivel inalt: PoW vs BFT}
+\label{table1}
+\begin{tabular}{|l|l|l|llll}
+\cline{1-3}
+                                                                                 & Proof of Work                                                                                  & Bizantine Fault Tolerance                                                                                        &  &  &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Managementul \\ identitatii \\ nodurilor\end{tabular} & deschis, decentralizat                                                                         & \begin{tabular}[c]{@{}l@{}}fiecare nod trebuie \\ sa cunoasca informatii \\ despre celelalte noduri\end{tabular} &  &  &  &  \\ \cline{1-3}
+Scalabilitate                                                                    & excelenta                                                                                      & limitata                                                                                                        &  &  &  &  \\ \cline{1-3}
+Performanta(throuput)                                                            & limitata                                                                                       & \begin{tabular}[c]{@{}l@{}}excelenta(mii de \\ tranzactii/sec)\end{tabular}                                      &  &  &  &  \\ \cline{1-3}
+Performanta(laten'ta)                                                            & latenta crescuta                                                                               & \begin{tabular}[c]{@{}l@{}}excelenta(similara \\ cu cea indusa de retea)\end{tabular}                            &  &  &  &  \\ \cline{1-3}
+Putere consumata                                                                 & \begin{tabular}[c]{@{}l@{}}Ridicata(PoW \\ necesita putere \\ de calcul ridicata)\end{tabular} & Scazuta                                                                                                          &  &  &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Numar total \\ de atacatori tolerati\end{tabular}     & \begin{tabular}[c]{@{}l@{}}\textless{}25\% din puterea \\ de calcul\end{tabular}               & \begin{tabular}[c]{@{}l@{}}\textless{}33\% din numarul\\  de noduri care voteaza\end{tabular}                    &  &  &  &  \\ \cline{1-3}
+\end{tabular}
+\end{table}		
+
+Se poate observa faptul ca algoritmii reprezinta doua abordari diferite in cadrul unei retele blockchain. PoW pune accent pe scalabilitate dar prezinta o performanta scazuta in tim ce BFT asigura performanta ridicata dar cu o scalabilitate redusa. Decizia in ce priveste tipul de algoritm folosit depinde de nevoia sistemelor implementate.
+	\subsection{Smart comtract}
+	Un smart contract reprezinta "un set de promisiuni in format digital in care partile implicate actioneaza conform acestor promisiuni". Altfel spus aceste contracte sunt o reprezentare digitala a unor clauze contractuale, integrate in software pentru a media actiuni prin operatii bazate pe reguli. Odata ce preconditiile pentru un smart contract sunt indeplinite si acesta este initiat actiunile din cadrul lui sunt executate, ele fiind irevocabile.
+	\subsection{Implementari ale tehnologiei blockchain}
+	Prima implementare cu succes a tehnologiei blockchain a fost realizata de moneda virtuala bitcoin. Odata cu cresterea acesteia in popularitate au aparut diverse implementari ale acestei tehnologii, fiecare avand unele particularitati si scopuri de utilizare diferite.
+	
+	
+	Tipuri de implementari. Exista 3 tipuri de implementari ale tehnologiei blockchain: public, privat si bazat pe permisiuni. Tabelul \ref{table2} prezinta o analiza la nivel inalt a celor 3 tipuri de implementari. Sunt luate in considerare aspecte precum drepturile de acces, performanta, costurile implicate, avantajele si dezavantajele fiecarei implementari precum si numarul de puncte de esec in cazul fiecareia.
+	
+	Blockchain public. In cadrul unu blockchain public nu exista nevoia definirii unor  drepturi de acces. Orice entitate are drepturi de acces egale in cadrul retelei si poate participa la procesul de validare a tranzactiilor. Din acest punct de vedere un blockchain public foloseste o topologie decentralizata nefiind prezenta o autoritate centrala care sa medieze tranzactiile din retea. O astfel de implementare este folosita de catre monedele virtuale Bitcoin sau Ethereum. In cadrul acestor retele participantii efectuaza tranzactii fara a fi implicata a treia entitate in acest proces. Pentru a se ajunge la un consens, un mecanism de tip PoW este folosit, acesta avand un impact asupra performantei retelei si a consumului de enegie.
+	
+	Blockchain privat. Spre deosebire de un blockchain public, cel privat foloseste o topologie centralizata. Accesul la retea este controlat de o autoritate centrala, aceasta avand dreptul de a lua decizii si de a implementa reguli in cadrul retelei. Un astfel de blockchain poate fi folosit in cazul in care este necesara restrictionarea accesului publicului larg la retea. O astfel de retea se bazaza pe stabilirea unui nivel ridicat de incredere in autoritatea centrala responsabila de administrarea retelei. Deoarece doar o singura entitate este responsabila de procesul de validare a tranzactiilor, apare avantajul performantei crescute in comparatie cu un blockchain public.
+	
+	Blockchain bazat pe permisiuni. Acesta abordare poate fi vazuta ca n hibrid intre un blockchai privat si unul public. Autoritatea in retea este detinuta de un set de entitati care pot face parte din organizatii diferite. Aceste entitati stabilesc dreptrile de acces la retea si rparticipa la validarea tranzactiilor. Drepturile de acces depind de identitatile participantilor, fiind nevoie de executarea unor smart contracts inainte de executarea unor tranzactii pentru validarea identitatii participantilor. Hyperledger Fabric si Corda sunt implementari ale unui astfel de blockchain. Ambele sunt solutii open-source care pot fi folosite pentru stocarea si partajarea datelor intre participantii retelei.
+\begin{table}[]
+\caption{Comparatie la nivel inalt a implementarilor tehnologiei blockchain}
+\label{table2}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+                                                          & Public                                                                                                                                                                                                             & Privat                                                                                                                                                                                    & Bazat pe permisiuni                                                                                                                                                                                                                                                   \\ \hline
+Topologie retea                                           & decentralizata                                                                                                                                                                                                     & \begin{tabular}[c]{@{}l@{}}partial\\ decentralizata\end{tabular}                                                                                                                          & \begin{tabular}[c]{@{}l@{}}partial\\ decentralizata\end{tabular}                                                                                                                                                                                                      \\ \hline
+Definire                                                  & \begin{tabular}[c]{@{}l@{}}Oricine are acces \\ la datele din retea. \\ Toate nodurile \\ participa la validare\end{tabular}                                                                                       & \begin{tabular}[c]{@{}l@{}}Permisiunile de acces \\ sunt controlate de o \\ singura entitate de \\ incredere din retea\end{tabular}                                                       & \begin{tabular}[c]{@{}l@{}}Permisiunile de acces\\ sunt controlate de un \\ numar prestabilit \\ de noduri cu autoritate\end{tabular}                                                                                                                                 \\ \hline
+Beneficii                                                 & \begin{tabular}[c]{@{}l@{}}- Sigur, deoarece toti \\ participantii contribuie \\ la validarea tranzactiilor\\ - Transparent, toate \\ tranzactiile fiind publice\\ iar entitatile implicate\\ anonime\end{tabular} & \begin{tabular}[c]{@{}l@{}}- Verificare eficienta \\ a tranzactiilor de catre\\ autoritatea centrala\\ - Autoritatea centrala \\ decide entitatile care \\ au acces la retea\end{tabular} & \begin{tabular}[c]{@{}l@{}}- Eficient, deoarece un\\ numar relativ mic de\\ noduri verifica tranzactiile\\ - Drepturile de acces sunt \\ controlate de un set \\ predeterminat de noduri\\ - Controlul nu este detinut \\ de catre o autoritate centrala\end{tabular} \\ \hline
+Provocari                                                 & Eficienta scazuta                                                                                                                                                                                                  & \begin{tabular}[c]{@{}l@{}}Controlul este detinut\\ de o singura entitate\end{tabular}                                                                                                    &                                                                                                                                                                                                                                                                       \\ \hline
+Cost                                                      & scazut                                                                                                                                                                                                             & ridicat                                                                                                                                                                                   & mediu                                                                                                                                                                                                                                                                 \\ \hline
+Performanta                                               & scazuta                                                                                                                                                                                                            & excelenta                                                                                                                                                                                 & ridicata                                                                                                                                                                                                                                                              \\ \hline
+\begin{tabular}[c]{@{}l@{}}Puncte de \\ esec\end{tabular} & n                                                                                                                                                                                                                  & 1                                                                                                                                                                                         & * (nodurile cu autoritate)                                                                                                                                                                                                                                            \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\section{Scenarii de utilizare ale tehnologiei blockchain}
+Sectiunea curenta descrie unele sisteme existente care au la baza implementarii lor tehnologia blockchain. Capitolul prezinta motivatia alegerii tehnologiei blockchain precum si avantajele aduse de aceasta in sistemele implementate
+
+\subsection{Determinarea identitatii digitale}
+
+In lucrarea [cite here] autorul incearca obtinerea un sistem pentru managementul identitatii digitale a utilizatorilor care sa aiba urmatoarele proprietati:
+\begin{itemize}
+	\item \textbf{Existenta} : entitatile trebuie sa existe independent, nu doar in mediul digital
+	\item \textbf{Control}: o entitate are controlul absolut asupra identitatii proprii
+	\item \textbf{Transparenta}: sistemele care mentin actualizata identitatea trebuie sa realizeze aceasta in mod transparent
+	\item \textbf{Portabilitate} : identitatea trebuie sa fie transportabila
+	\item \textbf{Consimtamant} : entitatile trebuie sa fie de acord cu partajarea informatiilor personale inainte de efectuarea acesteia.
+\end{itemize}
+
+
+Lucrarea propune un sistem decentralizat bazat pe tehnologia blockchain pentru managementul indetitatii consumatorilor, fiind implicate institutiile care emit identitatea si cele care se folosesc de aceasta. Beneficiile aduse de utilizarea tehnologiei blockchain in acest sistem sunt: schimbul decentralizat de informatii legate de identitatea unei persoane, partajarea informatiilor doar cu acordul clientului care detine identitatea, independenta fata de entitatea care a emis o anumita informatie legata de identitatea unui client.
+
+\subsection{Trasarea provenientei produselor}
+
+Lucrarea [cite here] prezinta un sistem care are ca scop urmarirea distributiei, originii si a starii curente a produselor intr-un mediu complex care implica un numar ridicat de participanti din diferite organizatii. Solutia propusa foloseste framework-ul Hyperledger Fabric pentru implementarea unei retele decentralizate care sa faciliteze si sa imbunatateasca transparenta si posibilitatea de urmarire a originii produselor.
+
+\section{Tehnologia blockchain in studiile clinice}
+Tehnologia blockchain poate avea un impact global asupra cercetarii clinice deoarece permite urmarirea, partajarea si protectia informatiilor. Prin utilizarea unui sistem decentralizat folosit pentru urmarirea activitatilor din cadrul unui studiu clinic si a unei retele peer-to-peer pentru partajarea informatiilor sunt asigurate transparenta si protectia datelor personale ale pacientilor. Un sistem bazat pe aceasta tehnologie poate imbunatati metodologiile din cercetarea clinica si protectia datelor cu caracter sensibil.
+
+\subsection{Motivatie}
+
+
+\subsection{Modelarea cercetarii clinice sub forma unei retele de afaceri}
+
+	O \textbf{retea de afaceri} reprezint'a o re'tea complex'a de companii "unde scopul este de a sus'tine cerintele informationale 'si opera'tionale ale afacerii cum ar fi cele de marketing, contabilitate ..."\cite{bndef}. Un alt aspect important al unei retele de afaceri este ca aceasta nu inglobeaza doar afacerea in sine ci implic'a 'si unele entitati din exterior care sus'tin activitatea re'telei cum ar fi furnizorii sau distribuitorii. 
+	
+	In cazul studiilor clinice o retea de afaceri poate fi format'a din participan'tii direc'ti la activita'ti(ex. centrele medicale in care se desfasoar'a studiile clinice), precum si partile care sustin activitatea studiilor clinice(ex. furnizori, institutii de reglementare...)
+	Re'telele existente de afaceri folosesc in prezent metode similare pentru stocarea informa'tiilor. Entit'atile implicate tranzactioneaza intre ele, 'ins'a men'tin inregistrari proprii referitoare la tranzactiile efectuate. In cele mai multe cazuri o autoritate central'a in care toate partile implicate au incredere intermediaz'a tranzactiile 'si schimbul de informa'tii din cadrul re'telei. Conceptul descris mai sus este ilustrat in figura \ref{fig:centralised}.\\	
 		\begin{figure}[!ht]
 		\begin{center}
 			\includegraphics[scale=1.60]{img/current_network.png}
@@ -295,11 +421,11 @@ Reprezint'a cca. 10\% din lucrare.
   			\label{fig:centralised}
   		\end{center}
   		\end{figure}
-	Aceasta metod'a prezint'a o complexitate redus'a dar produce in acelasi timp unele dezavantaje. Partajarea informatiilor este efectuata indirect, responsabila de acest lucru fiind autoritatea centrala. Din acest motiv procesul este incetinit, implicand costuri suplimentare. Stabilirea corectitudinii informatiilor devine dificila in momentul in care partile implicate detin inregistrari diferite referitoare la tranzactii.\\
+  		
+	Aceasta metod'a prezint'a o complexitate redus'a dar produce in acelasi timp unele dezavantaje. Partajarea informatiilor este efectuata indirect, responsabila de acest lucru fiind autoritatea centrala. Din acest motiv procesul este incetinit, implicand costuri suplimentare. Stabilirea corectitudinii informatiilor devine dificila in momentul in care partile implicate detin inregistrari diferite referitoare la tranzactii.
 		Printre sistemele care folosesc o astfel de abordare se numar'a Oracle Siebel Clinical Trial Management System\cite{ctms}. Sistemul ofer'a posibilitatea cercetatorilor de a organiza si colecta date in cadrul uni studiu clinic, fiind astfel simplificat'a activitatea acestora. Datele sunt colectate intr-o baza de date central'a . Partajarea datelor intre participan'ti are loc fie prin implicarea unei autorit'a'ti centrale, fie prin folosirea unor mijloace nesigure. Aceste mijloace sunt ineficiente si reprezint'a un risc in ce prive'ste protejarea datelor cu caracter sensibil.\\	
 
-\subsection{Retele de afaceri decentralizate}
-O alta abordare pentru realizarea unei retele de afaceri reprezinta utilizarea unei retele decentralizate. O astfel de metoda presupune folosirea unui registru comun, replicat de catre fiecare participant din reteaua de afaceri. Procesul de salvare a tranzactiilor in cadrul registrului este de asemenea partajat, fiecare participant la retea participand la procesul de validare si memorare a tranzactiilor efectuate. Este eliminata astfel nevoia unei autoritati centrale, partile implicate avand incredere ca tranzactiile salvate in registrul comun sunt valide. \\
+\textbf{Retele de afaceri decentralizate}. O alta abordare pentru realizarea unei retele de afaceri reprezinta utilizarea unei retele decentralizate. O astfel de metoda presupune folosirea unui registru comun, replicat de catre fiecare participant din reteaua de afaceri. Procesul de salvare a tranzactiilor in cadrul registrului este de asemenea partajat, fiecare participant la retea participand la procesul de validare si memorare a tranzactiilor efectuate. Este eliminata astfel nevoia unei autoritati centrale, partile implicate avand incredere ca tranzactiile salvate in registrul comun sunt valide. \\
 Figura \ref{fig:decentralised} ilustreaza structura unei retele de afaceri decentralizate. O astfel de retea este similara cu o retea blockchain.
 		\begin{figure}[H]
 		\begin{center}
@@ -309,66 +435,32 @@ Figura \ref{fig:decentralised} ilustreaza structura unei retele de afaceri decen
   		\end{center}
   		\end{figure}
   		
-\section{Blockchain}
-Termenul de blockchain a devenit cunoscut odata cu cresterea in popularitate a monedelor virtuale, in special a monedei virtuale Bitcoin. O retea blockchain poate fi definita ca fiind o baza de date distribuita, intretinuta de o serie de participanti care valideaza inregistrarile din cadrul retelei folosind o comunicare de tip peer-to-peer. Inregistrarile din cadrul retelei sunt securizate prin metode criptografice care asigura imutabilitatea datelor. Rezolvarea conflictelor din inregistrari se rezolva folosind algoritmi de conses.
-
-\subsection{Baza de date distribuit'a}
-Tehnologia blockchain foloseste o retea de tip peer-to-peer pentru a valida si propaga tranzactiile intre participantii din retea. Spre deosebire de abordarea client-server intr-o retea de tip peer-to-peer entitatile implicate au aceleasi privilegii si responsabilitati\cite{p2p}. Figura \ref{fig:p2p} ilustreaza descrierea de mai sus. Spre deosebire de arhitectura client-server, arhitectura peer-to-peer ofera o toleranta la esec ridicata, oferita prin eliminarea punctului unic de e'sec.\\
-
-		\begin{figure}[H]
-		\begin{center}
-			\includegraphics[scale=2]{img/p2p.png}
-			\caption{Retea client-server vs peer-to-peer\cite{fabricdoc}}
-  			\label{fig:p2p}
-  		\end{center}
-  		\end{figure}
-
-O alta caracteristica a tehnologiei blockchain este replicarea datelor la fiecare peer din retea. Este eliminata astfel necesitatea de a avea o autoritate centrala care sa asigure corectitudinea datelor.   		
-
-\subsection{Securizarea datelor prin criptografie}
-Structura de date folosita pentru moneda virtuala Bitcoin este o lista invers inlantuita in care fiecare inregistrare, numita bloc, contine hash-ul blocului anterior, un timestamp si radacina Merkle a tranzactiilor, folosita pentru a verifica integritatea acestora\cite{bitcoin}. 
-Este asigurata astfel integritatea si imutabilitatea datelor stocate pentru structura de date. Modificarea unui bloc nu poate aavea loc fara a fi modificate si blocurile anterioare din lista inlantuita.
-\subsection{Algoritmi de consens}
-
-\section{Topologii re'tele}
-	'In lucrarea \cite{topologies}, Paul Baran propune 3 tipuri de topologii pentru structura internetului avand ca scop optimizarea acesteia. Figura \ref{fig:topologies} ilustreaz'a cele trei topologii propuse de Baran pentru structura internetului: centralizat(a), decentralizat(b) si distribuit(c).
-	
-		\begin{figure}[H]
-		\begin{center}
-			\includegraphics[scale=0.50]{img/topologies.jpg}
-			\caption{Topologii propuse\cite{topologies}}
-  			\label{fig:topologies}
-  		\end{center}
-  		\end{figure}
- 	'In cazul internetului, Baran propune folosirea unei structuri distribuite ar'atand c'a o structur'a centralizat'a sau decentralizat'a ar fi vulnerabil'a in cazul unor atacuri.
-	
-
 
 \chapter{Analiz'a 'si Fundamentare Teoretic'a}
 \label{ch:analysis}
+Acest capitol prezinta tehnologiile folosite pentru realizarea unei aplicatii decentralizate pentru managementul studiilor clinice.
 
-'Impreun'a cu capitolul urm'ator trebuie s'a reprezinte aproximativ 60\% din total.
+\section{Cerinte sistem}
+Sectiunea prezinta o analiza a sistemului pentru managementul studiilor clinice. Cerintele unui sistem pot fi clasificate in cerinte functionale si non-functionale. Cerintele functionale descriu comportamentul sistemului din punctul de vedere al utilizatorilor. Cerintele non-functionale descriu proprietati si impun constrangeri asupra sistemului.
 
-Scopul acestui capitol este de a explica principiile func'tionale ale aplica'tiei implementate. 
-Aici se va descrie solu'tia propus'a dintr-un punct de vedere teoretic - explica'ti 'si demonstra'ti propriet'a'tile 'si valoarea teoretic'a:
-\begin{itemize}
- \item algoritm utilizat sau propus
-\item protocoale utilizate
-\item modele abstracte
-\item explica'tii/argument'ari logice ale solu'tiei alese
-\item structura logic'a 'si func'tional'a a aplica'tiei.
-\end{itemize}
+\subsection{Cerinte functionale}
+In continuare sunt prezentate cerintele functionale indeplinite de modulul client al aplicatiei. Aceste functionalitati sunt disponibile pentru utilizatorii sistemului:
+\begin{enumerate}
+	\item \textbf{Autentificare}: Accesul la funtionalitatile aplicatiei este disponibil doar pentru utilizatorii autentificati. Identitatea utilizatorului are o importanta majora in cadrul retelei blockchain. In acest mod este asigurata posibilitatea urmarii activitatii participantilor si salvarea unui istoric a tuturor operatiilor efectuate de acestia. 
+	\item \textbf{Emitere identitate}: Utilizatorii autentificati au nevoie de o identitate emisa de organizatia din care fac parte pentru a putea accesa reteaua. Cu ajutorul acesteia utilizatorii sunt identificati in reteaua blockchain si supusi regulilor de acces la resurse definite in sistem.
+	\item \textbf{Creare studiu clinic}: Utilizatorii au posibilitatea de a crea un nou studiu clinic folosind interfata utilizator dupa introducerea informatiilor necesare.
+	\item \textbf{Vizualizare studiu clinic}: Ofera posibilitatea utilizatorilor autentificati care au drepturile de acces necesare sa acceseze informatiile despre un studiu clinic si datele legate de activitatea desfasurata in cadrul acestora.
+	\item \textbf{Inrolare pacienti}: Posibilitatea de a asocia un pacient la un studiu clinic.
+	\item \textbf{Definire formulare}: Cercetatorii pot defini in cadrul unui studiu clinic formulare de colectare a datelor de la pacienti. Aceste formulare ofera cercetatorului flexibilitatea de a defini campuri de text si intrebari cu variante de raspuns relevante pentru studiul clinic.
+	\item \textbf{Colectare date}: Folosind formularele definite, cercetatorii au posibilitatea de a colecta date de la un anumit pacient.
+	\item \textbf{Management drepturi de acces}: Administratorul unui studiu clinic defineste drepturile de citire sau scriere a utilizatorilor pentru studiul clinic de care este responsabil
+	\item \textbf{Management fisier protocol}: Protocolul unui studiu clinic descrie modul de desfasurare al unui studiu clinic. Utilizatorii care detin drepturile de acces necesare pot incarca un fisier de protocol si il pot descarca prin intermediul interfetei utilizator
+\end{enumerate}
 
-{\color{red}
-NU SE FAC referiri la implementarea propriu-zis'a. 
-
-NU SE PUN descrieri de tehnologii preluate cu copy-paste din alte surse sau lucruri care nu 'tin strict de proiectul propriu-zis (materiale de umplutur'a).
-}
-
-
-\section{Titlu}
-\section{Alt titlu}
-
+\subsection{Cerinte non-functionale}
+\begin{enumerate}
+\item \textbf{}
+\end{enumerate}
 
 \chapter{Proiectare de Detaliu 'si Implementare}
 
