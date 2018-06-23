@@ -25,9 +25,22 @@ export enum EntryType{
     SELECTOR_FIELD
 }
 
+export enum AccountType{
+    RESEARCHER,
+    ADMIN,
+    AGENT,
+    SPONSOR
+}
+
 export class FormVO{
     entryName : string
     entryType : number
     entryOptions : string[]
     value : string
+}
+
+export class AuthenticationVO{
+    userID: string
+    displayName: string
+    accountType: AccountType
 }

@@ -44,7 +44,7 @@ import {ResearchSite,SupplyOrganisation} from './ro.utcluj.clinictrial.organisat
    }
    export class Researcher extends ParticipantPerson {
       idResearcher: string;
-      employer: ResearchSite;
+      employer: string;
    }
    export class Supplier extends ParticipantPerson {
       idSupplier: string;

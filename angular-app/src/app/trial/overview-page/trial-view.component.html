@@ -10,7 +10,25 @@
                         </h2>
                     </mat-card-header>
                     <mat-card-content>
-                        testing content content aldadkklakksladkadsk aslkdsakdklaskdsakd KAskSKAsA AkaskjkASKSNkNSKJNKSN KDKKAKASKSAKSAnjaASK
+                        <div *ngIf="!editMode" style="white-space: pre-wrap;">
+                            {{trial.description}}
+                        </div>
+                        <br/>
+                        <a mat-button (click)="editMode =! editMode" color="primary" *ngIf="!editMode">
+                            <i class="material-icons">edit</i>&nbsp; Edit
+                        </a>
+                        <div *ngIf="editMode">
+                            <mat-form-field class="input-field-width">
+                                <textarea matInput rows=10 style="white-space: pre-wrap;" placeholder="Description" [(ngModel)]="trial.description" ngDefaultControl></textarea>
+                            </mat-form-field>
+                        </div>
+                        <a mat-button (click)="onDescriptionChange()" color="primary" *ngIf="editMode">
+                            Save
+                        </a>
+                        &nbsp;
+                        <a mat-button (click)="editMode =! editMode" color="primary" *ngIf="editMode">
+                            Cancel
+                        </a>
                     </mat-card-content>
                 </mat-card>
             </div>
@@ -45,10 +63,6 @@
     </mat-tab>
     <mat-tab label="Protocol">
         <ng-template matTabContent>
-
-            <br/>
-
-
             <div *ngIf="uploadCardActivate">
                 <div class="center-div">
                     <mat-card class="description-card-small">
@@ -168,6 +182,7 @@
 
     <mat-tab label="Forms">
         <ng-template matTabContent>
+            <br/>
             <div *ngIf="!formBuilder">
                 <mat-table #table [dataSource]="allCustomFormsDataSource">
                     <!-- Form name column -->
@@ -220,12 +235,14 @@
     </mat-tab>
 
     <mat-tab label="Patients">
+
         <ng-template matTabContent>
+            <br/>
             <div *ngIf="patientSelect">
                 <patient-page [idTrial]="idTrial"></patient-page>
             </div>
             <div *ngIf="!patientSelect">
-                <patient-table [allPatientsDataSource]="allPatientsDataSource" [adminMode]=false [idTrial] = "trial.idTrial"></patient-table>
+                <patient-table [allPatientsDataSource]="allPatientsDataSource" [adminMode]=false [idTrial]="trial.idTrial"></patient-table>
                 <div class="floating-button">
 
                     <button mat-fab color="primary" (click)="patientSelection()">
@@ -237,7 +254,20 @@
     </mat-tab>
 
     <mat-tab label="Records">
-        <ng-template matTabContent></ng-template>
+        <ng-template matTabContent>
+            <records-component [idTrial]="idTrial"></records-component>
+        </ng-template>
+    </mat-tab>
+
+    <mat-tab label="Users">
+        <ng-template matTabContent>
+           
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Settings">
+        <ng-template matTabContent>
+            
+        </ng-template>
     </mat-tab>
 
 

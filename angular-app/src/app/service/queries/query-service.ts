@@ -23,8 +23,8 @@ export class QueryService<Type> {
 
     public get(query: string, param: string): Observable<Type[]> {
         console.log("Executing query ... ")
-        console.log("param" + param)
+        console.log("param: " + param)
         console.log(`${this.actionUrl}queries/${query}${param}`) 
-        return this.http.get<Type[]>(`${this.actionUrl}queries/${query}${param}`);
+        return this.http.get<Type[]>(`${this.actionUrl}queries/${query}${param}`,{ withCredentials: true });
     }
 }

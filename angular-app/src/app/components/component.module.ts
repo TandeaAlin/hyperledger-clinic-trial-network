@@ -1,14 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppMaterialModule } from '../material.module';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IdProviderService } from '../utils/id-provider.service'
-import { PatientTableComponent, CustomFormSelectDialog } from './patient/patient-table.component'
 import { RouterModule } from '@angular/router';
-import { PatientService } from '../service/patient.service'
-import { PatientPageComponent } from '../components/patient-page/patient-page.component'
+import { PatientPageComponent } from '../components/patient-page/patient-page.component';
+import { AppMaterialModule } from '../material.module';
+import { PatientService } from '../service/patient.service';
+import { IdProviderService } from '../utils/id-provider.service';
 import { FormComponent } from './form/form.component';
+import { CustomFormSelectDialog, PatientTableComponent } from './patient/patient-table.component';
+import { RecordsComponent } from './records/records.component';
+import { ResourceProvider } from '../utils/resource-provider';
 @NgModule({
     imports: [
         AppMaterialModule,
@@ -19,13 +20,15 @@ import { FormComponent } from './form/form.component';
     ],
     providers: [
         IdProviderService,
-        PatientService
+        PatientService,
+        ResourceProvider
     ],
     declarations: [
         PatientTableComponent,
         PatientPageComponent,
         FormComponent,
-        CustomFormSelectDialog
+        CustomFormSelectDialog,
+        RecordsComponent
     ],
     entryComponents:[
         PatientTableComponent,
@@ -35,7 +38,8 @@ import { FormComponent } from './form/form.component';
         PatientTableComponent,
         PatientPageComponent,
         FormComponent,
-        CustomFormSelectDialog
+        CustomFormSelectDialog,
+        RecordsComponent
     ]
 })
 export class ComponentModule { }

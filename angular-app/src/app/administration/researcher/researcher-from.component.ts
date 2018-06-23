@@ -6,6 +6,8 @@ import { Researcher, Person, Address, ContactDetails, BirthDetails } from '../..
 import { ResearcherService } from '../../service/researcher.service'
 import { ResearchSiteService } from '../../service/research-site.service';
 import { IdProviderService } from '../../utils/id-provider.service';
+import { ResourceProvider } from '../../utils/resource-provider';
+import { ResearchSite } from '../../model/ro.utcluj.clinictrial.organisation';
 
 @Component({
     selector: 'researcher-form',
@@ -14,7 +16,7 @@ import { IdProviderService } from '../../utils/id-provider.service';
 export class ResearcherFormComponent implements OnInit {
 
     researcher: Researcher = new Researcher();
-    
+
     researcherForm: FormGroup;
     idResearcher;
 
@@ -28,6 +30,7 @@ export class ResearcherFormComponent implements OnInit {
     searchActivate = false;
     selectionActivate = false;
     searchQuery = ""
+    orgName = "";
     searchResult = [];
 
     //form controls
@@ -47,8 +50,8 @@ export class ResearcherFormComponent implements OnInit {
         private _router: Router,
         private _route: ActivatedRoute,
         private _researcherService: ResearcherService,
-        private _researchSiteService : ResearchSiteService,
-        private _idProvider : IdProviderService
+        private _researchSiteService: ResearchSiteService,
+        private _idProvider: IdProviderService
     ) {
         //check if this is an update operation or a create one
         var id = this._route.params
@@ -62,7 +65,7 @@ export class ResearcherFormComponent implements OnInit {
                     //instantiate the researcher binding object
                     this.initBindings();
                     //create the form and it's validators
-                    this.buildForm(); 
+                    this.buildForm();
                     this.isInitialised = true;
                     return;
                 }
@@ -85,104 +88,107 @@ export class ResearcherFormComponent implements OnInit {
         this.searchActivate = false;
     }
 
-    search(){
+    search() {
         this._researchSiteService.getAll().toPromise()
             .then(
                 (res) => {
-                    this.searchResult = []; 
+                    this.searchResult = [];
                     console.log(res)
                     res.forEach(part => {
                         this.searchResult.push(part);
                     });
                     this.searchActivate = true;
-                (err)=>{
-                    alert("Something went wrong while searching. Please try again!")
-                }    
-            })
+                    (err) => {
+                        alert("Something went wrong while searching. Please try again!")
+                    }
+                })
     }
 
-    onSelect(res){
-        this.researcher.employer = res;
+    onSelect(res: ResearchSite) {
+        this.orgName = res.name;
+        this.researcher.employer = ResourceProvider.newResearchSiteResource(res.idResearchSite);
         this.searchActivate = false;
         this.selectionActivate = true;
     }
 
-    onCancel(){
+    onCancel() {
+        this.orgName = "";
         this.researcher.employer = null;
         this.searchActivate = true;
         this.selectionActivate = false;
     }
 
-    onSubmit(){
+    onSubmit() {
         this.fillObject(this.researcherForm.value);
         console.log("Saving object... :");
         console.log(this.researcher);
         var result;
-        if (this.idResearcher){
-        result = this._researcherService.updateParticipant(this.idResearcher, this.researcher);
+        if (this.idResearcher) {
+            this.researcher.idResearcher = "";
+            result = this._researcherService.updateParticipant(this.idResearcher, this.researcher);
         } else {
-        this.researcher.idResearcher = this._idProvider.generateID();
-        console.log(JSON.stringify(this.researcher));
-        result = this._researcherService.addParticipant(this.researcher);
-      }    
-      result.subscribe(
+            this.researcher.idResearcher = this._idProvider.generateID();
+            console.log(JSON.stringify(this.researcher));
+            result = this._researcherService.addParticipant(this.researcher);
+        }
+        result.subscribe(
             //saved succesfully - go back to administration
             (data) => {
-              this._router.navigate(['administration'])
+                this._router.navigate(['administration'])
             },
             //error - notify user
             (err) => {
-              alert("Error while saving. Please try again.")
+                alert("Error while saving. Please try again.")
             }
         );
     }
 
-    fillObject(values){
-      this.researcher.person.firstName = values.firstName;
-      this.researcher.person.lastName = values.lastName;
-      this.researcher.person.contactDetails.email =  values.email;
-      this.researcher.person.contactDetails.mobilePhone = values.phone;
-      this.researcher.person.birthDetails.dateOfBirth = values.picker;
-      this.researcher.person.birthDetails.placeOfBirth = values.placeOfBirth;
-      this.researcher.person.contactDetails.address.city = values.city;
-      this.researcher.person.contactDetails.address.country = values.country;
-      this.researcher.person.contactDetails.address.region = values.region;
-      this.researcher.person.contactDetails.address.street = values.street;
+    fillObject(values) {
+        this.researcher.person.firstName = values.firstName;
+        this.researcher.person.lastName = values.lastName;
+        this.researcher.person.contactDetails.email = values.email;
+        this.researcher.person.contactDetails.mobilePhone = values.phone;
+        this.researcher.person.birthDetails.dateOfBirth = values.picker;
+        this.researcher.person.birthDetails.placeOfBirth = values.placeOfBirth;
+        this.researcher.person.contactDetails.address.city = values.city;
+        this.researcher.person.contactDetails.address.country = values.country;
+        this.researcher.person.contactDetails.address.region = values.region;
+        this.researcher.person.contactDetails.address.street = values.street;
     }
 
-    buildForm(){
+    buildForm() {
         this.researcherForm = this.formBuilder.group({
-          firstName: this.formBuilder.
-                control(this.researcher.person.firstName, 
-                  [Validators.required, Validators.minLength(2)]),
-          lastName: this.formBuilder.
-                control(this.researcher.person.lastName, 
-                  [Validators.required, Validators.minLength(2)]),
-          placeOfBirth: this.formBuilder.
-                control(this.researcher.person.birthDetails.placeOfBirth, 
-                  [Validators.required, Validators.minLength(2)]),
-          picker: this.formBuilder.
+            firstName: this.formBuilder.
+                control(this.researcher.person.firstName,
+                    [Validators.required, Validators.minLength(2)]),
+            lastName: this.formBuilder.
+                control(this.researcher.person.lastName,
+                    [Validators.required, Validators.minLength(2)]),
+            placeOfBirth: this.formBuilder.
+                control(this.researcher.person.birthDetails.placeOfBirth,
+                    [Validators.required, Validators.minLength(2)]),
+            picker: this.formBuilder.
                 control(this.researcher.person.birthDetails.dateOfBirth,
-                  [Validators.required]),
-          email: this.formBuilder.
-                control(this.researcher.person.contactDetails.email, 
-                  [Validators.required, Validators.email]),
-          phone: this.formBuilder.
-                control(this.researcher.person.contactDetails.mobilePhone, 
-                  [Validators.required, Validators.minLength(10),
-                  Validators.maxLength(10), Validators.pattern('[0-9]{10}')]),
-          city: this.formBuilder.
-                control(this.researcher.person.contactDetails.address.city, 
-                  [Validators.required, Validators.minLength(2)]),
-          country: this.formBuilder.
-                control(this.researcher.person.contactDetails.address.country, 
-                  [Validators.required, Validators.minLength(2)]),
-          region: this.formBuilder.
-                control(this.researcher.person.contactDetails.address.region, 
-                  [Validators.required, Validators.minLength(2)]),
-          street: this.formBuilder.
-                control(this.researcher.person.contactDetails.address.street, 
-                  [Validators.required, Validators.minLength(2)]),              
+                    [Validators.required]),
+            email: this.formBuilder.
+                control(this.researcher.person.contactDetails.email,
+                    [Validators.required, Validators.email]),
+            phone: this.formBuilder.
+                control(this.researcher.person.contactDetails.mobilePhone,
+                    [Validators.required, Validators.minLength(10),
+                    Validators.maxLength(10), Validators.pattern('[0-9]{10}')]),
+            city: this.formBuilder.
+                control(this.researcher.person.contactDetails.address.city,
+                    [Validators.required, Validators.minLength(2)]),
+            country: this.formBuilder.
+                control(this.researcher.person.contactDetails.address.country,
+                    [Validators.required, Validators.minLength(2)]),
+            region: this.formBuilder.
+                control(this.researcher.person.contactDetails.address.region,
+                    [Validators.required, Validators.minLength(2)]),
+            street: this.formBuilder.
+                control(this.researcher.person.contactDetails.address.street,
+                    [Validators.required, Validators.minLength(2)]),
         })
         this.firstNameControl = this.researcherForm.get('firstName');
         this.lastNameControl = this.researcherForm.get('lastName');
@@ -194,9 +200,9 @@ export class ResearcherFormComponent implements OnInit {
         this.countryControl = this.researcherForm.get('country');
         this.regionControl = this.researcherForm.get('region');
         this.streetControl = this.researcherForm.get('street');
-      }
+    }
 
-    initBindings(){
+    initBindings() {
         this.researcher.person = new Person();
         this.researcher.person.firstName = "";
         this.researcher.person.lastName = "";
@@ -210,5 +216,5 @@ export class ResearcherFormComponent implements OnInit {
         this.researcher.person.contactDetails.address.country = "";
         this.researcher.person.contactDetails.address.region = "";
         this.researcher.person.contactDetails.address.street = "";
-      }
+    }
 }  

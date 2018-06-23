@@ -8,15 +8,16 @@ import { FormValue } from '../../model/ro.utcluj.clinictrial.trial';
 
 // Can be injected into a constructor
 @Injectable()
-export class FormQueryService {
+export class FormValueQueryService {
     constructor(
-        private _queryService: QueryService<CustomForm>,
+        private _queryService: QueryService<FormValue>,
     ) {
 
     }
 
-    public findCustomFormsByTrial(idTrial: string): Observable<CustomForm[]> {
-        var trial = ResourceProvider.newTrialQueryResource(idTrial);
-        return this._queryService.get("selectCustomFormsByTrial?trial=", trial);
+
+    public findDataForCustomForm(idForm: string): Observable<FormValue[]> {
+        var customForm = ResourceProvider.newCustomFormQueryResource(idForm);
+        return this._queryService.get("selectDataForCustomForm?customForm=", customForm);
     }
 }

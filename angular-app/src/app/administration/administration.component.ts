@@ -1,21 +1,20 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Patient, Researcher } from '../model/ro.utcluj.clinictrial.base';
-import { ResearchSite, SupplyOrganisation } from '../model/ro.utcluj.clinictrial.organisation';
 import { OrganisationVO } from '../model/ro.utcluj.vo';
 import { PatientService } from '../service/patient.service';
 import { ResearchSiteService } from '../service/research-site.service';
-import { SupplyOrganisationService } from '../service/supply-organisation.service';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { OnChanges } from '@angular/core';
 import { ResearcherService } from '../service/researcher.service';
+import { SupplyOrganisationService } from '../service/supply-organisation.service';
 
 @Component({
   selector: 'administration-component',
   templateUrl: 'administration.component.html'
 })
 export class AdministrationComponent implements OnInit {
-
+  //disable some annoying animations
+  @HostBinding('@.disabled')
   private allPatients: Patient[] = [];
   private allOrg: OrganisationVO[] = [];
   private allResearchers: Researcher[] = [];
@@ -25,8 +24,8 @@ export class AdministrationComponent implements OnInit {
   allOrganisationsDataSource: MatTableDataSource<OrganisationVO>;
   allResearchersDataSource: MatTableDataSource<Researcher>;
   displayedColumns = ['PatientID', 'Name', 'Gender', 'Birthdate', 'View', 'Edit', 'Delete'];
-  organisationColumns = ['OrganisationID', 'Name', 'Address', 'Type', 'Edit', 'Delete'];
-  researcherColumns = ['ResearcherID', 'Name', 'Gender', 'Birthdate', 'View', 'Edit', 'Delete'];
+  organisationColumns = ['OrganisationID', 'Name', 'Address', 'Type', 'Actions'];
+  researcherColumns = ['ResearcherID', 'Name', 'Gender', 'Birthdate', 'Action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private _patientService: PatientService,

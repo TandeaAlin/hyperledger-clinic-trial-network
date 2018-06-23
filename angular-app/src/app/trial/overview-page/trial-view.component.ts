@@ -44,6 +44,8 @@ export class TrialViewComponent implements OnInit {
     formBuilder = false;
     patientSelect = false;
 
+    editMode = false;
+
 
     fileColumns = ['FileID', 'FileVersion', 'FileDate', 'Download', 'Delete'];
     customFormColumns = ['FormName', 'LastModified', 'Edit', 'Delete'];
@@ -71,6 +73,7 @@ export class TrialViewComponent implements OnInit {
                 //reset the tab components
                 this.formBuilder = false;
                 this.patientSelect = false;
+                this.editMode = false;
                 this.loadTableData();
             }
         });
@@ -78,12 +81,11 @@ export class TrialViewComponent implements OnInit {
             .subscribe(params => {
                 var id = params['idTrial'];
                 this.idTrial = id;
-                //build the relation string
-                this.trialRelation = TrialVO.RESOURCE_REF + TrialVO.TRIAL_QUERY + id;
                 console.log("Selected trial with ID: " + this.idTrial);
                 if (!id) {
                     alert("Something went wrong! Please try again!")
                 }
+                
                 this.loadTableData();
                 this.idTrialLoaded = true;
             })
@@ -99,21 +101,21 @@ export class TrialViewComponent implements OnInit {
                     console.log(this.trial);
                 }
             )
-        this._fileQueryService.findFileByTrial(this.trialRelation)
+        this._fileQueryService.findFileByTrial(this.idTrial)
             .subscribe(
                 (res) => {
                     console.log(res);
                     this.allFilesDataSource = new MatTableDataSource<ProtocolFile>(res);
                 }
             )
-        this._formQueryService.findCustomFormsByTrial(this.trialRelation)
+        this._formQueryService.findCustomFormsByTrial(this.idTrial)
             .subscribe(
                 (res) => {
                     console.log(res)
                     this.allCustomFormsDataSource = new MatTableDataSource<CustomForm>(res);
                 }
             )
-        this._patientQueryService.selectPatientsForTrial(this.trialRelation).subscribe(
+        this._patientQueryService.selectPatientsForTrial(this.idTrial).subscribe(
             (res) => {
                 console.log(res);
                 this.allPatientsDataSource = new MatTableDataSource<Patient>(res);
@@ -206,7 +208,7 @@ export class TrialViewComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        
     }
     private units = [
         'bytes',
@@ -227,5 +229,15 @@ export class TrialViewComponent implements OnInit {
         }
 
         return bytes.toFixed(+ precision) + ' ' + this.units[unit];
+    }
+
+    onDescriptionChange() {
+        var id = this.trial.idTrial;
+        this.trial.idTrial = "";
+        this._trialService.updateAsset(id, this.trial).subscribe(
+            (res) => {
+                this._router.navigate([this._router.url])
+            }
+        )
     }
 }

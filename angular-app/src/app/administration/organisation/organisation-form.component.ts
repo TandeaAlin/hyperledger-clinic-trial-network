@@ -60,12 +60,13 @@ export class OrganisationFormComponent implements OnInit {
           .subscribe(
             (res) => {
               this.researchSite = res;
+              console.log(res);
               this.fillVO(this.researchSite);
               this.internalVO.orgType = "RESEARCH";
               this.buildForm();
               this.isInitialised = true;
               console.log(this.researchSite)
-              console.log(res);
+
             });
         this._supplyOrganisationService.getparticipant(id)
           .subscribe(
@@ -92,6 +93,7 @@ export class OrganisationFormComponent implements OnInit {
     var result;
     if (type == "SUPPLIER") {
       if (this.idOrg) {
+        this.supplyOrg.idSupplyOrganisation = "";
         result = this._supplyOrganisationService
           .updateParticipant(this.idOrg, this.supplyOrg);
       } else {
@@ -101,6 +103,7 @@ export class OrganisationFormComponent implements OnInit {
       }
     } else if (type == "RESEARCH") {
       if (this.idOrg) {
+        this.researchSite.idResearchSite = "";
         result = this._researchSiteService
           .updateParticipant(this.idOrg, this.researchSite);
       } else {
@@ -130,10 +133,18 @@ export class OrganisationFormComponent implements OnInit {
 
   fillVO(org) {
     this.internalVO.orgName = org.name;
-    this.internalVO.city = org.orgAddress.city;
-    this.internalVO.country = org.orgAddress.country;
-    this.internalVO.region = org.orgAddress.region;
-    this.internalVO.street = org.orgAddress.street;
+    if (org.orgAddress) {
+      this.internalVO.city = org.orgAddress.city;
+      this.internalVO.country = org.orgAddress.country;
+      this.internalVO.region = org.orgAddress.region;
+      this.internalVO.street = org.orgAddress.street;
+    } else {
+      this.internalVO.city = "";
+      this.internalVO.country = "";
+      this.internalVO.region = "";
+      this.internalVO.street = "";
+      org.orgAddress = new Address();
+    }
   }
 
   fillObject(org, orgType) {
@@ -199,3 +210,6 @@ export class OrganisationFormComponent implements OnInit {
     this.supplyOrg.orgAddress = new Address();
   }
 }
+
+
+

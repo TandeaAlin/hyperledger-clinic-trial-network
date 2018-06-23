@@ -17,6 +17,10 @@ import { FormQueryService } from './service/queries/forms-query-service'
 import { QueryService } from './service/queries/query-service'
 import { CustomFormService } from './service/CustomForm.service'
 import { TransactionService } from './service/transaction-service';
+import { SystemService } from './service/system-service';
+import { FormValueQueryService } from './service/queries/form-value-query-service'
+import { AuthService } from './service/auth.service';
+import { ResearcherService } from './service/researcher.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,11 @@ import { TransactionService } from './service/transaction-service';
     QueryService,
     CustomFormService,
     FormQueryService,
-    TransactionService
+    TransactionService,
+    AuthService,
+    FormValueQueryService,
+    SystemService,
+    ResearcherService
   ],
   bootstrap: [AppComponent]
 })

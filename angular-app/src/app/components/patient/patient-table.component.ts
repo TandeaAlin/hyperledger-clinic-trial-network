@@ -28,8 +28,9 @@ export class PatientTableComponent implements OnInit {
     @Input() allPatientsDataSource: MatTableDataSource<Patient>;
     @Input() adminMode: boolean;
     @Input() idTrial: string;
-    adminDisplayedColumns = ['PatientID', 'Name', 'Gender', 'Birthdate', 'View', 'Edit', 'Delete'];
-    userDisplayedColumns = ['PatientID', 'Name', 'Gender', 'Birthdate', 'View', 'Complete Form'];
+    @Input() enrol: boolean;
+    adminDisplayedColumns = ['PatientID', 'Name', 'Gender', 'Birthdate', 'Actions'];
+    userDisplayedColumns = ['PatientID', 'Name', 'Gender', 'Birthdate', 'Actions'];
     displayedColumns: string[] = [];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     constructor(
@@ -53,10 +54,9 @@ export class PatientTableComponent implements OnInit {
 
     ngOnInit() {
         console.log(this.idTrial)
-        this._formQueryService.findCustomFormsByTrial(ResourceProvider.newTrialQueryResource(this.idTrial))
+        this._formQueryService.findCustomFormsByTrial(this.idTrial)
             .subscribe(
                 (res) => {
-                    console.log(res)
                     this.forms = res;
                 }
             )
@@ -64,7 +64,7 @@ export class PatientTableComponent implements OnInit {
             this.displayedColumns = this.adminDisplayedColumns;
         } else {
             this.displayedColumns = this.userDisplayedColumns;
-            if (this.idTrial != null) {
+            if (this.enrol) {
                 this.displayedColumns.push('Enroll');
             }
         }

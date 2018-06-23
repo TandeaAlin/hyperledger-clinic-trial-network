@@ -1,8 +1,23 @@
-<mat-toolbar _ngcontent-c0="" class="mat-toolbar mat-primary mat-toolbar-multiple-rows" color="primary">
-   <mat-toolbar-row _ngcontent-c0 class="mat-toolbar-row">
-      <a mat-button routerLink="/administration">Administration</a>
-      <a mat-button routerLink="/trial">Trials</a>
-      <a mat-button routerLink="/crf">CRF</a>
-      <a mat-button routerLink="/trial/patient/new">Patient</a>
-   </mat-toolbar-row>
+<mat-toolbar _ngcontent-c0="" color="primary">
+    <mat-toolbar-row _ngcontent-c0>
+        <span>
+            <a mat-button routerLink="/home">Clinic Trials App</a>
+        </span>
+        <span>
+            <button mat-button [matMenuTriggerFor]="menu">Menu
+                <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+        </span>
+        <span class="flex-fill"></span>
+        <span>
+            <mat-icon>account_circle </mat-icon>
+            <br/> {{_authService.getUser()}}
+        </span>
+        <button mat-button (click)="_authService.logout()">Log Out</button>
+    </mat-toolbar-row>
 </mat-toolbar>
+
+<mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/administration">Administration</button>
+    <button mat-menu-item routerLink="/trial">Trials</button>
+</mat-menu>

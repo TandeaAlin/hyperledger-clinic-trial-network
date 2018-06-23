@@ -1,4 +1,4 @@
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
 .description-card {
     width: 95%;
   }
@@ -11,6 +11,16 @@
     align-items: center;
   }
 
+.center-content {
+    left: 0;
+    line-height: 200px;
+    margin: auto;
+    margin-top: -100px;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+}
+
   .floating-button{
     width: 55px;
     height: 55px;
@@ -22,18 +32,12 @@
     box-shadow: 0px 2px 5px #666;
   }
   header[_ngcontent-c0] {
-    color: #fff;
-    background-color: #3f51b5;
     padding-top: 25px;
     padding-bottom: 25px;
     margin-bottom: 25px;
     text-align: center;
 }
 
-.mat-toolbar.mat-primary {
-  background: #3f51b5;
-  color: #fff;
-}
 
 mat-toolbar[_ngcontent-c0] {
   position: fixed;
@@ -85,4 +89,10 @@ mat-toolbar[_ngcontent-c0] {
 
   .input-field-full-width {
     width: 100%;
+  }
+
+  .flex-fill {
+    /* This fills the remaining space, by using flexbox. 
+       Every toolbar row uses a flexbox row layout. */
+    flex: 1 1 auto;
   }

@@ -1,0 +1,24 @@
+<div *ngIf="isInitialised">
+    <div class="center-div">
+        <mat-card style= "width:45%;  height:200px;">
+            <mat-card-header>
+                <mat-card-title><h1>Patient Overview</h1></mat-card-title>
+                <mat-card-subtitle><h2>{{patient.person.firstName}}{{patient.person.lastName}}</h2></mat-card-subtitle>
+
+            </mat-card-header>
+            <mat-card-content>
+
+            </mat-card-content>
+        </mat-card>
+        &nbsp;
+        <mat-card style= "width: 45%; height:200px;">
+            <mat-card-header>
+                <mat-card-title><h2>Patient Overview</h2></mat-card-title>
+                <mat-card-subtitle>{{patient.person.firstName}}{{patient.person.lastName}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

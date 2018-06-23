@@ -64,28 +64,48 @@ export class CustomForm extends Asset {
     name: string;
     dateCreated: string;
     formMeta: FormEntry[];
-    formValues: FormValue[];
-    trial: string;
-}
+    trial: String;
+ }
 export enum EntryType {
     FORM_FIELD,
     CHOICE_FIELD,
     SELECTOR_FIELD,
 }
-export class FormValue {
-    data: string[];
-}
-export class FormEntry {
+export class FormValue extends Asset {
+    idFormData: string;
+    date: string;
+    time: string;
+    formMeta: FormEntry[];
+    patient: Patient;
+    customForm: CustomForm;
+ }
+ export class FormEntry {
     entryName: string;
-    entryType: string;
+    entryType: number;
     entryOptions: string[];
     value: string;
-}
-export class ProtocolFile extends Asset {
+ }
+ export class ProtocolFile extends Asset {
     fileID: string;
     fileContent: string;
     fileType: string;
     fileTimestamp: string;
     trial: Trial;
-}
+ }
+ export class MedicalHistory extends Asset {
+    idMedicalHistory: string;
+    records: MedicalRecord[];
+    patient: Patient;
+ }
+ export class AddFormData extends Transaction {
+    idFormData: string;
+    formMeta: FormEntry[];
+    patient: String;
+    customForm: String;
+ }
+ export class MedicalRecord {
+    recordType: string;
+    description: string;
+    date: string;
+ }
 // }

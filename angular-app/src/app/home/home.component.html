@@ -1,1 +1,47 @@
+<br/>
+<br/>
+<br/>
+<div class="center-div" *ngIf="identityAdd">
+    <h2>No identity binded to the account wallet. Please enter a participation ID provided by your orgnisation</h2>
+</div>
+<br/>
+<div class="center-div" *ngIf="identityAdd">
+    <mat-form-field class="input-field-width">
+        <input matInput type="text" placeholder="ParticipantID" [(ngModel)]="idParticipant">
+    </mat-form-field>
+</div>
+<br/>
+<div class="center-div" *ngIf="identityAdd">
+    <h4>Choose the identity type:</h4>
+    <br/>
+</div>
+<div class="center-div" *ngIf="identityAdd">
 
+    <mat-radio-group [(ngModel)]="identityType">
+        <mat-radio-button value="researcher">Researcher </mat-radio-button>
+        <br/>
+        <mat-radio-button value="agent">Regulatory Agent </mat-radio-button>
+        <br/>
+        <mat-radio-button value="sponsor">Sponsor </mat-radio-button>
+        <br/>
+    </mat-radio-group>
+</div>
+<br/>
+<div class="center-div" *ngIf="identityAdd">
+    <button mat-raised-button color="primary" (click)="onSubmit()">Bind</button>
+</div>
+
+
+<div class="center-div" *ngIf="!identityAdd">
+    <mat-card class="description-card-small">
+        <mat-card-header>
+            <h2>
+                Current identity
+            </h2>
+        </mat-card-header>
+        <mat-card-content>
+            {{setIdentity}}
+        </mat-card-content>
+    </mat-card>
+
+</div>

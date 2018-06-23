@@ -3,20 +3,22 @@
     <br/>
 
     <!-- the new patient button -->
-    <a mat-raised-button routerLink="new" style="float: right;" color="primary">Add Patient</a>
-
-    <br/>
-    <br/>
+    <div class="floating-button">
+      <a mat-fab routerLink="new" color="primary">
+        <mat-icon aria-label="New Researcher">add</mat-icon>
+      </a>
+    </div>
     <patient-table [allPatientsDataSource]="allPatientsDataSource" adminMode="true"></patient-table>
   </mat-tab>
   <mat-tab label="Organisations">
     <br/>
 
     <!-- the new organisation button -->
-    <a mat-raised-button routerLink="neworg" style="float: right;" color="primary">Add Organisation</a>
-
-    <br/>
-    <br/>
+    <div class="floating-button">
+      <a mat-fab routerLink="neworg" color="primary">
+        <mat-icon aria-label="New Organisation">add</mat-icon>
+      </a>
+    </div>
     <div class="table-container mat-elevation-z8">
       <mat-table #table [dataSource]="allOrganisationsDataSource">
 
@@ -44,22 +46,16 @@
           <mat-cell *matCellDef="let organisation"> {{organisation.orgType}} </mat-cell>
         </ng-container>
 
-        <!-- Edit link column -->
-        <ng-container matColumnDef="Edit">
-          <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
-          <mat-cell *matCellDef="let organisation">
-            <a [routerLink]="['neworg',organisation.orgID]">
-              <i class="material-icons">mode_edit</i>
-            </a>
-          </mat-cell>
-        </ng-container>
 
         <!-- Delete link column -->
-        <ng-container matColumnDef="Delete">
-          <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+        <ng-container matColumnDef="Actions">
+          <mat-header-cell *matHeaderCellDef> </mat-header-cell>
           <mat-cell *matCellDef="let organisation">
-            <a (click)="deleteOrganisation(organisation)">
+            <a mat-button (click)="deleteOrganisation(organisation)" color="primary">
               <i class="material-icons">delete_sweep</i>
+            </a>
+            <a mat-button [routerLink]="['neworg',organisation.orgID]" color="primary">
+              <i class="material-icons">mode_edit</i>
             </a>
           </mat-cell>
         </ng-container>
@@ -72,11 +68,11 @@
   <mat-tab label="Researchers">
     <br/>
 
-    <!-- the new patient button -->
-    <a mat-raised-button routerLink="newres" style="float: right;" color="primary">Add Researcher</a>
-
-    <br/>
-    <br/>
+    <div class="floating-button">
+      <a mat-fab routerLink="newres" color="primary">
+        <mat-icon aria-label="New Researcher">add</mat-icon>
+      </a>
+    </div>
     <div class="table-container mat-elevation-z8">
       <mat-table #table [dataSource]="allResearchersDataSource">
 
@@ -104,31 +100,17 @@
           <mat-cell *matCellDef="let researcher"> {{researcher.person.birthDetails.dateOfBirth}}</mat-cell>
         </ng-container>
 
-        <!-- View link column -->
-        <ng-container matColumnDef="View">
-          <mat-header-cell *matHeaderCellDef> View </mat-header-cell>
+        <!-- Action link column -->
+        <ng-container matColumnDef="Action">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let researcher">
-            <a [routerLink]="['/view',researcher.idPatient]">
+            <a mat-button [routerLink]="['/view',researcher.idPatient]" color="primary">
               <i class="material-icons">pageview</i>
             </a>
-          </mat-cell>
-        </ng-container>
-
-        <!-- Edit link column -->
-        <ng-container matColumnDef="Edit">
-          <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
-          <mat-cell *matCellDef="let researcher">
-            <a [routerLink]="['newres',researcher.idResearcher]">
+            <a mat-button [routerLink]="['newres',researcher.idResearcher]" color="primary">
               <i class="material-icons">mode_edit</i>
             </a>
-          </mat-cell>
-        </ng-container>
-
-        <!-- Delete link column -->
-        <ng-container matColumnDef="Delete">
-          <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
-          <mat-cell *matCellDef="let researcher">
-            <a (click)="deleteResearcher(researcher)">
+            <a mat-button (click)="deleteResearcher(researcher)" color="primary">
               <i class="material-icons">delete_sweep</i>
             </a>
           </mat-cell>

@@ -1,0 +1,48 @@
+<div *ngIf="isInitialised">
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <mat-form-field>
+                        <mat-select placeholder="Select records to view" [(value)]="selectedForm">
+                            <mat-option value='None'> - </mat-option>
+                            <mat-option *ngFor="let form of customForms" [value]="form.idForm">
+                                {{ form.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <button mat-raised-button (click)="onSelect()" color="primary">Select</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="displayTable">
+        <div class="table-container mat-elevation-z8">
+            <mat-table #table [dataSource]="recordsDataSource">
+                <ng-container matColumnDef="PatientID">
+                    <mat-header-cell *matHeaderCellDef> PatientID </mat-header-cell>
+                    <mat-cell *matCellDef="let rec"> test </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Date">
+                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                    <mat-cell *matCellDef="let rec"> {{rec.date}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Time">
+                    <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+                    <mat-cell *matCellDef="let rec"> {{rec.time}} </mat-cell>
+                </ng-container>
+
+                <!-- Records columns -->
+                <ng-container *ngFor="let col of dataColumns; let i = index" [matColumnDef]="col">
+                    <mat-header-cell *matHeaderCellDef> {{col}} </mat-header-cell>
+                    <mat-cell *matCellDef="let rec"> {{rec.formMeta[i].value}} </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="tableColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: tableColumns;"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+</div>

@@ -29,6 +29,7 @@ export class TransactionService {
     private ENROL_PATIENT_TRANSACTION = 'EnrolPatientTransaction'
     private REGISTER_TRIAL_TRANSACTION = 'RegisterTrialTransaction';
     private REMOVE_RESEARCHER_FROM_TRIAL = 'RemoveResearcherFromTrial';
+    private ADD_FORM_DATA = 'AddFormData'
 
     constructor(private dataService: DataService<any>) {
     };
@@ -47,6 +48,10 @@ export class TransactionService {
 
     public removeResearcherFromTrial(tx: any): Observable<RemoveResearcherFromTrial> {
         return this.dataService.add(this.REMOVE_RESEARCHER_FROM_TRIAL, tx);
+    }
+
+    public addFormData(tx: any): Observable<RemoveResearcherFromTrial> {
+        return this.dataService.add(this.ADD_FORM_DATA, tx);
     }
 }
 

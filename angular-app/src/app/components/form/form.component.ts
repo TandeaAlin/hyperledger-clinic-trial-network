@@ -2,10 +2,14 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { Patient } from '../../model/ro.utcluj.clinictrial.base';
-import { CustomForm, FormValue, FormEntry } from '../../model/ro.utcluj.clinictrial.trial';
+import { CustomForm, FormValue, FormEntry, AddFormData } from '../../model/ro.utcluj.clinictrial.trial';
 import { CustomFormService } from '../../service/CustomForm.service';
 import { PatientService } from '../../service/patient.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { ResourceProvider } from '../../utils/resource-provider';
+import { IdProviderService } from '../../utils/id-provider.service';
+import { ResourceLoader } from '@angular/compiler';
+import { TransactionService } from '../../service/transaction-service';
 
 @Component({
     selector: 'custom-form',
@@ -24,7 +28,9 @@ export class FormComponent implements OnInit, OnChanges {
         private _patientService: PatientService,
         private _router: Router,
         private _customFormService: CustomFormService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private _transactionSevice: TransactionService,
+        private _idProvider: IdProviderService
     ) {
 
     }
@@ -55,19 +61,22 @@ export class FormComponent implements OnInit, OnChanges {
     }
 
     save() {
-        var value: FormValue = new FormValue();
-        var entries: string[] = []
-        for (let meta of this.customForm.formMeta) {
-            entries.push(meta.value);
-            meta.value = "";
-        }
-        value.data = entries;
-        console.log(this.customForm);
-        this.customForm.formValues.push(value);
-        this._customFormService.updateAsset(this.customForm.idForm, this.customForm).subscribe(
-            (res) => {
-                this._router.navigate([this._router.url])
-            }
-        )
+        var tx: AddFormData = new AddFormData();
+        tx.formMeta = this.customForm.formMeta;
+        tx.idFormData = this._idProvider.generateID();
+        tx.customForm = ResourceProvider.newCustomFormResource(this.customForm.idForm);
+        tx.patient = ResourceProvider.newPatientResource(this.idPatient);
+        this._transactionSevice.addFormData(tx)
+            .subscribe(
+                (res) => {
+                    this._router.navigate([this._router.url]);
+                }
+            )
+     
+    }
+
+    generateTimestamp() {
+        var date = new Date();
+        return date.toLocaleDateString();
     }
 }
