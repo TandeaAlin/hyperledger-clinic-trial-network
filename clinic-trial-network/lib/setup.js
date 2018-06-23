@@ -40,7 +40,7 @@ async function setupMockData(tx) {
         {
             "$class": "ro.utcluj.clinictrial.base.Researcher",
             "idResearcher": "4",
-            "employer": "resource:ro.utcluj.clinictrial.organisation.ResearchSite#1",
+            "employer": "1",
             "person": {
                 "$class": "ro.utcluj.clinictrial.base.Person",
                 "firstName": "Eiusmod veniam laboris.",
@@ -76,7 +76,7 @@ async function setupMockData(tx) {
         {
             "$class": "ro.utcluj.clinictrial.base.Researcher",
             "idResearcher": "5",
-            "employer": "resource:ro.utcluj.clinictrial.organisation.ResearchSite#2",
+            "employer": "2",
             "person": {
                 "$class": "ro.utcluj.clinictrial.base.Person",
                 "firstName": "Eiusmod veniam laboris.",
@@ -112,7 +112,7 @@ async function setupMockData(tx) {
         {
             "$class": "ro.utcluj.clinictrial.base.Researcher",
             "idResearcher": "6",
-            "employer": "resource:ro.utcluj.clinictrial.organisation.ResearchSite#3",
+            "employer": "3",
             "person": {
                 "$class": "ro.utcluj.clinictrial.base.Person",
                 "firstName": "Eiusmod veniam laboris.",
@@ -252,7 +252,7 @@ async function setupMockData(tx) {
                     "placeOfDeath": "Consectetur ipsum non quis."
                 }
             },
-            "trial": "resource:ro.utcluj.clinictrial.trial.Trial#01"
+            "trial": "01"
         }
     ];
 
@@ -262,9 +262,10 @@ async function setupMockData(tx) {
             "idTrial": "01",
             "studyName": "Bretuximab Vedotin side effects",
             "status": "REGISTERED",
-            "organiser": "resource:ro.utcluj.clinictrial.organisation.ResearchSite#1",
+            "description": "Testing trial description",
+            "organiser": "1",
             "responsibles": [
-                "resource:ro.utcluj.clinictrial.base.Researcher#6"
+                "6"
             ]
         },
         {
@@ -272,9 +273,10 @@ async function setupMockData(tx) {
             "idTrial": "02",
             "studyName": "ABVD eficiency",
             "status": "REGISTERED",
-            "organiser": "resource:ro.utcluj.clinictrial.organisation.ResearchSite#2",
+            "description": "Testing trial description",
+            "organiser": "2",
             "responsibles": [
-                "resource:ro.utcluj.clinictrial.base.Researcher#5"
+                "5"
             ]
         }
     ]
@@ -305,6 +307,7 @@ async function setupMockData(tx) {
         var trial = factory.newResource(NS_TRIAL, 'Trial', srcTrial.idTrial);
         trial.studyName = srcTrial.studyName;
         trial.status = srcTrial.status;
+        trial.description = srcTrial.description;
         trial.organiser = factory.newRelationship(NS_ORG, 'ResearchSite', srcTrial.organiser);
         trial.responsibles = [];
         for (let res of srcTrial.responsibles) {

@@ -42,11 +42,18 @@ enum Gender{
 asset Trial identified by idTrial{
 	o String idTrial
   o String studyName
+  o String description 
+  o TodoElement[] tasks optional
 	o TrialStatus status optional
   o ResearchSite[] researchSites optional
   --> ResearchSite organiser
 	--> Patient[] participants optional
 	--> Researcher[] responsibles optional
+}
+
+concept TodoElement{
+  o String taskName
+  o Boolean completed default = false
 }
 
 /** Transaction for registering a new clinic trial*/
@@ -73,7 +80,6 @@ asset CustomForm identified by idForm{
   o String name  
   o String dateCreated
   o FormEntry[] formMeta
-  o FormValue[] formValues
   -->Trial trial
 }
 
@@ -83,15 +89,20 @@ enum EntryType{
   o SELECTOR_FIELD
 }
 
-concept FormValue{
-  o String[] data
+asset FormValue identified by idFormData{
+  o String idFormData
+  o String date
+  o String time
+  o FormEntry[] formMeta
+  -->Patient patient
+  -->CustomForm customForm
 }
 
 concept FormEntry{
   o String entryName
   o Integer entryType
   o String[] entryOptions
-  o String value
+  o String value optional
 }
 
 asset ProtocolFile identified by fileID{
@@ -100,6 +111,18 @@ asset ProtocolFile identified by fileID{
   o String fileType
   o String fileTimestamp
   --> Trial trial
+}
+
+asset MedicalHistory identified by idMedicalHistory{
+  o String idMedicalHistory
+  o MedicalRecord[] records
+  -->Patient patient
+}
+
+concept MedicalRecord{
+  o String recordType
+  o String description
+  o String date
 }
 
 transaction EnrolPatientTransaction{
@@ -115,6 +138,13 @@ transaction RemoveResearcherFromTrial{
 transaction AddResearcherToTrial{
   --> Trial trial
   --> Researcher researcher
+}
+
+transaction AddFormData{
+  o String idFormData
+  o FormEntry[] formMeta
+  -->Patient patient
+  -->CustomForm customForm
 }
 
 transaction SetupMockData{

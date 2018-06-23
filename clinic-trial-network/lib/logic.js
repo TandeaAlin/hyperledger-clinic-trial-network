@@ -108,3 +108,30 @@ async function addResearcherToTrial(tx) {
   await registry.update(trial);
 }
 
+/**
+ * Adds a Researcher as responsible for a clinical trial
+ * @param {ro.utcluj.clinictrial.trial.AddFormData} tx 
+ * @transaction
+ */
+async function addFormData(tx) {
+  console.log('Adding new colected date');
+  //namespace for transaction
+  const factory = getFactory();
+  const NS_TRIAL = 'ro.utcluj.clinictrial.trial';
+  const NS_BASE = 'ro.utcluj.clinictrial.base';
+  let id = tx.idFormData;
+  let meta = tx.formMeta;
+  let patient = tx.patient;
+  let customForm = tx.customForm;
+  console.log("Creating resources and relationships...");
+  var target = factory.newResource(NS_TRIAL, 'FormValue', id);
+  target.date = new Date().toLocaleDateString();
+  target.time = new Date().toLocaleTimeString();
+  target.formMeta = meta;
+  target.patient = factory.newRelationship(NS_BASE, 'Patient', patient.idPatient);
+  target.customForm = factory.newRelationship(NS_TRIAL, 'CustomForm', customForm.idForm);
+  console.log('Adding asset to registry ...');
+  const registry = await getAssetRegistry(target.getFullyQualifiedType());
+  await registry.add(target);
+}
+
