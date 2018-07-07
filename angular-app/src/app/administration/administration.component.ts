@@ -7,6 +7,7 @@ import { PatientService } from '../service/patient.service';
 import { ResearchSiteService } from '../service/research-site.service';
 import { ResearcherService } from '../service/researcher.service';
 import { SupplyOrganisationService } from '../service/supply-organisation.service';
+import { LoaderService } from '../components/loader/loader.service';
 
 @Component({
   selector: 'administration-component',
@@ -34,7 +35,9 @@ export class AdministrationComponent implements OnInit {
     private _researcerService: ResearcherService,
     private _router: Router,
     private _route: ActivatedRoute,
+    private _loaderService: LoaderService
   ) {
+    this._loaderService.show();
     this.navigationSubscription = this._router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
@@ -164,6 +167,7 @@ export class AdministrationComponent implements OnInit {
           this.allPatients.push(asset);
         });
         this.allPatientsDataSource = new MatTableDataSource<Patient>(this.allPatients);
+        this._loaderService.hide();
       })
       .catch((error) => {
         if (error == 'Server error') {
@@ -175,7 +179,9 @@ export class AdministrationComponent implements OnInit {
         else {
           this.errorMessage = error;
         }
+        this._loaderService.hide();
       });
+      
   }
 
   deletePatient(patient) {

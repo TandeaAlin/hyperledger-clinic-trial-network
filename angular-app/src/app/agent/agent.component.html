@@ -1,0 +1,44 @@
+<mat-tab-group>
+    <mat-tab label="All Transactions">
+
+        <ng-template matTabContent>
+            <br/>
+            <br/>
+            <history-table [historyData]="allProcessedHistory" *ngIf="isInitialised"></history-table>
+        </ng-template>
+    </mat-tab>
+
+    <mat-tab label="Transactions for Trial">
+        <ng-template matTabContent>
+            <br/>
+            <form>
+                <mat-form-field style="width: 75%;">
+                    <input type="text" [formControl]="myControl" matInput [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                        <mat-option *ngFor="let trial of filteredOptions | async" [value]="trial">{{trial.studyName}}</mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>&nbsp;&nbsp;
+                <button mat-raised-button (click)="onTrialSelect()" color="primary">Select</button>
+            </form>
+            <history-table [historyData]="trialFilteredHistory" *ngIf="isInitialised"></history-table>
+        </ng-template>
+    </mat-tab>
+
+    <mat-tab label="Transactions by Type">
+
+        <ng-template matTabContent>
+            <br/>
+            <mat-form-field style="width: 75%">
+                <mat-select placeholder="Select a transaction type" [(value)]="selectedTransaction">
+                    <mat-option value='None'> - </mat-option>
+                    <mat-option *ngFor="let entry of transactionTypes" [value]="entry">
+                        {{ entry }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>&nbsp;&nbsp;
+            <button mat-raised-button (click)="onTransactionSelect()" color="primary">Select</button>
+
+            <history-table [historyData]="filteredHistory" *ngIf="isInitialised"></history-table>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>

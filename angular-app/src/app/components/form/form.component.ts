@@ -1,15 +1,13 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Patient } from '../../model/ro.utcluj.clinictrial.base';
-import { CustomForm, FormValue, FormEntry, AddFormData } from '../../model/ro.utcluj.clinictrial.trial';
+import { AddFormData, CustomForm, FormValue } from '../../model/ro.utcluj.clinictrial.trial';
 import { CustomFormService } from '../../service/CustomForm.service';
 import { PatientService } from '../../service/patient.service';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { ResourceProvider } from '../../utils/resource-provider';
-import { IdProviderService } from '../../utils/id-provider.service';
-import { ResourceLoader } from '@angular/compiler';
 import { TransactionService } from '../../service/transaction-service';
+import { IdProviderService } from '../../utils/id-provider.service';
+import { ResourceProvider } from '../../utils/resource-provider';
+import { FormValueService } from '../../service/FormValue.service';
 
 @Component({
     selector: 'custom-form',
@@ -18,9 +16,11 @@ import { TransactionService } from '../../service/transaction-service';
 export class FormComponent implements OnInit, OnChanges {
     @Input() idPatient: string;
     @Input() idForm: string;
+    @Input() disabled: boolean;
+    @Input() idFormValue: string;
     customForm: CustomForm;
     isInitialised = false;
-
+    title;
     customFormGroup;
     basicFormControl;
 
@@ -30,13 +30,16 @@ export class FormComponent implements OnInit, OnChanges {
         private _customFormService: CustomFormService,
         private formBuilder: FormBuilder,
         private _transactionSevice: TransactionService,
-        private _idProvider: IdProviderService
+        private _idProvider: IdProviderService,
+        private _formValueService: FormValueService
     ) {
 
     }
 
     ngOnChanges() {
+
     }
+
     ngOnInit() {
         console.log('Patient : ' + this.idPatient);
         console.log('Form : ' + this.idForm);
@@ -44,12 +47,27 @@ export class FormComponent implements OnInit, OnChanges {
             (res) => {
                 this.customForm = res;
                 this.buildForm();
+                this.title = this.customForm.name;
+                if (this.disabled) {
+                    this.title += ' - Preview Mode';
+                    if (this.idFormValue) {
+                        this._formValueService.getAsset(this.idFormValue).subscribe(
+                            (res: FormValue) => {
+                                this.customForm.formMeta = res.formMeta;
+                                this.idPatient = res.patient.idPatient;
+                            }
+                        )
+                    }
+                }
                 this.isInitialised = true;
             }
         )
     }
 
 
+    viewPatient(idPatient: string){
+        this._router.navigateByUrl('/view/'+idPatient);
+    }
 
     buildForm() {
         this.customFormGroup = this.formBuilder.group({
@@ -72,7 +90,11 @@ export class FormComponent implements OnInit, OnChanges {
                     this._router.navigate([this._router.url]);
                 }
             )
-     
+
+    }
+
+    cancel() {
+        this._router.navigate([this._router.url]);
     }
 
     generateTimestamp() {

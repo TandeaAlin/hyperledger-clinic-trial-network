@@ -1,0 +1,77 @@
+<div *ngIf="displayTable">
+    <div class="example-container mat-elevation-z8">
+        <mat-table #table [dataSource]="historyDataSource">
+
+            <!-- Patient ID column -->
+            <ng-container matColumnDef="TransactionType">
+                <mat-header-cell *matHeaderCellDef> TransactionType </mat-header-cell>
+                <mat-cell *matCellDef="let entry"> {{entry.transactionType}} </mat-cell>
+            </ng-container>
+
+            <!-- Patient ID column -->
+            <ng-container matColumnDef="Date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let entry"> {{entry.transactionTimestamp}} </mat-cell>
+            </ng-container>
+
+            <!-- Patient ID column -->
+            <ng-container matColumnDef="InvokingUserID">
+                <mat-header-cell *matHeaderCellDef> Invoking User ID </mat-header-cell>
+                <mat-cell *matCellDef="let entry"> {{entry.participantInvoking}} </mat-cell>
+            </ng-container>
+
+            <!-- Patient ID column -->
+            <ng-container matColumnDef="Trial">
+                <mat-header-cell *matHeaderCellDef> Trial </mat-header-cell>
+                <mat-cell *matCellDef="let entry">
+                    {{entry.trial}} &nbsp;&nbsp;&nbsp;
+                    <a mat-button (click)="viewTrial(entry.trial)" color="primary">
+                        Go to trial {{entry.trial}}
+                    </a>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="expandedDetail">
+                <mat-cell *matCellDef="let detail">
+                    <div class="marginAutoLR" *ngIf="(detail.element.transactionType == 'CreateCustomForm')">
+                        <mat-card style="width:75vh; height: 30%">
+                            <mat-card-header>
+                                <mat-card-title>
+                                    <h2>Custom Form with ID = {{detail.element.customFormID}} was created by user {{detail.element.participantInvoking}}
+                                        for trial with ID = {{detail.element.trial}}</h2>
+                                </mat-card-title>
+
+                            </mat-card-header>
+                            <mat-card-content>
+                                <custom-form [idForm]="detail.element.customFormID" [disabled]="true"></custom-form>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div class="marginAutoLR" *ngIf="(detail.element.transactionType == 'AddResearcherToTrial') || (detail.element.transactionType == 'RemoveResearcherFromTrial')">
+                        <mat-card style="width:75vh; height: 30%">
+                            <mat-card-header>
+                                <mat-card-title>
+                                    <h2 *ngIf="(detail.element.transactionType == 'AddResearcherToTrial')">User {{detail.element.participantInvoking}} granted acces to participant Researcher#{{detail.element.researcher}}
+                                        for trial with ID = {{detail.element.trial}}</h2>
+                                    <h2 *ngIf="(detail.element.transactionType == 'RemoveResearcherFromTrial')">User {{detail.element.participantInvoking}} revoked acces to participant Researcher#{{detail.element.researcher}}
+                                        for trial with ID = {{detail.element.trial}}</h2>
+                                </mat-card-title>
+
+                            </mat-card-header>
+                            <mat-card-content>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <br/>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="tableColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: tableColumns;" matRipple class="element-row" [class.expanded]="expandedElement == row"
+                (click)="expand(row)"></mat-row>
+            <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow" [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
+                style="overflow: hidden">
+            </mat-row>
+        </mat-table>
+    </div>
+</div>

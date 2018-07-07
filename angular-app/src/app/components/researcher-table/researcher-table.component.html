@@ -1,0 +1,40 @@
+<div class="table-container mat-elevation-z8 ">
+    <div class="table-container ">
+        <mat-table #table [dataSource]="dataSource" style="max-height: 50vh">
+            <!-- Researcher ID column -->
+            <ng-container matColumnDef="ResearcherID">
+                <mat-header-cell *matHeaderCellDef> ResearcherID </mat-header-cell>
+                <mat-cell *matCellDef="let res"> {{res.idResearcher}} </mat-cell>
+            </ng-container>
+
+            <!-- Researcher name column -->
+            <ng-container matColumnDef="Name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let res"> {{res.person.firstName}} {{res.person.lastName}} </mat-cell>
+            </ng-container>
+
+            <!-- Researcher email column -->
+            <ng-container matColumnDef="E-mail">
+                <mat-header-cell *matHeaderCellDef> E-mail </mat-header-cell>
+                <mat-cell *matCellDef="let res"> {{res.person.contactDetails.email}} </mat-cell>
+            </ng-container>
+
+            <!-- Actions column -->
+            <ng-container matColumnDef="Actions" class="mat-column-Actions">
+                <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                <mat-cell *matCellDef="let res">
+                    <a mat-button (click)="removeResearcher(res)" color="primary" *ngIf="activeMode">
+                        <i class="material-icons">clear</i>
+                    </a>
+
+                    <a mat-button (click)="addResearcher(res)" color="primary" *ngIf="!activeMode">
+                        <i class="material-icons">add</i>
+                    </a>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="tableColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: tableColumns;"></mat-row>
+        </mat-table>
+    </div>
+</div>

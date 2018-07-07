@@ -16,6 +16,8 @@ import { PatientService } from '../../service/patient.service'
 import { PatientQueryService } from '../../service/queries/patient-query-service'
 import * as FileSaver from 'file-saver';
 import { Patient } from '../../model/ro.utcluj.clinictrial.base';
+import { LoaderService } from '../../components/loader/loader.service';
+
 
 @Component({
     selector: 'trial-view-component',
@@ -53,7 +55,8 @@ export class TrialViewComponent implements OnInit {
     allFilesDataSource: MatTableDataSource<ProtocolFile>;
     allCustomFormsDataSource: MatTableDataSource<CustomForm>;
     allPatientsDataSource: MatTableDataSource<Patient>;
-
+    selectedForm: CustomForm;
+    enableViewForm: boolean = false;
 
 
     constructor(
@@ -64,8 +67,9 @@ export class TrialViewComponent implements OnInit {
         private _protocolService: ProtocolFileService,
         private _fileQueryService: FilesQueryService,
         private _formQueryService: FormQueryService,
-        private _patientQueryService: PatientQueryService
+        private _loaderService: LoaderService
     ) {
+        this._loaderService.show();
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
             // If it is a NavigationEnd event re-initalise the component
             if (e instanceof NavigationEnd) {
@@ -74,6 +78,8 @@ export class TrialViewComponent implements OnInit {
                 this.formBuilder = false;
                 this.patientSelect = false;
                 this.editMode = false;
+                this.uploadCardActivate = false;
+                this.enableViewForm = false;
                 this.loadTableData();
             }
         });
@@ -85,7 +91,7 @@ export class TrialViewComponent implements OnInit {
                 if (!id) {
                     alert("Something went wrong! Please try again!")
                 }
-                
+
                 this.loadTableData();
                 this.idTrialLoaded = true;
             })
@@ -95,10 +101,12 @@ export class TrialViewComponent implements OnInit {
     loadTableData() {
         this._trialService.getAsset(this.idTrial)
             .subscribe(
-                (res) => {
+                (res: Trial) => {
                     console.log("Received from server: ");
                     this.trial = res;
+                    this.allPatientsDataSource = new MatTableDataSource<Patient>(res.participants);
                     console.log(this.trial);
+                    this._loaderService.hide();
                 }
             )
         this._fileQueryService.findFileByTrial(this.idTrial)
@@ -115,12 +123,6 @@ export class TrialViewComponent implements OnInit {
                     this.allCustomFormsDataSource = new MatTableDataSource<CustomForm>(res);
                 }
             )
-        this._patientQueryService.selectPatientsForTrial(this.idTrial).subscribe(
-            (res) => {
-                console.log(res);
-                this.allPatientsDataSource = new MatTableDataSource<Patient>(res);
-            }
-        )
     }
 
     displayFormBuilder() {
@@ -129,6 +131,18 @@ export class TrialViewComponent implements OnInit {
     hideFormBuilder() {
         this.formBuilder = false;
     }
+
+    viewForm(form: CustomForm) {
+        this.selectedForm = form;
+        this.enableViewForm = true
+    }
+
+    hideForm(){
+        this.selectedForm = null;
+        this.enableViewForm = false;
+    }
+
+
 
     patientSelection() {
         console.log(this.idTrial)
@@ -154,7 +168,7 @@ export class TrialViewComponent implements OnInit {
                 this.protocolFile.fileID = this._idProvider.generateID();
                 this.protocolFile.fileContent = res.toString().substr(res.toString().indexOf(',') + 1);
                 this.protocolFile.fileType = fileExtension;
-                this.protocolFile.fileVersion = "";
+                // this.protocolFile.fileVersion = "";
                 this.protocolFile.trial = TrialVO.TRIAL + this.idTrial;
                 this.protocolFile.fileTimestamp = this.generateTimestamp();
             }
@@ -190,7 +204,7 @@ export class TrialViewComponent implements OnInit {
         console.log(JSON.stringify(this.protocolFile));
         this._protocolService.addAsset(this.protocolFile).subscribe(
             (res) => {
-                this._router.navigate(['.']);
+                this._router.navigate([this._router.url])
             }
         )
     }
@@ -208,7 +222,7 @@ export class TrialViewComponent implements OnInit {
     }
 
     ngOnInit() {
-        
+
     }
     private units = [
         'bytes',
@@ -234,10 +248,21 @@ export class TrialViewComponent implements OnInit {
     onDescriptionChange() {
         var id = this.trial.idTrial;
         this.trial.idTrial = "";
-        this._trialService.updateAsset(id, this.trial).subscribe(
-            (res) => {
-                this._router.navigate([this._router.url])
+        this._trialService.getAssetUnresolved(id).subscribe(
+            (res: Trial) =>{
+                res.description = this.trial.description;
+                console.log(res);
+                this._trialService.updateAsset(res.idTrial, res).subscribe(
+                    (result) => {
+                        this._router.navigate([this._router.url])
+                    },
+                    (err)=>{
+                        this._router.navigate([this._router.url])
+                    }
+                )
+
             }
         )
+
     }
 }

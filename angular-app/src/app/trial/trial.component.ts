@@ -3,6 +3,8 @@ import { Trial } from '../model/ro.utcluj.clinictrial.trial'
 import { TrialService } from '../service/trial.service'
 import { ResearchSiteService } from '../service/research-site.service'
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { LoaderService } from '../components/loader/loader.service';
+import { HistorianService } from '../service/historian.service';
 
 @Component({
     selector: 'trial-component',
@@ -16,21 +18,26 @@ export class TrialComponent implements OnInit {
     allTrialsDataSource: MatTableDataSource<Trial>;
     constructor(
         private _trialService: TrialService,
-        private _researchSiteService: ResearchSiteService
+        private _loaderService: LoaderService,
+        private _historianService: HistorianService
     ) {
+        _loaderService.show();
+    }
+
+    ngOnInit() {
         this.loadAll();
         console.log(this.trials);
     }
 
-    ngOnInit() {
-
-    }
-
-    loadAll(): Promise<any> {
+    loadAll() {
         let tempList = [];
-        return this._trialService.getAll()
-            .toPromise()
-            .then((result) => {
+        this._historianService.getAll().subscribe(
+            (res) =>{
+                console.log(res);
+            }
+        )
+        this._trialService.getAll().subscribe(
+            (result) => {
                 this.errorMessage = null;
                 result.forEach(asset => {
                     console.log(asset)
@@ -38,8 +45,10 @@ export class TrialComponent implements OnInit {
                 });
                 this.trials = tempList;
                 this.allTrialsDataSource = new MatTableDataSource(this.trials);
-            })
-            .catch((error) => {
+                this._loaderService.hide();
+            },
+
+            (error) => {
                 if (error == 'Server error') {
                     this.errorMessage = "Could not connect to REST server. Please check your configuration details";
                 }
@@ -50,7 +59,9 @@ export class TrialComponent implements OnInit {
                     this.errorMessage = error;
                 }
                 alert(this.errorMessage);
-            });
+                this._loaderService.hide();
+            }
+        )
     }
 
 }

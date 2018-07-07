@@ -10,6 +10,7 @@ import { Configuration } from './configuration';
 @Injectable()
 export class DataService<Type> {
     private resolveSuffix: string = '?resolve=true';
+    private includeSuffix: string = '?filter={"include":"resolve"}';
     private actionUrl: string;
     private headers: HttpHeaders;
 
@@ -23,13 +24,19 @@ export class DataService<Type> {
 
     public getAll(ns: string): Observable<Type[]> {
         console.log('GetAll ' + ns + ' to ' + this.actionUrl + ns, this.headers);
-        return this.http.get<Type[]>(`${this.actionUrl}${ns}`,{ withCredentials: true });
+        return this.http.get<Type[]>(`${this.actionUrl}${ns}` + this.includeSuffix,{ withCredentials: true });
     }
 
     public getSingle(ns: string, id: string): Observable<Type> {
         console.log('GetSingle ' + ns);
 
-        return this.http.get<Type>(this.actionUrl + ns + '/' + id + this.resolveSuffix, { withCredentials: true });
+        return this.http.get<Type>(this.actionUrl + ns + '/' + id + this.includeSuffix, { withCredentials: true });
+    }
+
+    public getSingleUnresolved(ns: string, id: string): Observable<Type> {
+        console.log('GetSingle ' + ns);
+
+        return this.http.get<Type>(this.actionUrl + ns + '/' + id, { withCredentials: true });
     }
 
     public add(ns: string, asset: Type): Observable<Type> {

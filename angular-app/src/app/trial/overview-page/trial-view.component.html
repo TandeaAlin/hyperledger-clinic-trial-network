@@ -183,53 +183,58 @@
     <mat-tab label="Forms">
         <ng-template matTabContent>
             <br/>
-            <div *ngIf="!formBuilder">
-                <mat-table #table [dataSource]="allCustomFormsDataSource">
-                    <!-- Form name column -->
-                    <ng-container matColumnDef="FormName">
-                        <mat-header-cell *matHeaderCellDef> Form Name </mat-header-cell>
-                        <mat-cell *matCellDef="let form"> {{form.name}} </mat-cell>
-                    </ng-container>
+            <div *ngIf="!enableViewForm">
+                <div *ngIf="!formBuilder">
+                    <mat-table #table [dataSource]="allCustomFormsDataSource">
+                        <!-- Form name column -->
+                        <ng-container matColumnDef="FormName">
+                            <mat-header-cell *matHeaderCellDef> Form Name </mat-header-cell>
+                            <mat-cell *matCellDef="let form"> {{form.name}} </mat-cell>
+                        </ng-container>
 
-                    <!-- Form last modified column -->
-                    <ng-container matColumnDef="LastModified">
-                        <mat-header-cell *matHeaderCellDef> Last Modified </mat-header-cell>
-                        <mat-cell *matCellDef="let form"> {{form.dateCreated}} </mat-cell>
-                    </ng-container>
+                        <!-- Form last modified column -->
+                        <ng-container matColumnDef="LastModified">
+                            <mat-header-cell *matHeaderCellDef> Last Modified </mat-header-cell>
+                            <mat-cell *matCellDef="let form"> {{form.dateCreated}} </mat-cell>
+                        </ng-container>
 
-                    <!-- Edit link column -->
-                    <ng-container matColumnDef="Edit">
-                        <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
-                        <mat-cell *matCellDef="let form">
-                            <a (click)="editForm(form)">
-                                <i class="material-icons">edit</i>
-                            </a>
-                        </mat-cell>
-                    </ng-container>
+                        <!-- Edit link column -->
+                        <ng-container matColumnDef="Edit">
+                            <mat-header-cell *matHeaderCellDef> View </mat-header-cell>
+                            <mat-cell *matCellDef="let form">
+                                <a mat-button (click)="viewForm(form)" color="primary">
+                                    <i class="material-icons">pageview</i>
+                                </a>
+                            </mat-cell>
+                        </ng-container>
 
-                    <!-- Delete link column -->
-                    <ng-container matColumnDef="Delete">
-                        <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
-                        <mat-cell *matCellDef="let form">
-                            <a (click)="deleteForm(form)">
-                                <i class="material-icons">delete_sweep</i>
-                            </a>
-                        </mat-cell>
-                    </ng-container>
+                        <!-- Delete link column -->
+                        <ng-container matColumnDef="Delete">
+                            <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+                            <mat-cell *matCellDef="let form">
+                                <a (click)="deleteForm(form)">
+                                    <i class="material-icons">delete_sweep</i>
+                                </a>
+                            </mat-cell>
+                        </ng-container>
 
 
-                    <mat-header-row *matHeaderRowDef="customFormColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: customFormColumns;"></mat-row>
-                </mat-table>
+                        <mat-header-row *matHeaderRowDef="customFormColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: customFormColumns;"></mat-row>
+                    </mat-table>
 
+                </div>
+                <div class="floating-button" *ngIf="!formBuilder">
+                    <button mat-fab color="primary" (click)=" formBuilder = !formBuilder">
+                        <mat-icon aria-label="New Custom Form">note_add</mat-icon>
+                    </button>
+                </div>
+                <div *ngIf="formBuilder">
+                    <crf-component></crf-component>
+                </div>
             </div>
-            <div class="floating-button" *ngIf="!formBuilder">
-                <button mat-fab color="primary" (click)=" formBuilder = !formBuilder">
-                    <mat-icon aria-label="New Custom Form">note_add</mat-icon>
-                </button>
-            </div>
-            <div *ngIf="formBuilder">
-                <crf-component></crf-component>
+            <div *ngIf="enableViewForm">
+                <custom-form [idForm]="selectedForm.idForm" [disabled] = "true"></custom-form>
             </div>
         </ng-template>
     </mat-tab>
@@ -255,18 +260,20 @@
 
     <mat-tab label="Records">
         <ng-template matTabContent>
+            <br/>
             <records-component [idTrial]="idTrial"></records-component>
         </ng-template>
     </mat-tab>
 
     <mat-tab label="Users">
         <ng-template matTabContent>
-           
+            <br/>
+            <user-manager [idTrial]="idTrial"></user-manager>
         </ng-template>
     </mat-tab>
     <mat-tab label="Settings">
         <ng-template matTabContent>
-            
+
         </ng-template>
     </mat-tab>
 

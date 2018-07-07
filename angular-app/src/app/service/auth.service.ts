@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import 'rxjs/Rx';
-import { Configuration } from './configuration';
-import { IdProviderService } from '../utils/id-provider.service';
-import { AuthenticationVO, AccountType } from '../model/ro.utcluj.vo';
-import { ResearcherService } from './researcher.service';
 import { Researcher } from '../model/ro.utcluj.clinictrial.base';
+import { AccountType, AuthenticationVO } from '../model/ro.utcluj.vo';
+import { IdProviderService } from '../utils/id-provider.service';
 import { Utils } from '../utils/utils';
+import { Configuration } from './configuration';
+import { ResearcherService } from './researcher.service';
 
 
 
@@ -27,14 +27,14 @@ export class AuthService {
 
     private RESEARCHER_NAMESPACE = "ro.utcluj.clinictrial.base.Researcher#";
 
-    private user : AuthenticationVO;
+    private user: AuthenticationVO;
 
     constructor(
-        private http: HttpClient, 
+        private http: HttpClient,
         private _configuration: Configuration,
-        private _idProvider : IdProviderService,
+        private _idProvider: IdProviderService,
         private _researcherService: ResearcherService
-    
+
     ) {
         this.actionUrl = _configuration.AdminServerWithApiUrl;
         this.userUrl = _configuration.ServerWithApiUrl;
@@ -43,23 +43,31 @@ export class AuthService {
         this.headers.append('Accept', 'application/json');
     }
 
-    getUser(){
-        return localStorage.getItem(Utils.USERNAME);
+    getUser() {
+        var user = localStorage.getItem(Utils.USERNAME);
+        //console.log(user);
+        return user;
     }
 
-    storeUserInfo(user: string){
-        if(user.includes('Researcher')){
+    storeUserInfo(user: string) {
+        if (user.includes('Researcher')) {
             localStorage.setItem(Utils.USER_ROLE, AccountType.RESEARCHER.toLocaleString())
             var uid = user.replace(this.RESEARCHER_NAMESPACE, "");
             localStorage.setItem(Utils.UID, uid)
             this._researcherService.getparticipant(uid).subscribe(
-                (res : Researcher) =>{
-                    var displayName = res.person.firstName + " " + res.person.lastName ;
+                (res: Researcher) => {
+                    var displayName = res.person.firstName + " " + res.person.lastName;
                     localStorage.setItem(Utils.USERNAME, displayName);
                 }
             )
-          
+
         }
+    }
+
+    clearUserInfo(){
+        localStorage.removeItem(Utils.USERNAME);
+        localStorage.removeItem(Utils.USER_ROLE);
+        localStorage.removeItem(Utils.UID);
     }
 
     getCurrentUserData() {
@@ -68,17 +76,13 @@ export class AuthService {
 
     logout() {
         return this.http.get("http://localhost:3000/auth/logout", { withCredentials: true }).subscribe(
-            (res) =>{
+            (res) => {
                 console.log("Logged out... Clearing cookies...");
-                localStorage.removeItem(Utils.UID)
-                localStorage.removeItem(Utils.USER_ROLE)
-                localStorage.removeItem(Utils.USERNAME)
+                this.clearUserInfo();
             },
-            (err) =>{
+            (err) => {
                 console.log("Logged out... Clearing cookies...");
-                localStorage.removeItem(Utils.UID)
-                localStorage.removeItem(Utils.USER_ROLE)
-                localStorage.removeItem(Utils.USERNAME)
+                this.clearUserInfo();
             }
         )
     }

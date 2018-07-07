@@ -21,6 +21,9 @@ import { SystemService } from './service/system-service';
 import { FormValueQueryService } from './service/queries/form-value-query-service'
 import { AuthService } from './service/auth.service';
 import { ResearcherService } from './service/researcher.service';
+import { ComponentModule } from './components/component.module';
+import { LoaderService } from './components/loader/loader.service';
+import { HistorianService } from './service/historian.service';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,8 @@ import { ResearcherService } from './service/researcher.service';
     HttpClientModule,
     BrowserAnimationsModule,
     AppMaterialModule,
+    ComponentModule,
+
   ],
   providers: [
     Configuration,
@@ -50,7 +55,9 @@ import { ResearcherService } from './service/researcher.service';
     AuthService,
     FormValueQueryService,
     SystemService,
-    ResearcherService
+    ResearcherService,
+    HistorianService,
+    LoaderService
   ],
   bootstrap: [AppComponent]
 })

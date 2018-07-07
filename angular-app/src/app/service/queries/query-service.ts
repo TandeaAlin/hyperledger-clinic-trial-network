@@ -27,4 +27,12 @@ export class QueryService<Type> {
         console.log(`${this.actionUrl}queries/${query}${param}`) 
         return this.http.get<Type[]>(`${this.actionUrl}queries/${query}${param}`,{ withCredentials: true });
     }
+
+    public getWithDoubleParam(query: string, param: string, secondParam: string): Observable<Type[]> {
+        console.log("Executing query ... ")
+        console.log("param1: " + param)
+        console.log("param1: " + secondParam)
+        console.log(`${this.actionUrl}queries/${query}${param}&${secondParam}`) 
+        return this.http.get<Type[]>(`${this.actionUrl}queries/${query}${param}&${secondParam}`,{ withCredentials: true });
+    }
 }

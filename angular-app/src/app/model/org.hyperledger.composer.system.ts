@@ -36,7 +36,7 @@
       transactionInvoked: Transaction;
       participantInvoking: Participant;
       identityUsed: Identity;
-      eventsEmitted: Event[];
+      eventsEmitted: any[];
       transactionTimestamp: Date;
    }
    export abstract class RegistryTransaction extends Transaction {

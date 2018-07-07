@@ -13,6 +13,7 @@ import { FormValueQueryService } from '../../service/queries/form-value-query-se
 })
 export class RecordsComponent implements OnInit, OnChanges {
     @Input() idTrial: string;
+    @Input() idFormExternal: string;
 
     private NONE: string = "None";
     private idForm;
@@ -46,39 +47,27 @@ export class RecordsComponent implements OnInit, OnChanges {
             return;
         } else {
             this._formValueQueryService.findDataForCustomForm(this.selectedForm).subscribe(
-                (res : FormValue[])=>{
+                (res: FormValue[]) => {
                     console.log(res);
                     this.tableColumns.push("PatientID");
                     this.tableColumns.push("Date");
                     this.tableColumns.push("Time");
-                    if(res.length > 0){
+                    if (res.length > 0) {
                         var value = res[0];
-                        for(let meta of value.formMeta){
+                        for (let meta of value.formMeta) {
                             this.tableColumns.push(meta.entryName);
-                            this.dataColumns.push(meta.entryName); 
+                            this.dataColumns.push(meta.entryName);
                         }
-                    }else{
+                    } else {
                         alert("No data to display");
                         return;
                     }
                     this.recordsDataSource = new MatTableDataSource<FormValue>(res);
                     this.displayTable = true;
                 }
-                
-                
+
+
             )
-            // this._customFormService.getAsset(this.selectedForm).subscribe(
-            //     (res: CustomForm) => {
-            //         this.tableColumns.push("PatientID");
-            //         this.tableColumns.push("Date");
-            //         for (let meta of res.formMeta) {
-            //             this.tableColumns.push(meta.entryName);
-            //         }
-            //         this.records = res.formValues;
-            //        this.recordsDataSource = new MatTableDataSource<FormValue>(this.records);
-            //        this.displayTable = true;
-            //     }
-            // )
         }
     }
 
@@ -87,14 +76,20 @@ export class RecordsComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this._formQueryService.findCustomFormsByTrial(this.idTrial).subscribe(
-            (res) => {
-                this.customForms = res;
-                console.log(res);
-                this.isInitialised = true;
-                this.displayTable = false;
-            }
-        )
+        if (this.idFormExternal) {
+            this.idForm = this.idFormExternal;
+            this.onSelect();
+        } else {
+            this._formQueryService.findCustomFormsByTrial(this.idTrial).subscribe(
+                (res) => {
+                    this.customForms = res;
+                    console.log(res);
+                    this.isInitialised = true;
+                    this.displayTable = false;
+                }
+            )
+        }
+
     }
 
     getCustomForm(idForm) {

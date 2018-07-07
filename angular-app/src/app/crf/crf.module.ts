@@ -11,7 +11,8 @@ import { IdProviderService } from '../utils/id-provider.service'
         AppMaterialModule,
         CRFRoutingModule,
         CommonModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [
         IdProviderService

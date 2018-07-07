@@ -91,8 +91,68 @@ mat-toolbar[_ngcontent-c0] {
     width: 100%;
   }
 
+  .input-field-small {
+    width: 50%;
+  }
+
   .flex-fill {
     /* This fills the remaining space, by using flexbox. 
        Every toolbar row uses a flexbox row layout. */
     flex: 1 1 auto;
   }
+
+  .wrapper {
+    display: flex;
+    width:100%;
+}
+
+.header-buttons {
+  margin-right: 35px;
+  float: right;
+  height: 68px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.table-container {
+  position: relative;
+  max-height: 40vh;
+  overflow: auto;
+}
+
+
+.loader-hidden {
+  visibility: hidden;
+}
+.loader-overlay {
+  position: absolute;
+  width:100%;
+}
+
+/* Absolute Center Spinner */
+.loading-indicator {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.loading-indicator:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+}
+

@@ -125,6 +125,8 @@ export class PatientFormComponent implements OnInit{
       console.log(this.patient);
       var result;
       if (this.idPatient){
+        this.patient.idPatient = "";
+        console.log(this.patient);
         result = this._patientService.updateAsset(this.idPatient, this.patient);
       } else {
         this.patient.idPatient = this.generatePatientID();

@@ -9,15 +9,18 @@
             </button>
         </span>
         <span class="flex-fill"></span>
+        <div *ngIf="_authService.getUser()">
         <span>
             <mat-icon>account_circle </mat-icon>
             <br/> {{_authService.getUser()}}
         </span>
         <button mat-button (click)="_authService.logout()">Log Out</button>
+    </div>
     </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-menu #menu="matMenu">
     <button mat-menu-item routerLink="/administration">Administration</button>
     <button mat-menu-item routerLink="/trial">Trials</button>
+    <button mat-menu-item routerLink="/agent">Agent</button>
 </mat-menu>

@@ -12,7 +12,7 @@
             <mat-divider></mat-divider>
             <mat-divider></mat-divider>
             <br/>
-            <mat-form-field class="input-field-width">
+            <mat-form-field class="input-field-full-width">
                 <input matInput placeholder="Enter a name for the custom form..." [(ngModel)]="customForm.name">
             </mat-form-field>
             <mat-divider></mat-divider>
@@ -24,24 +24,30 @@
             </div>
             <mat-divider></mat-divider>
             <br/>
-            <div>
+            <div style="display: table; margin: 0 auto; width: 75%">
                 <div *ngFor="let formEntry of formFields">
                     <mat-divider></mat-divider>
                     <div *ngIf="formEntry.entryType == 0">
                         <mat-form-field class="input-field-width">
                             <input matInput placeholder="{{formEntry.entryName}}">
-                        </mat-form-field>
+
+                        </mat-form-field>&nbsp;
+                        <button mat-button (click)="removeField(formEntry)">Remove</button>
                     </div>
                     <div *ngIf="formEntry.entryType == 1">
-                        <mat-radio-group>
+                        <mat-radio-group class="input-field-width">
                             <table>
                                 <thead>{{formEntry.entryName}}</thead>
+                                
                                 <tbody>
                                     <tr>
                                         <div>
                                             <td *ngFor="let option of formEntry.entryOptions">
                                                 <mat-radio-button value="{{option}}">{{option}}</mat-radio-button>
                                             </td>
+                                            <td>
+                                            <button mat-button (click)="removeField(formEntry)">Remove</button>
+                                        </td>
                                         </div>
                                     </tr>
                                 </tbody>
@@ -49,13 +55,15 @@
                         </mat-radio-group>
                     </div>
                     <div *ngIf="formEntry.entryType == 2">
-                        <mat-form-field>
+                        <mat-form-field class="input-field-width">
                             <mat-select placeholder="{{formEntry.entryName}}" [(ngModel)]="formEntry.value">
                                 <mat-option *ngFor="let option of formEntry.entryOptions" [value]="option">
                                     {{option}}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field>&nbsp;
+                        <button mat-button (click)="removeField(formEntry)">Remove</button>
+                        
                     </div>
                 </div>
                 <mat-divider></mat-divider>
@@ -63,37 +71,89 @@
 
             <br/>
             <div *ngIf="displayFormField">
-                <table width="100%">
-                    <tbody>
-                        <tr>
-                            <td width="70%">
-                                <mat-form-field class="input-field-width">
-                                    <input matInput placeholder="New field name" [(ngModel)]="formField.entryName">
-                                </mat-form-field>
-                            </td>
-                            <td width="30%">
-                                <button mat-raised-button (click)="addField()" color="primary">Add</button>
-                            </td>
-                        </tr>
-                        <div *ngIf="displayChoice || displaySelector">
-                            <tr>
-                                <td width=100%>
-                                    <mat-form-field class="max-width">
-                                        <mat-chip-list #chipList>
-                                            <mat-chip *ngFor="let header of dataHeaders" [selectable]="selectable" [removable]="removable" (removed)="remove(header)">
-                                                {{header}}
-                                                <mat-icon matChipRemove>cancel</mat-icon>
-                                            </mat-chip>
-                                            <input placeholder="Possible values for choice..." [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)" />
-                                        </mat-chip-list>
-                                    </mat-form-field>
-                                </td>
-                                <td></td>
-                            </tr>
+
+                <mat-vertical-stepper [linear]="true" #stepper>
+                    <mat-step>
+                        <form [formGroup]="fieldNameFormGroup">
+                            <ng-template matStepLabel>
+                                Enter the new field name:
+                            </ng-template>
+                            <mat-form-field class="input-field-small">
+                                <input matInput placeholder="New field name" [(ngModel)]="formField.entryName" [ngModelOptions]="{standalone: true}" required>
+                            </mat-form-field>
+                            <div>
+                                <button mat-button matStepperNext>Next</button>
+                                <button mat-button (click)="stepper.reset()  ; clearFormEntry()">Cancel</button>
+                            </div>
+                        </form>
+
+                    </mat-step>
+                    <mat-step *ngIf="(displayChoice || displaySelector)">
+                        <form [formGroup]="fieldNameFormGroup">
+                            <ng-template matStepLabel>
+                                Enter the new field options:
+                            </ng-template>
+                            <mat-form-field class="max-width">
+                                <mat-chip-list #chipList>
+                                    <mat-chip *ngFor="let header of dataHeaders" [selectable]="selectable" [removable]="removable" (removed)="remove(header)">
+                                        {{header}}
+                                        <mat-icon matChipRemove>cancel</mat-icon>
+                                    </mat-chip>
+                                    <input placeholder="Possible values for choice..." [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                        [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)" />
+                                </mat-chip-list>
+                            </mat-form-field>
+                            <div>
+                                <button mat-button matStepperPrevious>Back</button>&nbsp;
+                                <button mat-button matStepperNext>Next</button>&nbsp;
+                                <button mat-button (click)="stepper.reset() ; clearFormEntry()">Cancel</button>
+
+                            </div>
+                        </form>
+                    </mat-step>
+                    <mat-step *ngIf="formField">
+                        <ng-template matStepLabel>Preview</ng-template>
+                        <h5>This is a preview of the field that will be added to the form:</h5>
+                        <div *ngIf="formField.entryType == 0">
+                            <mat-form-field class="input-field-small">
+                                <input matInput placeholder="{{formField.entryName}}">
+                            </mat-form-field>
                         </div>
-                    </tbody>
-                </table>
+                        <div *ngIf="formField.entryType == 1">
+                            <mat-radio-group>
+                                <table>
+                                    <thead>{{formField.entryName}}</thead>
+                                    <tbody>
+                                        <tr>
+                                            <div>
+                                                <td *ngFor="let option of dataHeaders">
+                                                    <mat-radio-button value="{{option}}">{{option}}</mat-radio-button>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </mat-radio-group>
+                        </div>
+                        <div *ngIf="formField.entryType == 2">
+                            <mat-form-field>
+                                <mat-select placeholder="{{formField.entryName}}" [(ngModel)]="formField.value">
+                                    <mat-option *ngFor="let option of dataHeaders" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <br/>
+                        <div>
+                            <button mat-button matStepperPrevious>Back</button>&nbsp;
+                            <button mat-button (click)="stepper.reset() ;  clearFormEntry()">Cancel</button>
+                            &nbsp;
+                            <button mat-button (click)="addField()"> Add</button>
+                        </div>
+                    </mat-step>
+                </mat-vertical-stepper>
             </div>
             <br/>
             <div align="center">

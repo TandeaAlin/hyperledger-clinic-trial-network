@@ -10,6 +10,10 @@ import { FormComponent } from './form/form.component';
 import { CustomFormSelectDialog, PatientTableComponent } from './patient/patient-table.component';
 import { RecordsComponent } from './records/records.component';
 import { ResourceProvider } from '../utils/resource-provider';
+import { UserManagerComponent } from './user-manager/user-manager.component';
+import { ResearcherTableComponent } from './researcher-table/researcher-table.component';
+import { FormValueService } from '../service/FormValue.service';
+
 @NgModule({
     imports: [
         AppMaterialModule,
@@ -21,13 +25,16 @@ import { ResourceProvider } from '../utils/resource-provider';
     providers: [
         IdProviderService,
         PatientService,
-        ResourceProvider
+        ResourceProvider,
+        FormValueService
     ],
     declarations: [
         PatientTableComponent,
         PatientPageComponent,
         FormComponent,
         CustomFormSelectDialog,
+        UserManagerComponent,
+        ResearcherTableComponent,
         RecordsComponent
     ],
     entryComponents:[
@@ -37,7 +44,9 @@ import { ResourceProvider } from '../utils/resource-provider';
     exports: [
         PatientTableComponent,
         PatientPageComponent,
+        UserManagerComponent,
         FormComponent,
+        ResearcherTableComponent,
         CustomFormSelectDialog,
         RecordsComponent
     ]

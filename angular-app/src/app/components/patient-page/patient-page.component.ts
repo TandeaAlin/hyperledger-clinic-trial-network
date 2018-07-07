@@ -1,13 +1,8 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { TrialVO } from '../../model/ro.utcluj.trial.vo';
-import { Patient } from '../../model/ro.utcluj.clinictrial.base'
-import { TrialService } from '../../service/trial.service'
-import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ResearchSiteService } from '../../service/research-site.service';
-import { IdProviderService } from '../../utils/id-provider.service';
-import { PatientService } from '../../service/patient.service'
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
+import { Patient } from '../../model/ro.utcluj.clinictrial.base';
+import { PatientService } from '../../service/patient.service';
 
 @Component({
     selector: 'patient-page',

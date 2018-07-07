@@ -1,4 +1,18 @@
 <div *ngIf="isInitialised">
+
+  <div class="center-div">
+        <mat-card class="description-card">
+          <mat-card-header class="marginAutoLR">
+            <mat-card-title><h2>{{title}}</h2></mat-card-title>
+            <mat-card-subtitle  *ngIf="idPatient"><h3>Data colected for patient with ID = {{idPatient}}  <button mat-button color="primary" (click)="viewPatient(idPatient)"> View Patient </button></h3> 
+             
+            </mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+    
+    
+    </div>
+    <br/>
     <div *ngFor="let formEntry of customForm.formMeta">
         <mat-divider></mat-divider>
         <br/>
@@ -37,7 +51,7 @@
         </div>
     </div>
     <br/>
-    <table>
+    <table *ngIf="!disabled">
         <tbody>
             <tr>
                 <td>
@@ -49,4 +63,7 @@
             </tr>
         </tbody>
     </table>
+    <div *ngIf="disabled">
+            <button mat-raised-button (click)="cancel()" style="float: right, down;" color="primary">Close</button>
+    </div>
 </div>

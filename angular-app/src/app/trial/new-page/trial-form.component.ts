@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TrialVO } from '../../model/ro.utcluj.trial.vo';
-import { TrialService } from '../../service/trial.service'
-import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { OrganisationVO } from '../../model/ro.utcluj.vo';
 import { ResearchSiteService } from '../../service/research-site.service';
-import { OrganisationVO } from '../../model/ro.utcluj.vo'
+import { TrialService } from '../../service/trial.service';
 import { IdProviderService } from '../../utils/id-provider.service';
 
 @Component({

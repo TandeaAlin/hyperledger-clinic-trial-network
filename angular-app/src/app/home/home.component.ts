@@ -4,6 +4,7 @@ import { SystemService } from '../service/system-service'
 import { ResearcherService } from '../service/researcher.service';
 import { Researcher } from '../model/ro.utcluj.clinictrial.base';
 import { AuthService } from '../service/auth.service';
+import { LoaderService } from '../components/loader/loader.service';
 
 @Component({
   selector: 'home-component',
@@ -20,7 +21,8 @@ export class HomeComponent implements OnInit {
     private _route: ActivatedRoute,
     private _systemService: SystemService,
     private _researcherService: ResearcherService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _loaderService: LoaderService
   ) {
     var result = this._route.params
       .subscribe(params => {
@@ -32,6 +34,7 @@ export class HomeComponent implements OnInit {
             if (res['length'] == 0) {
               console.log("No identities defined in wallet. Asking for an identity")
               this.identityAdd = true;
+              this._loaderService.hide();
               this.identities.concat(res);
 
             } else {
@@ -40,6 +43,7 @@ export class HomeComponent implements OnInit {
                   console.log(res)
                   this._authService.storeUserInfo(res);
                   this.identityAdd = false;
+                  this._loaderService.hide();
                 }
               )
             }
@@ -52,6 +56,7 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit() {
+    this._loaderService.show();
     this.idParticipant = this.idParticipant.trim();
     if (!this.identityType) {
       alert("Please choose the type of identity!")
@@ -74,9 +79,22 @@ export class HomeComponent implements OnInit {
           this._systemService
             .bindIdentity(this.createResearcherIdentity(participant)).then(
               (res) => {
-                console.log(res);
+                this._loaderService.hide();
+                console.log("Checking if default identity is set...");
+                this._systemService.getCurrentUser().then(
+                  (res) => {
+                    console.log("Seting cookies...")
+                    this._authService.storeUserInfo(res);
+                    console.log("Reinitializing...");
+                    this._router.navigate([this._router.url])
+                  }
+                )
               }
             )
+        },
+        (err)=>{
+          this._loaderService.hide();
+          alert("Cannot bind identity");
         }
       )
     } else if (this.identityType == "agent") {

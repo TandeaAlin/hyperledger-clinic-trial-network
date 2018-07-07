@@ -25,6 +25,10 @@ export class TrialService {
       return this.dataService.getSingle(this.NAMESPACE, id);
     }
 
+    public getAssetUnresolved(id: any): Observable<Trial> {
+      return this.dataService.getSingleUnresolved(this.NAMESPACE, id);
+    }
+
     public addAsset(itemToAdd: any): Observable<Trial> {
       return this.dataService.add(this.NAMESPACE, itemToAdd);
     }

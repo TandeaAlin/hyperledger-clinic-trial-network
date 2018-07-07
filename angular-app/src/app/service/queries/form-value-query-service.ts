@@ -20,4 +20,15 @@ export class FormValueQueryService {
         var customForm = ResourceProvider.newCustomFormQueryResource(idForm);
         return this._queryService.get("selectDataForCustomForm?customForm=", customForm);
     }
+
+    public findDataForCustomFormAndPatient(idForm: string, idPatient: string): Observable<FormValue[]> {
+        var customForm = ResourceProvider.newCustomFormQueryResource(idForm);
+        var patient = ResourceProvider.newPatientQueryResource(idPatient);
+        return this._queryService.getWithDoubleParam("selectDataForCustomFormAndPatient?customForm=", customForm, patient);
+    }
+
+    public selectDataForPatient(idPatient: string): Observable<FormValue[]> {
+        var patient = ResourceProvider.newPatientQueryResource(idPatient);
+        return this._queryService.get("selectDataForPatient?patient=", patient);
+    }
 }

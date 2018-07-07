@@ -20,6 +20,7 @@ import { EnrolPatientTransaction } from '../model/transaction';
 import { RegisterTrialTransaction } from '../model/transaction';
 import { RemoveResearcherFromTrial } from '../model/transaction';
 import 'rxjs/Rx';
+import { AddFormData, CreateCustomForm } from '../model/ro.utcluj.clinictrial.trial';
 
 // Can be injected into a constructor
 @Injectable()
@@ -30,6 +31,7 @@ export class TransactionService {
     private REGISTER_TRIAL_TRANSACTION = 'RegisterTrialTransaction';
     private REMOVE_RESEARCHER_FROM_TRIAL = 'RemoveResearcherFromTrial';
     private ADD_FORM_DATA = 'AddFormData'
+    private CREATE_CUSTOM_FORM = 'CreateCustomForm';
 
     constructor(private dataService: DataService<any>) {
     };
@@ -50,8 +52,14 @@ export class TransactionService {
         return this.dataService.add(this.REMOVE_RESEARCHER_FROM_TRIAL, tx);
     }
 
-    public addFormData(tx: any): Observable<RemoveResearcherFromTrial> {
+    public addFormData(tx: any): Observable<AddFormData> {
         return this.dataService.add(this.ADD_FORM_DATA, tx);
     }
+
+    public createCustomForm(tx: CreateCustomForm): Observable<CreateCustomForm> {
+        return this.dataService.add(this.CREATE_CUSTOM_FORM, tx);
+    }
+
+    
 }
 

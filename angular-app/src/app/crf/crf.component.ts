@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { FormVO } from '../model/ro.utcluj.vo';
-import { FormEntry, CustomForm, EntryType } from '../model/ro.utcluj.clinictrial.trial'
-import { IdProviderService } from '../utils/id-provider.service'
-import { CustomFormService } from '../service/CustomForm.service'
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { TrialVO } from '../model/ro.utcluj.trial.vo'
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CreateCustomForm, CustomForm, EntryType } from '../model/ro.utcluj.clinictrial.trial';
+import { FormVO } from '../model/ro.utcluj.vo';
+import { CustomFormService } from '../service/CustomForm.service';
+import { TransactionService } from '../service/transaction-service';
+import { IdProviderService } from '../utils/id-provider.service';
+import { ResourceProvider } from '../utils/resource-provider';
 
 @Component({
   selector: 'crf-component',
@@ -20,18 +22,23 @@ export class CRFComponent implements OnInit {
   removable: boolean = true;
   addOnBlur: boolean = true;
 
+
   dataHeaders = [];
   separatorKeysCodes = [ENTER, COMMA];
 
   formFields: FormVO[] = [];
   formField: FormVO = new FormVO();
   customForm = new CustomForm();
+  createFormTransaction = new CreateCustomForm();
 
   displayFormField = false;
   displayChoice = false;
   displaySelector = false;
   previewForm = false;
 
+  nameFormGroup;
+  fieldNameFormGroup;
+  fieldOptionsFormGroup;
   idTrial;
 
   constructor(
@@ -39,7 +46,9 @@ export class CRFComponent implements OnInit {
     private _customFormService: CustomFormService,
     private _router: Router,
     private _route: ActivatedRoute,
-    private _location: Location
+    private _location: Location,
+    private _formBuilder: FormBuilder,
+    private _transactionService: TransactionService
   ) {
     var id = this._route.params
       .subscribe(params => {
@@ -51,6 +60,15 @@ export class CRFComponent implements OnInit {
 
   ngOnInit() {
     this.clearFormEntry();
+    this.nameFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.fieldNameFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.fieldOptionsFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
   }
 
   formFieldSelect() {
@@ -74,14 +92,22 @@ export class CRFComponent implements OnInit {
 
   addField() {
     this.formField.entryOptions = this.dataHeaders;
+    this.formField.value = "";
     this.formFields.push(this.formField);
     console.log(this.formField);
     this.clearFormEntry();
     this.hideInputs();
     console.log(this.formFields);
   }
+  removeField(formEntry:FormVO){
+    var index = this.formFields.indexOf(formEntry);
+    this.formFields.splice(index, 1);
+  }
 
   clearFormEntry() {
+    this.displayFormField = false;
+    this.displayChoice = false;
+    this.displaySelector = false;
     this.formField = new FormVO();
     this.formField.entryName = "";
     this.formField.entryOptions = []
@@ -101,12 +127,14 @@ export class CRFComponent implements OnInit {
     for (let entry of this.formFields) {
       formEntries.push(entry);
     }
-    this.customForm.formMeta = formEntries;
-    this.customForm.idForm = this._idProvider.generateID();
-    this.customForm.trial = TrialVO.TRIAL + this.idTrial;
-    this.customForm.dateCreated = this.generateTimestamp();
-    console.log(JSON.stringify(this.customForm));
-    this._customFormService.addAsset(this.customForm)
+
+    this.createFormTransaction.formMeta = formEntries;
+    this.createFormTransaction.idForm = this._idProvider.generateID();
+    this.createFormTransaction.trial = ResourceProvider.newTrialResource(this.idTrial);
+    this.createFormTransaction.dateCreated = this.generateTimestamp();
+    this.createFormTransaction.name = this.customForm.name;
+    console.log(JSON.stringify(this.createFormTransaction));
+    this._transactionService.createCustomForm(this.createFormTransaction)
       .subscribe(
         (res) => {
           this._router.navigate([this._router.url]);
