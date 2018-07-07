@@ -64,15 +64,17 @@ transaction RegisterTrialTransaction  {
   --> Researcher[] responsibles 
 }
 
+event RegisterTrialEvent{
+  o String idTrial
+  o String studyName
+  o ResearchSite organiser
+  o Researcher[] responsibles 
+
+}
+
 concept TableRow{
   o String[] cell
   o String timestamp
-}
-
-asset Crf identified by idCrf{
-  o String idCrf
-  o TableRow[] rows
-  o String[] columnHeader
 }
 
 asset CustomForm identified by idForm{
@@ -81,6 +83,19 @@ asset CustomForm identified by idForm{
   o String dateCreated
   o FormEntry[] formMeta
   -->Trial trial
+}
+
+transaction CreateCustomForm{
+  o String idForm
+  o String name  
+  o String dateCreated
+  o FormEntry[] formMeta
+  -->Trial trial
+}
+
+event CreateCustomFormEvent{
+  o CustomForm form
+  o Trial trial
 }
 
 enum EntryType{
@@ -121,6 +136,7 @@ asset MedicalHistory identified by idMedicalHistory{
 
 concept MedicalRecord{
   o String recordType
+  o String title
   o String description
   o String date
 }
@@ -129,10 +145,21 @@ transaction EnrolPatientTransaction{
   --> Patient patient
   --> Trial trial
 }
+ 
+event EnrolPatientEvent{
+	o Patient patient
+  	o Trial trial
+}
+  
 
 transaction RemoveResearcherFromTrial{
   --> Trial trial 
   --> Researcher researcher
+}
+
+event RemoveResearcherEvent{
+  o Trial trial
+  o Researcher researcher
 }
 
 transaction AddResearcherToTrial{
@@ -140,11 +167,30 @@ transaction AddResearcherToTrial{
   --> Researcher researcher
 }
 
+event AddResearcherEvent{
+  o Trial trial
+  o Researcher researcher
+}
+
+
 transaction AddFormData{
   o String idFormData
   o FormEntry[] formMeta
   -->Patient patient
   -->CustomForm customForm
+}
+
+event AddFormDataEvent{
+  o String idFormData
+  o FormEntry[] formMeta
+  o Patient patient
+  o CustomForm customForm
+}
+
+@commit(false)
+@returns(Researcher[])
+transaction GetResponsibles{
+  --> Trial trial
 }
 
 transaction SetupMockData{

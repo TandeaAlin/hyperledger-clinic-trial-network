@@ -33,6 +33,12 @@ async function registerTrialTransaction(tx) {
   console.log('Adding trial to asset registry');
   const registry = await getAssetRegistry(trial.getFullyQualifiedType());
   await registry.add(trial);
+  event = factory.newEvent(NS_TRIAL, 'RegisterTrialEvent');
+  event.idTrial = trial.idTrial;
+  event.studyName = trial.studyName;
+  event.responsibles = trial.responsibles;
+  event.organiser = trial.organiser;
+  emit(event);
 }
 
 /**
@@ -53,15 +59,24 @@ async function enrolPatientTransaction(tx) {
   let patient = tx.patient;
   //get the asset registries
   console.log("Building relations...");
-  patient.trial = factory.newRelationship(NS_TRIAL, 'Trial', trial.idTrial);
+  let patientRelation = factory.newRelationship(NS_BASE, 'Patient', patient.idPatient);
+  if (!trial.participants) {
+    trial.participants = [];
+  }
+  trial.participants.push(patientRelation);
   //update the asset registry
-  const patientRegistry = await getAssetRegistry(patient.getFullyQualifiedType());
-  await patientRegistry.update(patient);
+  const trialRegistry = await getAssetRegistry(trial.getFullyQualifiedType());
+  await trialRegistry.update(trial);
+  event = factory.newEvent(NS_TRIAL, 'EnrolPatientEvent');
+  event.patient = patient;
+  event.trial = trial;
+  emit(event);
 }
 
 /**
  * Removes one responsible from a specified clinical trial
  * @param {ro.utcluj.clinictrial.trial.RemoveResearcherFromTrial} tx 
+ * @transaction
  */
 async function removeResearcherFromTrial(tx) {
   console.log('Removing researcher from trial...');
@@ -79,6 +94,10 @@ async function removeResearcherFromTrial(tx) {
   console.log('Updating trial ...');
   const registry = await getAssetRegistry(trial.getFullyQualifiedType());
   await registry.update(trial);
+  event = factory.newEvent(NS_TRIAL, 'RemoveResearcherEvent');
+  event.researcher = researcher;
+  event.trial = trial;
+  emit(event);
 }
 
 /**
@@ -106,6 +125,11 @@ async function addResearcherToTrial(tx) {
   console.log('Updating trial ...');
   const registry = await getAssetRegistry(trial.getFullyQualifiedType());
   await registry.update(trial);
+  event = factory.newEvent(NS_TRIAL, 'AddResearcherEvent');
+  event.researcher = researcher;
+  event.trial = trial;
+  emit(event);
+
 }
 
 /**
@@ -133,5 +157,63 @@ async function addFormData(tx) {
   console.log('Adding asset to registry ...');
   const registry = await getAssetRegistry(target.getFullyQualifiedType());
   await registry.add(target);
+  event = factory.newEvent(NS_TRIAL, 'AddFormDataEvent');
+  event.idFormData = id;
+  event.formMeta = meta;
+  event.patient = patient;
+  event.customForm = customForm;
+  emit(event);
+}
+/**
+ * Adds a Researcher as responsible for a clinical trial
+ * @param {ro.utcluj.clinictrial.trial.CreateCustomForm} tx 
+ * @transaction
+ */
+async function createCustomForm(tx) {
+  console.log('Adding new custom form');
+  //namespace for transaction
+  const factory = getFactory();
+  const NS_TRIAL = 'ro.utcluj.clinictrial.trial';
+  const NS_BASE = 'ro.utcluj.clinictrial.base';
+  var target = factory.newResource(NS_TRIAL, 'CustomForm', tx.idForm);
+  target.idForm = tx.idForm;
+  target.name = tx.name;
+  target.dateCreated = tx.dateCreated;
+  target.formMeta = tx.formMeta;
+  let trial = tx.trial;
+  target.trial = factory.newRelationship(NS_TRIAL, 'Trial', trial.idTrial);
+  const registry = await getAssetRegistry(target.getFullyQualifiedType());
+  await registry.add(target);
+  event = factory.newEvent(NS_TRIAL, 'CreateCustomFormEvent');
+  event.form = target;
+  event.trial = trial;
+  emit(event);
+}
+
+/**
+ * Resolves all responsible relations from a trial
+ * @param {ro.utcluj.clinictrial.trial.GetResponsibles} tx 
+ * @returns {ro.utcluj.clinictrial.base.Researcher[]} All the responsibles.
+ * @transaction
+ */
+async function getResponsibles(tx) {
+  let trial = tx.trial;
+  console.log(trial);
+  const NS_BASE = 'ro.utcluj.clinictrial.base';
+  let registry = await getParticipantRegistry(NS_BASE + '.Researcher');
+  let responsibles = [];
+  let res = [];
+  responsibles = trial.responsibles;
+  for (const participant of responsibles) {
+    registry.get(participant.getIdentifier()).
+      then(
+        (result) => {
+          res.push(result);
+        }
+      )
+
+  }
+  console.log(res);
+  return res;
 }
 

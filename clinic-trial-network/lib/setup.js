@@ -28,7 +28,7 @@ async function setupMockData(tx) {
             "$class": "ro.utcluj.clinictrial.organisation.ResearchSite",
             "idResearchSite": "2",
             "name": "University of Houston"
-        },
+        }, 
         {
             "$class": "ro.utcluj.clinictrial.organisation.ResearchSite",
             "idResearchSite": "3",
@@ -43,28 +43,28 @@ async function setupMockData(tx) {
             "employer": "1",
             "person": {
                 "$class": "ro.utcluj.clinictrial.base.Person",
-                "firstName": "Eiusmod veniam laboris.",
-                "lastName": "Consequat non consequat est.",
+                "firstName": "Test",
+                "lastName": "Researcher1",
                 "gender": "MALE",
                 "contactDetails": {
                     "$class": "ro.utcluj.clinictrial.base.ContactDetails",
-                    "email": "Adipisicing amet cillum esse irure.",
-                    "mobilePhone": "Fugiat qui mollit aliqua.",
+                    "email": "test@test.com",
+                    "mobilePhone": "0744924478",
                     "homePhone": "Aliquip.",
                     "address": {
                         "$class": "ro.utcluj.clinictrial.base.Address",
-                        "city": "Aute nisi labore.",
-                        "country": "Fugiat duis mollit culpa ullamco.",
+                        "city": "city",
+                        "country": "country",
                         "locality": "Incididunt deserunt.",
-                        "region": "Aute deserunt esse officia.",
-                        "street": "Enim quis qui labore veniam.",
+                        "region": "region",
+                        "street": "street",
                         "postalCode": "Nostrud."
                     }
                 },
                 "birthDetails": {
                     "$class": "ro.utcluj.clinictrial.base.BirthDetails",
                     "dateOfBirth": "2018-06-02T12:56:36.938Z",
-                    "placeOfBirth": "Adipisicing cillum commodo."
+                    "placeOfBirth": "test place"
                 },
                 "deathDetails": {
                     "$class": "ro.utcluj.clinictrial.base.DeathDetails",
@@ -287,19 +287,16 @@ async function setupMockData(tx) {
         console.log(site);
         var trial = factory.newResource(NS_ORG, 'ResearchSite', site.idResearchSite);
         trial.name = site.name;
-        researchSiteRegistry.add(trial);
+        await researchSiteRegistry.add(trial);
     }
 
     console.log('Adding mock researchers...');
     console.log(researchers)
     for (let res of researchers) {
         var researcher = factory.newResource(NS_BASE, 'Researcher', res.idResearcher);
-        let employer = res.employer;
-        console.log(employer);
-        researcher.employer = factory.newRelationship(NS_ORG, 'ResearchSite', employer);
         copyPerson(researcher, res);
         console.log(researcher);
-        researcherRegistry.add(researcher);
+        await researcherRegistry.add(researcher);
     }
 
     console.log('Starting clinic trials ....')
@@ -316,7 +313,7 @@ async function setupMockData(tx) {
                 .push(factory
                     .newRelationship(NS_BASE, 'Researcher', res));
         }
-        trialRegistry.add(trial);
+        await trialRegistry.add(trial);
     }
 
     console.log('Adding mock patients...');
@@ -325,7 +322,7 @@ async function setupMockData(tx) {
         var patient = factory.newResource(NS_BASE, 'Patient', srcPatient.idPatient);
         copyPerson(patient, srcPatient);
         console.log(patient);
-        patientRegistry.add(patient);
+        await patientRegistry.add(patient);
     }
 }
 

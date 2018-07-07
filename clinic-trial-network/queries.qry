@@ -12,13 +12,6 @@ query selectCustomFormsByTrial{
           WHERE (trial == _$trial)
 }
 
-query selectPatientsForTrial{
-    description: "Select the patients asociated to a clinical study "
-    statement:
-      SELECT ro.utcluj.clinictrial.base.Patient
-          WHERE (trial == _$trial)
-}
-
 query selectDataForCustomForm{
     description: "Select all the data entries for a custom form"
     statement:
@@ -31,4 +24,18 @@ query selectDataForCustomFormAndPatient{
     statement:
         SELECT ro.utcluj.clinictrial.trial.FormValue
             WHERE ((customForm == _$customForm) AND (patient == _$patient))
+}
+
+query selectMedicalHistoryForPatient{
+    description: "Selects the medical history records for a patient"
+    statement:
+        SELECT ro.utcluj.clinictrial.trial.MedicalHistory
+            WHERE (patient == _$patient)
+}
+
+query selectDataForPatient{
+    description: "Selects all custom forms completed for a patient"
+    statement: 
+        SELECT ro.utcluj.clinictrial.trial.FormValue
+            WHERE (patient == _$patient)
 }

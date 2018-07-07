@@ -51,16 +51,17 @@ abstract participant ParticipantPerson{
 
 participant Researcher identified by idResearcher extends ParticipantPerson{
     o String idResearcher
-    --> ResearchSite employer
 }
 
 participant Supplier identified by idSupplier extends ParticipantPerson{
     o String idSupplier
-    o SupplyOrganisation employer
+}
+
+participant Agent identified by idAgent extends ParticipantPerson{
+	o String idAgent
 }
 
 asset Patient identified by idPatient {
     o String idPatient
     o Person person
-	-->Trial trial optional
 }
