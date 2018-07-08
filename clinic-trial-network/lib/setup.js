@@ -14,7 +14,10 @@ async function setupMockData(tx) {
 
     const factory = getFactory();
     const researchSiteRegistry = await getParticipantRegistry(NS_ORG + '.ResearchSite');
+    const sponsorOrgRegistry = await getParticipantRegistry(NS_ORG + '.SupplyOrganisation');
     const researcherRegistry = await getParticipantRegistry(NS_BASE + '.Researcher');
+    const agentRegistry = await getParticipantRegistry(NS_BASE + '.Agent');
+    const sponsorRegistry = await getParticipantRegistry(NS_BASE + '.Supplier');
     const patientRegistry = await getAssetRegistry(NS_BASE + '.Patient');
     const trialRegistry = await getAssetRegistry(NS_TRIAL + '.Trial');
     //add research sites
@@ -33,6 +36,19 @@ async function setupMockData(tx) {
             "$class": "ro.utcluj.clinictrial.organisation.ResearchSite",
             "idResearchSite": "3",
             "name": "The University of Hong Kong"
+        }
+    ];
+
+    var orgs = [
+        {
+            "$class": "ro.utcluj.clinictrial.organisation.SupplyOrganisation",
+            "idSupplier": "112",
+            "name": "Sponsor 1"
+        },
+        {
+            "$class": "ro.utcluj.clinictrial.organisation.ResearchSite",
+            "idSupplier": "121",
+            "name": "Sponsor 2"
         }
     ];
 
@@ -79,28 +95,28 @@ async function setupMockData(tx) {
             "employer": "2",
             "person": {
                 "$class": "ro.utcluj.clinictrial.base.Person",
-                "firstName": "Eiusmod veniam laboris.",
-                "lastName": "Consequat non consequat est.",
+                "firstName": "Test",
+                "lastName": "Researcher2",
                 "gender": "MALE",
                 "contactDetails": {
                     "$class": "ro.utcluj.clinictrial.base.ContactDetails",
-                    "email": "Adipisicing amet cillum esse irure.",
-                    "mobilePhone": "Fugiat qui mollit aliqua.",
+                    "email": "test1@test.com",
+                    "mobilePhone": "0751283777",
                     "homePhone": "Aliquip.",
                     "address": {
                         "$class": "ro.utcluj.clinictrial.base.Address",
-                        "city": "Aute nisi labore.",
-                        "country": "Fugiat duis mollit culpa ullamco.",
+                        "city": "city",
+                        "country": "country",
                         "locality": "Incididunt deserunt.",
-                        "region": "Aute deserunt esse officia.",
-                        "street": "Enim quis qui labore veniam.",
+                        "region": "region",
+                        "street": "street",
                         "postalCode": "Nostrud."
                     }
                 },
                 "birthDetails": {
                     "$class": "ro.utcluj.clinictrial.base.BirthDetails",
                     "dateOfBirth": "2018-06-02T12:56:36.938Z",
-                    "placeOfBirth": "Adipisicing cillum commodo."
+                    "placeOfBirth": "test place"
                 },
                 "deathDetails": {
                     "$class": "ro.utcluj.clinictrial.base.DeathDetails",
@@ -115,28 +131,28 @@ async function setupMockData(tx) {
             "employer": "3",
             "person": {
                 "$class": "ro.utcluj.clinictrial.base.Person",
-                "firstName": "Eiusmod veniam laboris.",
-                "lastName": "Consequat non consequat est.",
+                "firstName": "Test",
+                "lastName": "Researcher 3",
                 "gender": "MALE",
                 "contactDetails": {
                     "$class": "ro.utcluj.clinictrial.base.ContactDetails",
-                    "email": "Adipisicing amet cillum esse irure.",
-                    "mobilePhone": "Fugiat qui mollit aliqua.",
+                    "email": "test2@test.com",
+                    "mobilePhone": "9756473647",
                     "homePhone": "Aliquip.",
                     "address": {
                         "$class": "ro.utcluj.clinictrial.base.Address",
-                        "city": "Aute nisi labore.",
-                        "country": "Fugiat duis mollit culpa ullamco.",
+                        "city": "city",
+                        "country": "country",
                         "locality": "Incididunt deserunt.",
-                        "region": "Aute deserunt esse officia.",
-                        "street": "Enim quis qui labore veniam.",
+                        "region": "region",
+                        "street": "street",
                         "postalCode": "Nostrud."
                     }
                 },
                 "birthDetails": {
                     "$class": "ro.utcluj.clinictrial.base.BirthDetails",
                     "dateOfBirth": "2018-06-02T12:56:36.938Z",
-                    "placeOfBirth": "Adipisicing cillum commodo."
+                    "placeOfBirth": "test"
                 },
                 "deathDetails": {
                     "$class": "ro.utcluj.clinictrial.base.DeathDetails",
@@ -153,28 +169,28 @@ async function setupMockData(tx) {
             "idPatient": "7",
             "person": {
                 "$class": "ro.utcluj.clinictrial.base.Person",
-                "firstName": "Est ipsum laborum id aliqua.",
-                "lastName": "Elit.",
+                "firstName": "Test",
+                "lastName": "Patient1",
                 "gender": "MALE",
                 "contactDetails": {
                     "$class": "ro.utcluj.clinictrial.base.ContactDetails",
-                    "email": "Esse dolor.",
-                    "mobilePhone": "Nostrud occaecat cillum labore.",
+                    "email": "test12@test.com",
+                    "mobilePhone": "0768465786",
                     "homePhone": "Ipsum velit sit.",
                     "address": {
                         "$class": "ro.utcluj.clinictrial.base.Address",
-                        "city": "Qui anim.",
-                        "country": "Aute.",
-                        "locality": "Mollit incididunt.",
-                        "region": "Et esse aliqua nulla.",
-                        "street": "Laborum.",
-                        "postalCode": "Elit."
+                        "city": "city",
+                        "country": "country",
+                        "locality": "Incididunt deserunt.",
+                        "region": "region",
+                        "street": "street",
+                        "postalCode": "Nostrud."
                     }
                 },
                 "birthDetails": {
                     "$class": "ro.utcluj.clinictrial.base.BirthDetails",
-                    "dateOfBirth": "Cillum.",
-                    "placeOfBirth": "Occaecat ut."
+                    "dateOfBirth": "1950-06-02T12:56:36.938Z",
+                    "placeOfBirth": "Test birth place"
                 },
                 "deathDetails": {
                     "$class": "ro.utcluj.clinictrial.base.DeathDetails",
@@ -188,28 +204,28 @@ async function setupMockData(tx) {
             "idPatient": "8",
             "person": {
                 "$class": "ro.utcluj.clinictrial.base.Person",
-                "firstName": "Est ipsum laborum id aliqua.",
-                "lastName": "Elit.",
+                "firstName": "Test",
+                "lastName": "Person2",
                 "gender": "MALE",
                 "contactDetails": {
                     "$class": "ro.utcluj.clinictrial.base.ContactDetails",
-                    "email": "Esse dolor.",
-                    "mobilePhone": "Nostrud occaecat cillum labore.",
+                    "email": "test34@test.com",
+                    "mobilePhone": "0765748374",
                     "homePhone": "Ipsum velit sit.",
                     "address": {
                         "$class": "ro.utcluj.clinictrial.base.Address",
-                        "city": "Qui anim.",
-                        "country": "Aute.",
-                        "locality": "Mollit incididunt.",
-                        "region": "Et esse aliqua nulla.",
-                        "street": "Laborum.",
-                        "postalCode": "Elit."
+                        "city": "city",
+                        "country": "country",
+                        "locality": "Incididunt deserunt.",
+                        "region": "region",
+                        "street": "street",
+                        "postalCode": "Nostrud."
                     }
                 },
                 "birthDetails": {
                     "$class": "ro.utcluj.clinictrial.base.BirthDetails",
-                    "dateOfBirth": "Cillum.",
-                    "placeOfBirth": "Occaecat ut."
+                    "dateOfBirth": "1959-06-02T12:56:36.938Z",
+                    "placeOfBirth": "place"
                 },
                 "deathDetails": {
                     "$class": "ro.utcluj.clinictrial.base.DeathDetails",
@@ -223,27 +239,27 @@ async function setupMockData(tx) {
             "idPatient": "9",
             "person": {
                 "$class": "ro.utcluj.clinictrial.base.Person",
-                "firstName": "Est ipsum laborum id aliqua.",
-                "lastName": "Elit.",
+                "firstName": "Test",
+                "lastName": "Patient3",
                 "gender": "MALE",
                 "contactDetails": {
                     "$class": "ro.utcluj.clinictrial.base.ContactDetails",
-                    "email": "Esse dolor.",
-                    "mobilePhone": "Nostrud occaecat cillum labore.",
+                    "email": "test135@test.com",
+                    "mobilePhone": "0765748374",
                     "homePhone": "Ipsum velit sit.",
                     "address": {
                         "$class": "ro.utcluj.clinictrial.base.Address",
-                        "city": "Qui anim.",
-                        "country": "Aute.",
-                        "locality": "Mollit incididunt.",
-                        "region": "Et esse aliqua nulla.",
-                        "street": "Laborum.",
-                        "postalCode": "Elit."
+                        "city": "city",
+                        "country": "country",
+                        "locality": "Incididunt deserunt.",
+                        "region": "region",
+                        "street": "street",
+                        "postalCode": "Nostrud."
                     }
                 },
                 "birthDetails": {
                     "$class": "ro.utcluj.clinictrial.base.BirthDetails",
-                    "dateOfBirth": "Cillum.",
+                    "dateOfBirth": "1969-06-02T12:56:36.938Z",
                     "placeOfBirth": "Occaecat ut."
                 },
                 "deathDetails": {
@@ -266,6 +282,9 @@ async function setupMockData(tx) {
             "organiser": "1",
             "responsibles": [
                 "6"
+            ],
+            "sponsors":[
+                "121"
             ]
         },
         {
@@ -277,9 +296,103 @@ async function setupMockData(tx) {
             "organiser": "2",
             "responsibles": [
                 "5"
+            ],
+            "sponsors":[
+                "112"
             ]
         }
     ]
+
+    var agents = [
+        {
+            "$class": "ro.utcluj.clinictrial.base.Agent",
+            "idAgent": "21",
+            "employer": "121",
+            "person": {
+                "$class": "ro.utcluj.clinictrial.base.Person",
+                "firstName": "Test",
+                "lastName": "Agent1",
+                "gender": "MALE",
+                "contactDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.ContactDetails",
+                    "email": "test1231@test.com",
+                    "mobilePhone": "0744921478",
+                    "homePhone": "Aliquip.",
+                    "address": {
+                        "$class": "ro.utcluj.clinictrial.base.Address",
+                        "city": "city",
+                        "country": "country",
+                        "locality": "Incididunt deserunt.",
+                        "region": "region",
+                        "street": "street",
+                        "postalCode": "Nostrud."
+                    }
+                },
+                "birthDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.BirthDetails",
+                    "dateOfBirth": "2000-06-02T12:56:36.938Z",
+                    "placeOfBirth": "test place"
+                },
+                "deathDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.DeathDetails",
+                    "dateOfDeath": "2018-06-02T12:56:36.938Z",
+                    "placeOfDeath": "Ullamco elit."
+                }
+            }
+        },
+        {
+            "$class": "ro.utcluj.clinictrial.base.Agent",
+            "idAgent": "22",
+            "employer": "112",
+            "person": {
+                "$class": "ro.utcluj.clinictrial.base.Person",
+                "firstName": "Test",
+                "lastName": "Agent2",
+                "gender": "MALE",
+                "contactDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.ContactDetails",
+                    "email": "test231@test.com",
+                    "mobilePhone": "0744941478",
+                    "homePhone": "Aliquip.",
+                    "address": {
+                        "$class": "ro.utcluj.clinictrial.base.Address",
+                        "city": "city",
+                        "country": "country",
+                        "locality": "Incididunt deserunt.",
+                        "region": "region",
+                        "street": "street",
+                        "postalCode": "Nostrud."
+                    }
+                },
+                "birthDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.BirthDetails",
+                    "dateOfBirth": "2001-06-02T12:56:36.938Z",
+                    "placeOfBirth": "test place"
+                },
+                "deathDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.DeathDetails",
+                    "dateOfDeath": "2018-06-02T12:56:36.938Z",
+                    "placeOfDeath": "Ullamco elit."
+                }
+            }
+        }
+
+        
+    ]
+    var sponsors = [
+        {
+            "$class": "ro.utcluj.clinictrial.base.Agent",
+            "idSupplier": "112",
+            "employer": "121"
+        },
+        {
+            "$class": "ro.utcluj.clinictrial.base.Agent",
+            "idSupplier": "2222",
+            "employer": "112"
+        }
+        
+    ]
+
 
     console.log('Adding mock research sites...')
     console.log(sites);
@@ -290,6 +403,15 @@ async function setupMockData(tx) {
         await researchSiteRegistry.add(trial);
     }
 
+    console.log('Adding mock research sponsors...')
+    console.log(orgs);
+    for (let org of orgs) {
+        console.log(org);
+        var trial = factory.newResource(NS_ORG, 'SupplyOrganisation', org.idSupplier);
+        trial.name =org.name;
+        await sponsorOrgRegistry.add(trial);
+    }
+
     console.log('Adding mock researchers...');
     console.log(researchers)
     for (let res of researchers) {
@@ -297,6 +419,24 @@ async function setupMockData(tx) {
         copyPerson(researcher, res);
         console.log(researcher);
         await researcherRegistry.add(researcher);
+    }
+
+    console.log('Adding mock agents and sponsors...');
+    console.log(agents)
+    for (let agent of agents) {
+        var ag = factory.newResource(NS_BASE, 'Agent', agent.idAgent);
+        copyPerson(ag, agent);
+        console.log(ag);
+        await agentRegistry.add(ag);
+
+    }
+
+    for(let spon of sponsors){
+        var target = factory.newResource(NS_BASE, 'Supplier', spon.idSupplier)
+        target.employer = factory.newRelationship(NS_ORG, 'SupplyOrganisation', spon.employer);
+        copyPerson(target, agents[0]);
+        target.person.lastName = "Sponsor";
+        await sponsorRegistry.add(target);
     }
 
     console.log('Starting clinic trials ....')
@@ -312,6 +452,13 @@ async function setupMockData(tx) {
             trial.responsibles
                 .push(factory
                     .newRelationship(NS_BASE, 'Researcher', res));
+        }
+        trial.sponsors = [];
+        for (let res of srcTrial.sponsors) {
+            console.log(res);
+            trial.sponsors
+                .push(factory
+                    .newRelationship(NS_ORG, 'SupplyOrganisation', res));
         }
         await trialRegistry.add(trial);
     }

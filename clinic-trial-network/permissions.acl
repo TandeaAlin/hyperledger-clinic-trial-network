@@ -1,11 +1,105 @@
 /**
  * Sample access control list.
  */
-rule Default {
-    description: "Allow all participants access to all resources"
-    participant: "ANY"
+
+
+rule ResearcherTrialAccess{
+    description: "Grant access to trial resources only to trial responsibles"
+    participant(p): "ro.utcluj.clinictrial.base.Researcher"
+    operation: READ, UPDATE, CREATE
+    resource(r): "ro.utcluj.clinictrial.trial.Trial"
+    condition: (
+        r.responsibles.some(function (responsible){
+            return responsible.getIdentifier() == p.getIdentifier();
+        })
+    )
+    action: ALLOW
+}
+
+rule ResearcherGeneralAccessFile{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Researcher"
     operation: ALL
-    resource: "ro.utcluj.clinictrial.**"
+    resource: "ro.utcluj.clinictrial.trial.ProtocolFile"
+    action: ALLOW
+}
+
+rule ResearcherGeneralAccessForm{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Researcher"
+    operation: ALL
+    resource: "ro.utcluj.clinictrial.trial.CustomForm"
+    action: ALLOW
+}
+
+rule ResearcherGeneralAccessPatient{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Researcher"
+    operation: ALL
+    resource: "ro.utcluj.clinictrial.base.Patient"
+    action: ALLOW
+}
+
+rule ResearcherGeneralAccessResearcher{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Researcher"
+    operation: ALL
+    resource: "ro.utcluj.clinictrial.base.Researcher"
+    action: ALLOW
+}
+
+rule ResearcherGeneralAccessRecords{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Researcher"
+    operation: ALL
+    resource: "ro.utcluj.clinictrial.trial.FormValue"
+    action: ALLOW
+}
+
+rule ResearcherGeneralAccessOrg{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Researcher"
+    operation: ALL
+    resource: "ro.utcluj.clinictrial.organisation.*"
+    action: ALLOW
+}
+
+
+rule ResearcherGeneralAccessTransaction{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Researcher"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.Transaction"
+    action: ALLOW
+}
+
+
+rule SponsorGeneralAcces{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Supplier"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.trial.*"
+    action: ALLOW
+}
+
+rule AgentGeneralAcces{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Agent"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.trial.*"
+    action: ALLOW
+}
+
+rule SponsorTrialAcces{
+    description: "Grant access to trial resources only to trial sponsors"
+    participant(p): "ro.utcluj.clinictrial.base.Supplier"
+    operation: READ
+    resource(r): "ro.utcluj.clinictrial.trial.Trial"
+    condition: (
+        r.sponsors.some(function (sponsor){
+            return sponsor.getIdentifier() == p.getIdentifier();
+        })
+    )
     action: ALLOW
 }
 

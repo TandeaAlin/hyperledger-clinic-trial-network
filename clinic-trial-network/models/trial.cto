@@ -4,7 +4,7 @@ import ro.utcluj.clinictrial.base.Researcher
 import ro.utcluj.clinictrial.base.Patient	
 import ro.utcluj.clinictrial.base.Address	
 import ro.utcluj.clinictrial.organisation.ResearchSite
-
+import ro.utcluj.clinictrial.organisation.SupplyOrganisation
 /** Enum that describes that contains the possible statuses
     of a clinic trial */
 enum TrialStatus {
@@ -42,13 +42,14 @@ enum Gender{
 asset Trial identified by idTrial{
 	o String idTrial
   o String studyName
-  o String description 
+  o String description optional
   o TodoElement[] tasks optional
 	o TrialStatus status optional
   o ResearchSite[] researchSites optional
   --> ResearchSite organiser
 	--> Patient[] participants optional
 	--> Researcher[] responsibles optional
+  --> SupplyOrganisation[] sponsors optional
 }
 
 concept TodoElement{
@@ -62,13 +63,14 @@ transaction RegisterTrialTransaction  {
   o String studyName
   --> ResearchSite organiser
   --> Researcher[] responsibles 
+  --> SupplyOrganisation[] sponsors optional
 }
 
 event RegisterTrialEvent{
   o String idTrial
   o String studyName
-  o ResearchSite organiser
-  o Researcher[] responsibles 
+  o ResearchSite organiser optional
+  o Researcher[] responsibles optional
 
 }
 

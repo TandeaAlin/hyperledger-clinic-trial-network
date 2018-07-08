@@ -39,3 +39,18 @@ query selectDataForPatient{
         SELECT ro.utcluj.clinictrial.trial.FormValue
             WHERE (patient == _$patient)
 }
+
+query selectTrialsForSponsor{
+    description: "Selects all the trials that an organisation has access to"
+    statement:
+        SELECT ro.utcluj.clinictrial.trial.Trial
+            WHERE (sponsors CONTAINS _$sponsor)
+}
+
+query selectTrialsForUser{
+    description: "Selects all the trials that a user"
+    statement:
+        SELECT ro.utcluj.clinictrial.trial.Trial
+            WHERE (responsibles CONTAINS _$researcher)
+}
+

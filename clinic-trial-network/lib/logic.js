@@ -30,14 +30,25 @@ async function registerTrialTransaction(tx) {
       .push(factory
         .newRelationship(NS_BASE, 'Researcher', tx.responsibles[res].idResearcher));
   }
+
+  if (!trial.sponsors) {
+    trial.sponsors = [];
+  }
+
+  for (let spon in tx.sponsors) {
+    trial.sponsors
+      .push(
+        factory
+          .newRelationship(NS_ORG, 'SupplyOrganisation', tx.sponsors[spon].idSupplyOrganisation))
+
+  }
   console.log('Adding trial to asset registry');
   const registry = await getAssetRegistry(trial.getFullyQualifiedType());
   await registry.add(trial);
   event = factory.newEvent(NS_TRIAL, 'RegisterTrialEvent');
   event.idTrial = trial.idTrial;
   event.studyName = trial.studyName;
-  event.responsibles = trial.responsibles;
-  event.organiser = trial.organiser;
+
   emit(event);
 }
 
@@ -81,6 +92,7 @@ async function enrolPatientTransaction(tx) {
 async function removeResearcherFromTrial(tx) {
   console.log('Removing researcher from trial...');
   console.log(tx)
+  const factory = getFactory();
   //namespace for transaction
   const NS_TRIAL = 'ro.utcluj.clinictrial.trial';
   let trial = tx.trial;

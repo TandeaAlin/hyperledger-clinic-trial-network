@@ -55,6 +55,7 @@ participant Researcher identified by idResearcher extends ParticipantPerson{
 
 participant Supplier identified by idSupplier extends ParticipantPerson{
     o String idSupplier
+	-->SupplyOrganisation employer
 }
 
 participant Agent identified by idAgent extends ParticipantPerson{
