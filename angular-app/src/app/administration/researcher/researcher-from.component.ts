@@ -106,14 +106,14 @@ export class ResearcherFormComponent implements OnInit {
 
     onSelect(res: ResearchSite) {
         this.orgName = res.name;
-        this.researcher.employer = ResourceProvider.newResearchSiteResource(res.idResearchSite);
+       // this.researcher.employer = ResourceProvider.newResearchSiteResource(res.idResearchSite);
         this.searchActivate = false;
         this.selectionActivate = true;
     }
 
     onCancel() {
         this.orgName = "";
-        this.researcher.employer = null;
+       // this.researcher.employer = null;
         this.searchActivate = true;
         this.selectionActivate = false;
     }

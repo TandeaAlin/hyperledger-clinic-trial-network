@@ -2,28 +2,28 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../material.module';
-import { AgentRoutingModule } from './agent.routing';
+import { SponsorRoutingModule } from './sponsor.routing';
 import { HistorianService } from '../service/historian.service';
-import { AgentComponent } from './agent.component';
-import { HistoryTable } from './table/history-table.component';
+import { SponsorComponent } from './sponsor.component';
 import { ComponentModule } from '../components/component.module';
 import { TrialService } from '../service/trial.service';
+import { HistoryTable } from '../agent/table/history-table.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    AgentRoutingModule,
+    SponsorRoutingModule,
     AppMaterialModule,
     FormsModule,
     ComponentModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
-    AgentComponent,
+    SponsorComponent,
   ],
   providers: [
     HistorianService,
     TrialService
   ]
 })
-export class AgentModule { }
+export class SponsorModule { }

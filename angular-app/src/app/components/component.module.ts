@@ -13,6 +13,7 @@ import { ResourceProvider } from '../utils/resource-provider';
 import { UserManagerComponent } from './user-manager/user-manager.component';
 import { ResearcherTableComponent } from './researcher-table/researcher-table.component';
 import { FormValueService } from '../service/FormValue.service';
+import { HistoryTable } from '../agent/table/history-table.component';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { FormValueService } from '../service/FormValue.service';
         CustomFormSelectDialog,
         UserManagerComponent,
         ResearcherTableComponent,
-        RecordsComponent
+        RecordsComponent,
+        HistoryTable
     ],
     entryComponents:[
         PatientTableComponent,
@@ -48,7 +50,8 @@ import { FormValueService } from '../service/FormValue.service';
         FormComponent,
         ResearcherTableComponent,
         CustomFormSelectDialog,
-        RecordsComponent
+        RecordsComponent,
+        HistoryTable
     ]
 })
 export class ComponentModule { }

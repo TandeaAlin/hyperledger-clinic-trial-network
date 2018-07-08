@@ -4,23 +4,24 @@
             <a mat-button routerLink="/home">Clinic Trials App</a>
         </span>
         <span>
-            <button mat-button [matMenuTriggerFor]="menu">Menu
+            <button *ngIf="_authService.getUser()" mat-button [matMenuTriggerFor]="menu">Menu
                 <mat-icon>arrow_drop_down</mat-icon>
             </button>
         </span>
         <span class="flex-fill"></span>
         <div *ngIf="_authService.getUser()">
-        <span>
-            <mat-icon>account_circle </mat-icon>
-            <br/> {{_authService.getUser()}}
-        </span>
-        <button mat-button (click)="_authService.logout()">Log Out</button>
-    </div>
+            <span>
+                <mat-icon>account_circle </mat-icon>
+                <br/> {{_authService.getUser()}}
+            </span>
+            <button mat-button (click)="_authService.logout()">Log Out</button>
+        </div>
     </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-menu #menu="matMenu">
     <button mat-menu-item routerLink="/administration">Administration</button>
     <button mat-menu-item routerLink="/trial">Trials</button>
-    <button mat-menu-item routerLink="/agent">Agent</button>
+    <button *ngIf="isAgent()" mat-menu-item routerLink="/agent">Agent</button>
+    <button *ngIf="isSponsor()" mat-menu-item routerLink="/sponsor">Sponsor</button>
 </mat-menu>

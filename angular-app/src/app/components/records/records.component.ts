@@ -71,6 +71,11 @@ export class RecordsComponent implements OnInit, OnChanges {
         }
     }
 
+    formatPatientID(patientResource: string){
+        let splitResult =  patientResource.split('#');
+        return splitResult[splitResult.length - 1];
+    }
+
     ngOnChanges() {
         console.log(this.idTrial)
     }

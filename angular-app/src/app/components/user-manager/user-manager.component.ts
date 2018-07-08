@@ -54,8 +54,25 @@ export class UserManagerComponent implements OnInit {
     search() {
         this._researcherService.getAll().subscribe(
             (res) => {
-                if (this.searchQuery == "") {
-                    this.allUsersDataSource = new MatTableDataSource<Researcher>(res);
+                let filterResult = res.filter(
+                    (user) => {
+                        return !this.trial.responsibles.some(
+                            (responsible) => {
+                                return (responsible.idResearcher == user.idResearcher);
+                            }
+                        )
+                    }
+                )
+                if (this.searchQuery.trim() == "") {
+                    this.allUsersDataSource = new MatTableDataSource<Researcher>(filterResult);
+                } else {
+                    filterResult.filter(
+                        (user) => {
+                            let name = user.person.firstName + user.person.lastName;
+                            return (name.toLowerCase().trim().includes(this.searchQuery.toLowerCase().trim()))
+                        }
+                    )
+                    this.allUsersDataSource = new MatTableDataSource<Researcher>(filterResult);
                 }
             }
         )

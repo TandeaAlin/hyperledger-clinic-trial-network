@@ -13,6 +13,7 @@ import { IdProviderService } from '../utils/id-provider.service';
 import { CRFModule } from '../crf/crf.module'
 import { PatientQueryService } from '../service/queries/patient-query-service'
 import { ComponentModule } from '../components/component.module'
+import { SupplyOrganisationService } from '../service/supply-organisation.service';
 @NgModule({
     imports: [
         AppMaterialModule,
@@ -27,7 +28,8 @@ import { ComponentModule } from '../components/component.module'
         TrialService,
         ResearchSiteService,
         IdProviderService,
-        PatientQueryService
+        PatientQueryService,
+        SupplyOrganisationService
     ],
     declarations: [
         TrialComponent,

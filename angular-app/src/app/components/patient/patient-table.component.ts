@@ -8,6 +8,7 @@ import { TransactionService } from '../../service/transaction-service';
 import { ResourceProvider } from '../../utils/resource-provider';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormQueryService } from '../../service/queries/forms-query-service';
+import { Utils } from '../../utils/utils';
 
 @Component({
     selector: 'patient-table',
@@ -70,6 +71,10 @@ export class PatientTableComponent implements OnInit {
         }
     }
 
+    formatDate(date){
+        return Utils.formatDate(date);
+    }
+
     ngOnChanges() {
 
     }
@@ -82,7 +87,6 @@ export class PatientTableComponent implements OnInit {
         this.enrolPatientTransaction = new EnrolPatientTransaction();
         this.enrolPatientTransaction.patient = ResourceProvider.newPatientResource(patient.idPatient);
         this.enrolPatientTransaction.trial = ResourceProvider.newTrialResource(this.idTrial);
-        console.log(patient.trial);
         this._transactionService.enrolPatientTransaction(this.enrolPatientTransaction).subscribe(
             (res) => this._router.navigate([this._router.url])
         )

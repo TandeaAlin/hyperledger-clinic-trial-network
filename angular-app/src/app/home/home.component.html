@@ -30,18 +30,3 @@
 <div class="center-div" *ngIf="identityAdd">
     <button mat-raised-button color="primary" (click)="onSubmit()">Bind</button>
 </div>
-
-
-<div class="center-div" *ngIf="!identityAdd">
-    <mat-card class="description-card-small">
-        <mat-card-header>
-            <h2>
-                Current identity
-            </h2>
-        </mat-card-header>
-        <mat-card-content>
-            {{setIdentity}}
-        </mat-card-content>
-    </mat-card>
-
-</div>

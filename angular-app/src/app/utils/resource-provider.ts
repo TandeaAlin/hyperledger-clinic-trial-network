@@ -5,6 +5,7 @@ export class ResourceProvider {
     private static TRIAL_RESOURCE = "ro.utcluj.clinictrial.trial.Trial#";
     private static CUSTOM_FORM_RESOURCE = "ro.utcluj.clinictrial.trial.CustomForm#";
     private static PATIENT_RESOURCE = "resource:ro.utcluj.clinictrial.base.Patient#";
+    private static SPONSOR_ORG_RESOURCE = "resource:ro.utcluj.clinictrial.organisation.SupplyOrganisation#";
     private static RESEARCHER_RESORCE = "resource:ro.utcluj.clinictrial.base.Researcher#"
     private static PATIENT_QUERY_REF = "ro.utcluj.clinictrial.base.Patient%23";
     private static TRIAL_QUERY = "ro.utcluj.clinictrial.trial.Trial%23";
@@ -41,5 +42,9 @@ export class ResourceProvider {
 
     public static newResearcherResource(idResearcher): string {
         return this.RESEARCHER_RESORCE + idResearcher;
+    }
+
+    public static newSponsorResource(idSponsor): string {
+        return this.SPONSOR_ORG_RESOURCE + idSponsor
     }
 }

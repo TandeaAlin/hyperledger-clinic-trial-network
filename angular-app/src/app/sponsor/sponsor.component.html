@@ -1,0 +1,22 @@
+<br/>
+<div class="center-div">
+    <mat-card class="description-card">
+      <mat-card-header>
+        <h2 class="marginAutoLR">Clinical trial activity history</h2>
+      </mat-card-header>
+    </mat-card>
+
+
+</div>
+
+<br/>
+<form>
+    <mat-form-field style="width: 75%;">
+        <input type="text" [formControl]="myControl" matInput [matAutocomplete]="auto" placeholder="Search clinical trial by name">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let trial of filteredOptions | async" [value]="trial">{{trial.studyName}}</mat-option>
+        </mat-autocomplete>
+    </mat-form-field>&nbsp;&nbsp;
+    <button mat-raised-button (click)="onTrialSelect()" color="primary">Select</button>
+</form>
+<history-table [historyData]="trialFilteredHistory" *ngIf="isInitialised"></history-table>

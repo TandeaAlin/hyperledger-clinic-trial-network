@@ -9,10 +9,10 @@ import { HistorianService } from '../service/historian.service';
 import { TrialService } from '../service/trial.service';
 
 @Component({
-    selector: 'agent',
-    templateUrl: 'agent.component.html'
+    selector: 'sponsor',
+    templateUrl: 'sponsor.component.html'
 })
-export class AgentComponent implements OnInit {
+export class SponsorComponent implements OnInit {
 
     myControl = new FormControl();
 
@@ -107,30 +107,8 @@ export class AgentComponent implements OnInit {
                     target.trial = entry.eventsEmitted[0].trial.idTrial;
                     target.researcher = entry.eventsEmitted[0].researcher.idResearcher;
                     this.allProcessedHistory.push(target);
-                }break;
+                }
 
-                case 'ro.utcluj.clinictrial.trial.AddFormData': {
-                    target.transactionType = 'AddFormData';
-                    target.transactionTimestamp = entry.transactionTimestamp.toLocaleString().replace('T', ' ').replace('Z', ' ').split('.')[0];
-                    target.participantInvoking = this.getParticipant(entry.participantInvoking);
-                    target.customFormID = entry.eventsEmitted[0].customForm.idForm;
-                   // target.researcher = entry.eventsEmitted[0].researcher.idResearcher;
-                    target.formValueID = entry.eventsEmitted[0].idFormData;
-                    target.patient = entry.eventsEmitted[0].patient.idPatient;
-                    target.trial = this.getTrial(entry.eventsEmitted[0].customForm.trial)
-                    this.allProcessedHistory.push(target);
-                }break;
-                case 'ro.utcluj.clinictrial.trial.RegisterTrialTransaction': {
-                    target.transactionType = 'RegisterTrialTransaction';
-                    target.transactionTimestamp = entry.transactionTimestamp.toLocaleString().replace('T', ' ').replace('Z', ' ').split('.')[0];
-                    target.participantInvoking = this.getParticipant(entry.participantInvoking);
-                    //target.customFormID = entry.eventsEmitted[0].customForm.idForm;
-                   // target.researcher = entry.eventsEmitted[0].researcher.idResearcher;
-                    //target.formValueID = entry.eventsEmitted[0].idFormData;
-                    //target.patient = entry.eventsEmitted[0].patient.idPatient;
-                   
-                    this.allProcessedHistory.push(target);
-                }break;
 
             }
         }
@@ -144,10 +122,6 @@ export class AgentComponent implements OnInit {
         return splitString[splitString.length - 1];
     }
 
-    private getTrial(trialString):string{
-        let splitString: string[] = trialString.toLocaleString().split('#');
-        return splitString[splitString.length - 1];
-    }
     private onTransactionSelect() {
         if (this.selectedTransaction == 'None') {
             alert("Please select a transaction type");
@@ -159,11 +133,11 @@ export class AgentComponent implements OnInit {
         }
     }
 
-    private onTrialSelect() {
+    private onTrialSelect(){   
         this.trialFilteredHistory = this.allProcessedHistory.filter(
-            (entry) =>
+            (entry) => 
                 entry.trial == this.myControl.value.idTrial
-        )
+            )
         console.log(this.trialFilteredHistory);
     }
 
@@ -183,7 +157,5 @@ export class HistorianVO {
     transactionTimestamp: string;
     trial: string;
     customFormID: string;
-    formValueID: string;
-    patient: string;
     researcher: string;
 }

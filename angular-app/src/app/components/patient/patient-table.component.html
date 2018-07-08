@@ -23,7 +23,7 @@
             <!-- Birthdate column -->
             <ng-container matColumnDef="Birthdate">
                 <mat-header-cell *matHeaderCellDef> Birthdate </mat-header-cell>
-                <mat-cell *matCellDef="let patient"> {{patient.person.birthDetails.dateOfBirth}}</mat-cell>
+                <mat-cell *matCellDef="let patient"> {{formatDate(patient.person.birthDetails.dateOfBirth)}}</mat-cell>
             </ng-container>
 
             <!-- View link column -->

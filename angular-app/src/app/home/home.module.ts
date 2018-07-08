@@ -8,6 +8,8 @@ import { HomeRoutingModule } from './home.routing';
 import { LoginComponent } from './login.component';
 import { PatientViewComponent } from './patient-view/patient-view.component'
 import { PatientService } from '../service/patient.service';
+import { SupplierService } from '../service/Supplier.service';
+import { AgentService } from '../service/Agent.service';
 
 @NgModule({
   imports: [
@@ -23,7 +25,9 @@ import { PatientService } from '../service/patient.service';
   ],
   providers: [
     ResearcherService,
-    PatientService
+    PatientService,
+    SupplierService,
+    AgentService
   ]
 })
 export class HomeModule { }

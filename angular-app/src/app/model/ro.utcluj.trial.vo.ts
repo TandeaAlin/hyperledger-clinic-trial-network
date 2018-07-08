@@ -11,6 +11,7 @@ export class TrialVO {
       status: string;
       researchSites: string[];
       organiser: string;
+      description: string;
       participants: string[];
       responsibles: string[];
 }

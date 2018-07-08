@@ -23,7 +23,7 @@
             <mat-table #table [dataSource]="recordsDataSource">
                 <ng-container matColumnDef="PatientID">
                     <mat-header-cell *matHeaderCellDef> PatientID </mat-header-cell>
-                    <mat-cell *matCellDef="let rec"> test </mat-cell>
+                    <mat-cell *matCellDef="let rec"> {{formatPatientID(rec.patient)}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="Date">

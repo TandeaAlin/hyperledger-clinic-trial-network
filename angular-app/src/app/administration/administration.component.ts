@@ -1,13 +1,14 @@
 import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Patient, Researcher } from '../model/ro.utcluj.clinictrial.base';
+import { Patient, Researcher, Agent } from '../model/ro.utcluj.clinictrial.base';
 import { OrganisationVO } from '../model/ro.utcluj.vo';
 import { PatientService } from '../service/patient.service';
 import { ResearchSiteService } from '../service/research-site.service';
 import { ResearcherService } from '../service/researcher.service';
 import { SupplyOrganisationService } from '../service/supply-organisation.service';
 import { LoaderService } from '../components/loader/loader.service';
+import { AgentService } from '../service/Agent.service';
 
 @Component({
   selector: 'administration-component',
@@ -24,9 +25,11 @@ export class AdministrationComponent implements OnInit {
   allPatientsDataSource: MatTableDataSource<Patient>;
   allOrganisationsDataSource: MatTableDataSource<OrganisationVO>;
   allResearchersDataSource: MatTableDataSource<Researcher>;
+  allAgentsDataSource: MatTableDataSource<Agent>;
   displayedColumns = ['PatientID', 'Name', 'Gender', 'Birthdate', 'View', 'Edit', 'Delete'];
   organisationColumns = ['OrganisationID', 'Name', 'Address', 'Type', 'Actions'];
   researcherColumns = ['ResearcherID', 'Name', 'Gender', 'Birthdate', 'Action'];
+  agentColumns = ['AgentID', 'Name', 'Gender', 'Birthdate', 'Action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private _patientService: PatientService,
@@ -35,7 +38,8 @@ export class AdministrationComponent implements OnInit {
     private _researcerService: ResearcherService,
     private _router: Router,
     private _route: ActivatedRoute,
-    private _loaderService: LoaderService
+    private _loaderService: LoaderService,
+    private _agentService: AgentService
   ) {
     this._loaderService.show();
     this.navigationSubscription = this._router.events.subscribe((e: any) => {
@@ -45,6 +49,7 @@ export class AdministrationComponent implements OnInit {
         this.loadAllPatients();
         this.loadAllOrganisations();
         this.loadAllResearchers();
+        this.loadAllAgents();
         console.log(this.allOrg);
       }
     });
@@ -156,6 +161,28 @@ export class AdministrationComponent implements OnInit {
       });
   }
 
+  loadAllAgents(): Promise<any> {
+    return this._agentService.getAll()
+      .toPromise()
+      .then((result) => {
+        this.errorMessage = null;
+        console.log(result)
+        this.allAgentsDataSource = new MatTableDataSource<Agent>(result);
+      })
+      .catch((error) => {
+        if (error == 'Server error') {
+          this.errorMessage = "Could not connect to REST server. Please check your configuration details";
+        }
+        else if (error == '404 - Not Found') {
+          this.errorMessage = "404 - Could not find API route. Please check your available APIs."
+        }
+        else {
+          this.errorMessage = error;
+        }
+        this._loaderService.hide();
+      });
+  }
+
   loadAllPatients(): Promise<any> {
     return this._patientService.getAll()
       .toPromise()
@@ -181,7 +208,7 @@ export class AdministrationComponent implements OnInit {
         }
         this._loaderService.hide();
       });
-      
+
   }
 
   deletePatient(patient) {

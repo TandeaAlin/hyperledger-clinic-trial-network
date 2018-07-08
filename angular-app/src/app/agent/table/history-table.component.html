@@ -62,6 +62,32 @@
                             </mat-card-content>
                         </mat-card>
                     </div>
+                    <div class="marginAutoLR" *ngIf="(detail.element.transactionType == 'AddFormData') || (detail.element.transactionType == 'RemoveResearcherFromTrial')">
+                        <mat-card style="width:75vh; height: 30%">
+                            <mat-card-header>
+                                <mat-card-title>
+                                    <h2>User {{detail.element.participantInvoking}} colected data on Custom Form with ID = {{detail.element.customFormID}}
+                                        for patient with ID = {{detail.element.patient}}</h2>
+                                </mat-card-title>
+
+                            </mat-card-header>
+                            <mat-card-content>
+                                <custom-form [idForm]="detail.element.customFormID" [idFormValue]="detail.element.formValueID" [disabled]="true"></custom-form>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div class="marginAutoLR" *ngIf="(detail.element.transactionType == 'RegisterTrialTransaction') || (detail.element.transactionType == 'RemoveResearcherFromTrial')">
+                        <mat-card style="width:75vh; height: 30%">
+                            <mat-card-header>
+                                <mat-card-title>
+                                    <h2>Trial with ID = {{detail.element.trial}} was created by user {{detail.element.participantInvoking}}</h2>
+                                </mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <custom-form [idForm]="detail.element.customFormID" [idFormValue]="detail.element.formValueID" [disabled]="true"></custom-form>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
                     <br/>
                 </mat-cell>
             </ng-container>

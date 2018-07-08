@@ -1,20 +1,19 @@
 <h3>{{title}}</h3>
 <div *ngIf="isInitialised">
-    <form [formGroup]="trialForm" (ngSubmit)="onSubmit()">
-        <mat-form-field class="full-width">
+    <form [formGroup]="trialForm">
+        <mat-form-field style="width: 75%">
             <input matInput type="text" formControlName="name" placeholder="Clinical study name" [(value)]="this.trial.studyName">
             <mat-error *ngIf="nameControl.errors
                                   && (nameControl.touched || nameControl.dirty)">
                 Field is required and must have at least 2 characters</mat-error>
         </mat-form-field>
-        <table>
-            <td>
-                <input matInput type="text" placeholder="Search a research center" [(value)]="searchQuery">
-            </td>
-            <td>
-                <a mat-button (click)="search()">Search</a>
-            </td>
-        </table>
+
+        <mat-form-field style="width: 75%">
+            <input matInput type="text" placeholder="Search a research center" [(value)]="searchQuery">
+        </mat-form-field> &nbsp;
+        <a mat-button (click)="search()">Search</a>
+
+
         <div *ngIf="searchActivate">
             <table class="highlight">
                 <thead>
@@ -49,10 +48,25 @@
                 </tbody>
             </table>
         </div>
+        <h3>Selected sponsors:</h3>
+        <ul>
+            <li *ngFor="let sponsor of selectedSponsors">
+                <h4>{{sponsor.orgName}} &nbsp;<button mat-raised-button (click)="removeSponsor(sponsor)">Remove</button></h4>
+                
+            </li>
+        </ul>
+
+        <mat-form-field style="width: 75%;">
+            <input type="text" [formControl]="myControl" matInput [matAutocomplete]="auto" placeholder="Add a sponsoring organisation">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let spon of filteredOptions | async" [value]="spon">{{spon.orgName}}</mat-option>
+            </mat-autocomplete>
+        </mat-form-field>&nbsp;&nbsp;
+        <button mat-raised-button (click)="addSponsor()">Select</button>
+
         <!--Submit button-->
         <div style="margin-bottom: 1em">
-            <button type="submit" class="btn btn-success" 
-            [disabled]="trialForm.valid">Save</button>
+            <button type="submit" style="float: left, down;"  (click)="onSubmit()" mat-raised-button class="btn btn-success" [disabled]="trialForm.valid">Save</button>
         </div>
     </form>
 </div>

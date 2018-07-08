@@ -52,6 +52,7 @@ import {ResearchSite} from './ro.utcluj.clinictrial.organisation';
       studyName: string;
       organiser: string;
       responsibles: string[];
+      sponsors: string[];
    }
    export class RegisterTrialEvent extends Event {
       idTrial: string;

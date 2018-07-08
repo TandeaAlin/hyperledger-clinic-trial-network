@@ -5,6 +5,16 @@
             <div class="center-div">
                 <mat-card class="description-card">
                     <mat-card-header>
+                        <h2 class="marginAutoLR">{{trial.studyName}}</h2>
+                    </mat-card-header>
+                </mat-card>
+            </div>
+
+            <br/>
+            <br/>
+            <div class="center-div">
+                <mat-card class="description-card">
+                    <mat-card-header>
                         <h2>
                             Clinical study description
                         </h2>
@@ -29,32 +39,6 @@
                         <a mat-button (click)="editMode =! editMode" color="primary" *ngIf="editMode">
                             Cancel
                         </a>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-            <br/>
-            <div class="center-div">
-                <mat-card class="description-card">
-                    <mat-card-header>
-                        <h2>
-                            Latest protocol version
-                        </h2>
-                    </mat-card-header>
-                    <mat-card-content>
-                        testing content
-                    </mat-card-content>
-                </mat-card>
-            </div>
-            <br/>
-            <div class="center-div">
-                <mat-card class="description-card">
-                    <mat-card-header>
-                        <h2>
-                            TODO List
-                        </h2>
-                    </mat-card-header>
-                    <mat-card-content>
-                        testing content
                     </mat-card-content>
                 </mat-card>
             </div>
@@ -96,8 +80,6 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <mat-divider></mat-divider>
-                                <mat-list-item>Item 3</mat-list-item>
                                 <mat-divider></mat-divider>
                                 <div class="center-div">
                                     <mat-list-item>
@@ -234,7 +216,7 @@
                 </div>
             </div>
             <div *ngIf="enableViewForm">
-                <custom-form [idForm]="selectedForm.idForm" [disabled] = "true"></custom-form>
+                <custom-form [idForm]="selectedForm.idForm" [disabled]="true"></custom-form>
             </div>
         </ng-template>
     </mat-tab>
@@ -271,11 +253,5 @@
             <user-manager [idTrial]="idTrial"></user-manager>
         </ng-template>
     </mat-tab>
-    <mat-tab label="Settings">
-        <ng-template matTabContent>
-
-        </ng-template>
-    </mat-tab>
-
 
 </mat-tab-group>

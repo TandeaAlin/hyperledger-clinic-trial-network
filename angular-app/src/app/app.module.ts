@@ -24,12 +24,17 @@ import { ResearcherService } from './service/researcher.service';
 import { ComponentModule } from './components/component.module';
 import { LoaderService } from './components/loader/loader.service';
 import { HistorianService } from './service/historian.service';
-
+import { ResearcherAuthGuard } from './service/auth-guards/researcher-auth.guard'
+import { SponsorModule } from './sponsor/sponsor.module'
+import { SponsorAuthGuard } from './service/auth-guards/sponsor-auth.guard';
+import { AgentAuthGuard } from './service/auth-guards/agent-auth.guard';
+import { HistoryTable } from './agent/table/history-table.component';
+import { SupplierService } from './service/Supplier.service';
+import { AgentService } from './service/Agent.service';
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
-    
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +45,7 @@ import { HistorianService } from './service/historian.service';
     BrowserAnimationsModule,
     AppMaterialModule,
     ComponentModule,
-
+    SponsorModule,
   ],
   providers: [
     Configuration,
@@ -57,7 +62,12 @@ import { HistorianService } from './service/historian.service';
     SystemService,
     ResearcherService,
     HistorianService,
-    LoaderService
+    LoaderService,
+    ResearcherAuthGuard,
+    SponsorAuthGuard,
+    AgentAuthGuard,
+    SupplierService,
+    AgentService
   ],
   bootstrap: [AppComponent]
 })

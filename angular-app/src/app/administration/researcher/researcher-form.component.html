@@ -114,41 +114,6 @@
       </tr>
     </table>
     <br/>
-    <!-- table that displays the search result -->
-    <div *ngIf="searchActivate">
-      <table class="highlight">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Select</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let res of searchResult">
-            <td>
-              {{res.name}}
-            </td>
-            <td>
-              <a mat-button (click)="onSelect(res)">Select</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div *ngIf="selectionActivate">
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <h5>Organisation {{orgName}} selected</h5>
-            </td>
-            <td>
-              <a mat-button (click)="onCancel()">Cancel selection</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
     <div style="margin-bottom: 1em">
       <button type="submit" class="btn btn-success" [disabled]="researcherForm.invalid">Save</button>
     </div>
