@@ -26,7 +26,8 @@
                 <mat-cell *matCellDef="let entry">
                     {{entry.trial}} &nbsp;&nbsp;&nbsp;
                     <a mat-button (click)="viewTrial(entry.trial)" color="primary">
-                        Go to trial {{entry.trial}}
+                        Go to trial <mat-icon>subdirectory_arrow_right</mat-icon>
+
                     </a>
                 </mat-cell>
             </ng-container>
@@ -62,7 +63,7 @@
                             </mat-card-content>
                         </mat-card>
                     </div>
-                    <div class="marginAutoLR" *ngIf="(detail.element.transactionType == 'AddFormData') || (detail.element.transactionType == 'RemoveResearcherFromTrial')">
+                    <div class="marginAutoLR" *ngIf="(detail.element.transactionType == 'AddFormData')">
                         <mat-card style="width:75vh; height: 30%">
                             <mat-card-header>
                                 <mat-card-title>
@@ -76,16 +77,13 @@
                             </mat-card-content>
                         </mat-card>
                     </div>
-                    <div class="marginAutoLR" *ngIf="(detail.element.transactionType == 'RegisterTrialTransaction') || (detail.element.transactionType == 'RemoveResearcherFromTrial')">
+                    <div class="marginAutoLR" *ngIf="(detail.element.transactionType == 'RegisterTrialTransaction')">
                         <mat-card style="width:75vh; height: 30%">
                             <mat-card-header>
                                 <mat-card-title>
                                     <h2>Trial with ID = {{detail.element.trial}} was created by user {{detail.element.participantInvoking}}</h2>
                                 </mat-card-title>
                             </mat-card-header>
-                            <mat-card-content>
-                                <custom-form [idForm]="detail.element.customFormID" [idFormValue]="detail.element.formValueID" [disabled]="true"></custom-form>
-                            </mat-card-content>
                         </mat-card>
                     </div>
                     <br/>

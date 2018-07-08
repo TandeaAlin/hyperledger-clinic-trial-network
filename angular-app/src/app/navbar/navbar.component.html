@@ -1,7 +1,7 @@
 <mat-toolbar _ngcontent-c0="" color="primary">
     <mat-toolbar-row _ngcontent-c0>
         <span>
-            <a mat-button routerLink="/home">Clinic Trials App</a>
+            <a mat-button (click)="onClick()">Clinic Trials App</a>
         </span>
         <span>
             <button *ngIf="_authService.getUser()" mat-button [matMenuTriggerFor]="menu">Menu
@@ -11,10 +11,9 @@
         <span class="flex-fill"></span>
         <div *ngIf="_authService.getUser()">
             <span>
-                <mat-icon>account_circle </mat-icon>
-                <br/> {{_authService.getUser()}}
+                {{_authService.getUser()}}
             </span>
-            <button mat-button (click)="_authService.logout()">Log Out</button>
+            <button mat-button color="accent" (click)="_authService.logout()">Log Out </button>
         </div>
     </mat-toolbar-row>
 </mat-toolbar>

@@ -23,6 +23,8 @@ export class NavbarComponent {
     return this._authService.getRole() == AccountType.SPONSOR.toLocaleString();
   }
   
-
+  onClick(){
+    console.log('Hello World!');
+  }
   
 }

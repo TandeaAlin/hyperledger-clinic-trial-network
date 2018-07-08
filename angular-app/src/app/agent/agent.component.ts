@@ -124,11 +124,7 @@ export class AgentComponent implements OnInit {
                     target.transactionType = 'RegisterTrialTransaction';
                     target.transactionTimestamp = entry.transactionTimestamp.toLocaleString().replace('T', ' ').replace('Z', ' ').split('.')[0];
                     target.participantInvoking = this.getParticipant(entry.participantInvoking);
-                    //target.customFormID = entry.eventsEmitted[0].customForm.idForm;
-                   // target.researcher = entry.eventsEmitted[0].researcher.idResearcher;
-                    //target.formValueID = entry.eventsEmitted[0].idFormData;
-                    //target.patient = entry.eventsEmitted[0].patient.idPatient;
-                   
+                    target.trial = entry.eventsEmitted[0].idTrial;
                     this.allProcessedHistory.push(target);
                 }break;
 
