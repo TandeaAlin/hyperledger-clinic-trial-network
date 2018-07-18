@@ -62,6 +62,10 @@ participant Agent identified by idAgent extends ParticipantPerson{
 	o String idAgent
 }
 
+participant Administrator identified by idAdmin extends ParticipantPerson{
+	o String idAdmin
+}
+
 asset Patient identified by idPatient {
     o String idPatient
     o Person person

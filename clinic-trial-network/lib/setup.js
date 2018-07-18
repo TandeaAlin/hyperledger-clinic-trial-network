@@ -19,6 +19,7 @@ async function setupMockData(tx) {
     const agentRegistry = await getParticipantRegistry(NS_BASE + '.Agent');
     const sponsorRegistry = await getParticipantRegistry(NS_BASE + '.Supplier');
     const patientRegistry = await getAssetRegistry(NS_BASE + '.Patient');
+    const administratorRegistry = await getParticipantRegistry(NS_BASE + '.Administrator');
     const trialRegistry = await getAssetRegistry(NS_TRIAL + '.Trial');
     //add research sites
     var sites = [
@@ -379,6 +380,83 @@ async function setupMockData(tx) {
 
         
     ]
+
+    var admins = [
+        {
+            "$class": "ro.utcluj.clinictrial.base.Administrator",
+            "idAdmin": "1234",
+            "employer": "121",
+            "person": {
+                "$class": "ro.utcluj.clinictrial.base.Person",
+                "firstName": "Test",
+                "lastName": "Admin1",
+                "gender": "MALE",
+                "contactDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.ContactDetails",
+                    "email": "test1231@test.com",
+                    "mobilePhone": "0744921478",
+                    "homePhone": "Aliquip.",
+                    "address": {
+                        "$class": "ro.utcluj.clinictrial.base.Address",
+                        "city": "city",
+                        "country": "country",
+                        "locality": "Incididunt deserunt.",
+                        "region": "region",
+                        "street": "street",
+                        "postalCode": "Nostrud."
+                    }
+                },
+                "birthDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.BirthDetails",
+                    "dateOfBirth": "2000-06-02T12:56:36.938Z",
+                    "placeOfBirth": "test place"
+                },
+                "deathDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.DeathDetails",
+                    "dateOfDeath": "2018-06-02T12:56:36.938Z",
+                    "placeOfDeath": "Ullamco elit."
+                }
+            }
+        },
+        {
+            "$class": "ro.utcluj.clinictrial.base.Administrator",
+            "idAdmin": "4321",
+            "employer": "112",
+            "person": {
+                "$class": "ro.utcluj.clinictrial.base.Person",
+                "firstName": "Test",
+                "lastName": "Admin2",
+                "gender": "MALE",
+                "contactDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.ContactDetails",
+                    "email": "test231@test.com",
+                    "mobilePhone": "0744941478",
+                    "homePhone": "Aliquip.",
+                    "address": {
+                        "$class": "ro.utcluj.clinictrial.base.Address",
+                        "city": "city",
+                        "country": "country",
+                        "locality": "Incididunt deserunt.",
+                        "region": "region",
+                        "street": "street",
+                        "postalCode": "Nostrud."
+                    }
+                },
+                "birthDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.BirthDetails",
+                    "dateOfBirth": "2001-06-02T12:56:36.938Z",
+                    "placeOfBirth": "test place"
+                },
+                "deathDetails": {
+                    "$class": "ro.utcluj.clinictrial.base.DeathDetails",
+                    "dateOfDeath": "2018-06-02T12:56:36.938Z",
+                    "placeOfDeath": "Ullamco elit."
+                }
+            }
+        }
+
+        
+    ]
     var sponsors = [
         {
             "$class": "ro.utcluj.clinictrial.base.Agent",
@@ -438,6 +516,13 @@ async function setupMockData(tx) {
         target.person.lastName = "Sponsor";
         await sponsorRegistry.add(target);
     }
+
+    for(let src of admins){
+        var target = factory.newResource(NS_BASE, 'Administrator', src.idAdmin)
+        copyPerson(target, src);
+        await administratorRegistry.add(target);
+    }
+
 
     console.log('Starting clinic trials ....')
     for (let srcTrial of trials) {

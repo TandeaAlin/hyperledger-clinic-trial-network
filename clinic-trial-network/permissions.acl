@@ -65,6 +65,119 @@ rule ResearcherGeneralAccessOrg{
 }
 
 
+rule AgentGeneralAccessFile{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Agent"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.trial.ProtocolFile"
+    action: ALLOW
+}
+
+rule AgentGeneralAccessForm{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Agent"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.trial.CustomForm"
+    action: ALLOW
+}
+
+rule AgentGeneralAccessPatient{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Agent"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.base.Patient"
+    action: ALLOW
+}
+
+
+rule AgentGeneralAccessRecords{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Agent"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.trial.FormValue"
+    action: ALLOW
+}
+
+rule AgentGeneralAccessOrg{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Agent"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.organisation.*"
+    action: ALLOW
+}
+
+rule SupplierGeneralAccessFile{
+    description: "Allow Suppliers to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Supplier"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.trial.ProtocolFile"
+    action: ALLOW
+}
+
+rule SupplierGeneralAccessForm{
+    description: "Allow Suppliers to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Supplier"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.trial.CustomForm"
+    action: ALLOW
+}
+
+rule SupplierGeneralAccessPatient{
+    description: "Allow Suppliers to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Supplier"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.base.Patient"
+    action: ALLOW
+}
+
+rule SupplierGeneralAccessRecords{
+    description: "Allow Suppliers to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Supplier"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.trial.FormValue"
+    action: ALLOW
+}
+
+rule SupplierGeneralAccessOrg{
+    description: "Allow Suppliers to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Supplier"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.organisation.*"
+    action: ALLOW
+}
+
+rule AgentGeneralAccessTrial{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Agent"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.trial.Trial"
+    action: ALLOW
+}
+
+rule SponsorGeneralAccessTrial{
+    description: "Allow sponsors to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Supplier"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.trial.Trial"
+    action: ALLOW
+}
+
+rule AgentGeneralAccessResearcher{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Agent"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.base.Researcher"
+    action: ALLOW
+}
+
+rule SponsorGeneralAccessResearcher{
+    description: "Allow agents to view all trials"
+    participant: "ro.utcluj.clinictrial.base.Supplier"
+    operation: READ
+    resource: "ro.utcluj.clinictrial.base.Researcher"
+    action: ALLOW
+}
+
 rule ResearcherGeneralAccessTransaction{
     description: "Allow agents to view all trials"
     participant: "ro.utcluj.clinictrial.base.Researcher"
@@ -73,22 +186,6 @@ rule ResearcherGeneralAccessTransaction{
     action: ALLOW
 }
 
-
-rule SponsorGeneralAcces{
-    description: "Allow agents to view all trials"
-    participant: "ro.utcluj.clinictrial.base.Supplier"
-    operation: READ
-    resource: "ro.utcluj.clinictrial.trial.*"
-    action: ALLOW
-}
-
-rule AgentGeneralAcces{
-    description: "Allow agents to view all trials"
-    participant: "ro.utcluj.clinictrial.base.Agent"
-    operation: READ
-    resource: "ro.utcluj.clinictrial.trial.*"
-    action: ALLOW
-}
 
 rule SponsorTrialAcces{
     description: "Grant access to trial resources only to trial sponsors"
@@ -111,9 +208,25 @@ rule SystemACL {
     action: ALLOW
 }
 
+rule AdministratorUser {
+    description: "Grant  administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule AdministratorSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "ro.utcluj.clinictrial.base.Administrator"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
 rule NetworkAdminUser {
     description: "Grant business network administrators full access to user resources"
-    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    participant: "ro.utcluj.clinictrial.base.Administrator"
     operation: ALL
     resource: "**"
     action: ALLOW
