@@ -15,18 +15,18 @@ export class RecordsComponent implements OnInit, OnChanges {
     @Input() idTrial: string;
     @Input() idFormExternal: string;
 
-    private NONE: string = "None";
-    private idForm;
-    private customForm;
-    private customForms: CustomForm[] = [];
-    private isInitialised = false;
-    private displayTable = false;
-    private selectedForm = this.NONE;
-    private records: FormValue[] = [];
-    private recordsDataSource: MatTableDataSource<FormValue>;
+    NONE: string = "None";
+    idForm;
+    customForm;
+    customForms: CustomForm[] = [];
+    isInitialised = false;
+    displayTable = false;
+    selectedForm = this.NONE;
+    records: FormValue[] = [];
+    recordsDataSource: MatTableDataSource<FormValue>;
 
-    private tableColumns = [];
-    private dataColumns = [];
+    tableColumns = [];
+    dataColumns = [];
 
     constructor(
         private _patientService: PatientService,
@@ -71,8 +71,8 @@ export class RecordsComponent implements OnInit, OnChanges {
         }
     }
 
-    formatPatientID(patientResource: string){
-        let splitResult =  patientResource.split('#');
+    formatPatientID(patientResource: string) {
+        let splitResult = patientResource.split('#');
         return splitResult[splitResult.length - 1];
     }
 

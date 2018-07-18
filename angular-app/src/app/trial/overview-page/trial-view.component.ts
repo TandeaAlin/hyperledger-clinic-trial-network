@@ -49,7 +49,7 @@ export class TrialViewComponent implements OnInit {
     editMode = false;
 
 
-    fileColumns = ['FileID', 'FileVersion', 'FileDate', 'Download', 'Delete'];
+    fileColumns = ['FileID', 'FileDate', 'Download', 'Delete'];
     customFormColumns = ['FormName', 'LastModified', 'Edit', 'Delete'];
     patientColumns = ['PatientID', 'Name', 'View', 'Remove'];
     allFilesDataSource: MatTableDataSource<ProtocolFile>;
@@ -69,8 +69,9 @@ export class TrialViewComponent implements OnInit {
         private _formQueryService: FormQueryService,
         private _loaderService: LoaderService
     ) {
-        this._loaderService.show();
+        
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
+            this._loaderService.show();
             // If it is a NavigationEnd event re-initalise the component
             if (e instanceof NavigationEnd) {
                 console.log("loading table data....")
@@ -85,6 +86,7 @@ export class TrialViewComponent implements OnInit {
         });
         var id = this._route.params
             .subscribe(params => {
+                this._loaderService.show();
                 var id = params['idTrial'];
                 this.idTrial = id;
                 console.log("Selected trial with ID: " + this.idTrial);
@@ -200,10 +202,12 @@ export class TrialViewComponent implements OnInit {
     }
 
     upload() {
+       this._loaderService.show();
         console.log("Uploading ...");
         console.log(JSON.stringify(this.protocolFile));
         this._protocolService.addAsset(this.protocolFile).subscribe(
             (res) => {
+                this._loaderService.hide();
                 this._router.navigate([this._router.url])
             }
         )

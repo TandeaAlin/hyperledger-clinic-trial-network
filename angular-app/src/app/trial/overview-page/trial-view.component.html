@@ -105,19 +105,13 @@
                 </div>
             </div>
             <br/>
-            <div class="table-container mat-elevation-z8">
+            <div class="table-container mat-elevation-z8" *ngIf="!uploadCardActivate">
                 <mat-table #table [dataSource]="allFilesDataSource">
 
                     <!-- File ID column -->
                     <ng-container matColumnDef="FileID">
                         <mat-header-cell *matHeaderCellDef> FileID </mat-header-cell>
                         <mat-cell *matCellDef="let file"> {{file.fileID}} </mat-cell>
-                    </ng-container>
-
-                    <!-- File version column -->
-                    <ng-container matColumnDef="FileVersion">
-                        <mat-header-cell *matHeaderCellDef> File Version </mat-header-cell>
-                        <mat-cell *matCellDef="let file"> {{file.fileVersion}} </mat-cell>
                     </ng-container>
 
                     <!-- File version column -->

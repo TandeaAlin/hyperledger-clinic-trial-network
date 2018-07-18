@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoaderService } from '../components/loader/loader.service';
 import { AuthService } from '../service/auth.service';
 @Component({
@@ -6,12 +6,18 @@ import { AuthService } from '../service/auth.service';
     templateUrl: 'login.component.html',
     styles: []
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
     constructor(
         private _loaderService: LoaderService,
         private _authService: AuthService
     ){
         _authService.clearUserInfo();
+        this._loaderService.hide();
+    }
+
+    ngOnInit(){
+        this._authService.clearUserInfo();
+        this._loaderService.hide();
     }
 
     loginAnimation(){

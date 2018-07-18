@@ -14,7 +14,6 @@ import { UserManagerComponent } from './user-manager/user-manager.component';
 import { ResearcherTableComponent } from './researcher-table/researcher-table.component';
 import { FormValueService } from '../service/FormValue.service';
 import { HistoryTable } from '../agent/table/history-table.component';
-
 @NgModule({
     imports: [
         AppMaterialModule,
@@ -37,7 +36,8 @@ import { HistoryTable } from '../agent/table/history-table.component';
         UserManagerComponent,
         ResearcherTableComponent,
         RecordsComponent,
-        HistoryTable
+        HistoryTable,
+        
     ],
     entryComponents:[
         PatientTableComponent,

@@ -18,8 +18,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.loaderService.loaderState.subscribe(
       (val) => {
-        this.objLoaderStatus = val
+        this.objLoaderStatus = val;
         console.log(val)
-      });
+      }),
+      (err) =>{
+        console.log(err);
+      }
+
   }
 }

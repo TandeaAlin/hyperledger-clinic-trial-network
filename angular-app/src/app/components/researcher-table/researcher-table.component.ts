@@ -5,6 +5,7 @@ import { AddResearcherToTrial, RemoveResearcherFromTrial } from '../../model/tra
 import { ResourceProvider } from '../../utils/resource-provider';
 import { TransactionService } from '../../service/transaction-service';
 import { Router } from '@angular/router';
+import { LoaderService } from '../loader/loader.service';
 
 @Component({
     selector: 'researcher-table',
@@ -13,9 +14,10 @@ import { Router } from '@angular/router';
 export class ResearcherTableComponent implements OnInit {
 
     constructor(
-        private _transactionService : TransactionService,
-        private _router: Router
-    ){
+        private _transactionService: TransactionService,
+        private _router: Router,
+        private _loaderService: LoaderService
+    ) {
 
     }
 
@@ -25,38 +27,44 @@ export class ResearcherTableComponent implements OnInit {
     @Input() activeMode: boolean;
     @Input() idTrial: string;
 
-    private tableColumns = ['ResearcherID', 'Name', 'E-mail', 'Actions'];
+    tableColumns = ['ResearcherID', 'Name', 'E-mail', 'Actions'];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     ngOnInit() {
         this.displayTable = true;
     }
 
     addResearcher(res: Researcher) {
-        var tx = new AddResearcherToTrial();
-        tx.researcher = ResourceProvider.newResearcherResource(res.idResearcher);
-        tx.trial = ResourceProvider.newTrialResource(this.idTrial);
-        this._transactionService.addResearcherToTrial(tx).subscribe(
-            (res) =>{
-                this._router.navigate([this._router.url])
-            },
-            (err: Error)=>{
-                alert(err.message);
-            }
-        );
+        if (confirm("Add user with ID = " + res.idResearcher + " to trial?")) {
+            this._loaderService.show();
+            var tx = new AddResearcherToTrial();
+            tx.researcher = ResourceProvider.newResearcherResource(res.idResearcher);
+            tx.trial = ResourceProvider.newTrialResource(this.idTrial);
+            this._transactionService.addResearcherToTrial(tx).subscribe(
+                (res) => {
+                    this._router.navigate([this._router.url])
+                },
+                (err: Error) => {
+                    alert(err.message);
+                }
+            );
+        }
     }
 
     removeResearcher(res: Researcher) {
-        var tx = new RemoveResearcherFromTrial();
-        tx.researcher = ResourceProvider.newResearcherResource(res.idResearcher);
-        tx.trial = ResourceProvider.newTrialResource(this.idTrial);
-        this._transactionService.removeResearcherFromTrial(tx).subscribe(
-            (res) =>{
-                this._router.navigate([this._router.url])
-            },
-            (err: Error)=>{
-                alert(err.message);
-            }
-        );
+        if (confirm("Remove user with ID = " + res.idResearcher + " from trial?")) {
+            this._loaderService.show();
+            var tx = new RemoveResearcherFromTrial();
+            tx.researcher = ResourceProvider.newResearcherResource(res.idResearcher);
+            tx.trial = ResourceProvider.newTrialResource(this.idTrial);
+            this._transactionService.removeResearcherFromTrial(tx).subscribe(
+                (res) => {
+                    this._router.navigate([this._router.url])
+                },
+                (err: Error) => {
+                    alert(err.message);
+                }
+            );
+        }
     }
 
 }

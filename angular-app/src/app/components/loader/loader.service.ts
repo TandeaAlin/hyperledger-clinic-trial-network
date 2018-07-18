@@ -9,9 +9,9 @@ export class LoaderService {
     loaderState = this.loaderSubject.asObservable();
     constructor() { }
     show() {
-            this.loaderSubject.next(<any> true);
-        }
+        this.loaderSubject.next(<any>true);
+    }
     hide() {
-            this.loaderSubject.next(<any> false);
-        }
+        this.loaderSubject.next(<any>false);
+    }
 }

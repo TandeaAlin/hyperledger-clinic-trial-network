@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SystemService } from '../service/system-service'
 import { ResearcherService } from '../service/researcher.service';
-import { Researcher, Supplier, Agent } from '../model/ro.utcluj.clinictrial.base';
+import { Researcher, Supplier, Agent, Administrator } from '../model/ro.utcluj.clinictrial.base';
 import { AuthService } from '../service/auth.service';
 import { LoaderService } from '../components/loader/loader.service';
 import { SupplyOrganisationService } from '../service/supply-organisation.service';
 import { SupplierService } from '../service/Supplier.service';
 import { AgentService } from '../service/Agent.service';
 import { AccountType } from '../model/ro.utcluj.vo';
+import { AdministratorService } from '../service/administrator.service';
 
 @Component({
   selector: 'home-component',
@@ -28,7 +29,8 @@ export class HomeComponent implements OnInit {
     private _sponsorService: SupplierService,
     private _authService: AuthService,
     private _loaderService: LoaderService,
-    private _agentService: AgentService
+    private _agentService: AgentService,
+    private _administratorService: AdministratorService
   ) {
     var result = this._route.params
       .subscribe(params => {
@@ -61,8 +63,11 @@ export class HomeComponent implements OnInit {
                     setTimeout(() => {
                       this._router.navigateByUrl('/agent');
                     }, 3000)
+                  } else if (this._authService.getRole() == AccountType.ADMIN.toLocaleString()) {
+                    setTimeout(() => {
+                      this._router.navigateByUrl('/administration');
+                    }, 3000)
                   }
-                  this._loaderService.hide();
                 }
               )
             }
@@ -104,13 +109,14 @@ export class HomeComponent implements OnInit {
                   this._systemService.getCurrentUser().then(
                     (res) => {
                       console.log("Seting cookies...")
-                      this._authService.storeUserInfo(res);
+                      //this._authService.storeUserInfo(res);
                       console.log("Reinitializing...");
-                      this._loaderService.hide();
-                      this._router.navigateByUrl('/trial');
+                      this._router.navigateByUrl('/login');
+                      alert("Identity binded successfully... Please relog!");
                     },
                     (err) => {
-                      this._router.navigateByUrl('/trial');
+                      alert("Identity binded successfully... Please relog!");
+                      this._router.navigateByUrl('/login');
                     }
                   )
                 }, 3000)
@@ -137,13 +143,15 @@ export class HomeComponent implements OnInit {
                   this._systemService.getCurrentUser().then(
                     (res) => {
                       console.log("Seting cookies...")
-                      this._authService.storeUserInfo(res);
+                      //this._authService.storeUserInfo(res);
                       console.log("Reinitializing...");
                       this._loaderService.hide();
-                      this._router.navigateByUrl('/sponsor');
+                      alert("Identity binded successfully... Please relog!");
+                      this._router.navigateByUrl('/login');
                     },
                     (err) => {
-                      this._router.navigateByUrl('/sponsor');
+                      alert("Identity binded successfully... Please relog!");
+                      this._router.navigateByUrl('/login');
                     }
                   )
                 }, 3000)
@@ -169,13 +177,49 @@ export class HomeComponent implements OnInit {
                   this._systemService.getCurrentUser().then(
                     (res) => {
                       console.log("Seting cookies...")
-                      this._authService.storeUserInfo(res);
+                      //this._authService.storeUserInfo(res);
                       console.log("Reinitializing...");
                       this._loaderService.hide();
-                      this._router.navigateByUrl('/agent');
+                      alert("Identity binded successfully... Please relog!");
+                      this._router.navigateByUrl('/login');
                     },
                     (err) => {
-                      this._router.navigateByUrl('/agent');
+                      alert("Identity binded successfully... Please relog!");
+                      this._router.navigateByUrl('/login');
+                    }
+                  )
+                }, 3000)
+              }
+            )
+        },
+        (err) => {
+          this._loaderService.hide();
+          alert("Cannot bind identity");
+        }
+      )
+    } else if (this.identityType == "admin") {
+      this._administratorService.getparticipantAdmin(this.idParticipant).subscribe(
+        (participant) => {
+          console.log("Found participant ...")
+          console.log(participant);
+          console.log("Biniding to wallet...")
+          this._systemService
+            .bindIdentity(this.createAdministratorIdentity(participant)).then(
+              (res) => {
+                console.log("Checking if default identity is set...");
+                setTimeout(() => {
+                  this._systemService.getCurrentUser().then(
+                    (res) => {
+                      console.log("Seting cookies...")
+                      //this._authService.storeUserInfo(res);
+                      console.log("Reinitializing...");
+                      this._loaderService.hide();
+                      alert("Identity binded successfully... Please relog!");
+                      this._router.navigateByUrl('/login');
+                    },
+                    (err) => {
+                      alert("Identity binded successfully... Please relog!");
+                      this._router.navigateByUrl('/login');
                     }
                   )
                 }, 3000)
@@ -213,6 +257,15 @@ export class HomeComponent implements OnInit {
     const identity = {
       participant: 'ro.utcluj.clinictrial.base.Agent#' + agent.idAgent,
       userID: agent.idAgent,
+      options: {}
+    };
+    return identity;
+  }
+
+  createAdministratorIdentity(admin: Administrator) {
+    const identity = {
+      participant: 'ro.utcluj.clinictrial.base.Administrator#' + admin.idAdmin,
+      userID: admin.idAdmin,
       options: {}
     };
     return identity;

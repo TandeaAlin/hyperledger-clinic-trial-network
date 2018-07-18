@@ -1,11 +1,10 @@
-import { CRFComponent } from './crf.component'
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppMaterialModule } from '../material.module';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { CRFRoutingModule } from './crf.routing';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IdProviderService } from '../utils/id-provider.service'
+import { AppMaterialModule } from '../material.module';
+import { IdProviderService } from '../utils/id-provider.service';
+import { CRFComponent } from './crf.component';
+import { CRFRoutingModule } from './crf.routing';
 @NgModule({
     imports: [
         AppMaterialModule,
@@ -15,7 +14,7 @@ import { IdProviderService } from '../utils/id-provider.service'
         ReactiveFormsModule
     ],
     providers: [
-        IdProviderService
+        IdProviderService,
     ],
     declarations: [
         CRFComponent

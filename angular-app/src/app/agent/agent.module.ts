@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AppMaterialModule } from '../material.module';
-import { AgentRoutingModule } from './agent.routing';
-import { HistorianService } from '../service/historian.service';
-import { AgentComponent } from './agent.component';
-import { HistoryTable } from './table/history-table.component';
 import { ComponentModule } from '../components/component.module';
+import { LoaderService } from '../components/loader/loader.service';
+import { AppMaterialModule } from '../material.module';
+import { HistorianService } from '../service/historian.service';
 import { TrialService } from '../service/trial.service';
+import { AgentComponent } from './agent.component';
+import { AgentRoutingModule } from './agent.routing';
 
 @NgModule({
   imports: [
@@ -22,8 +22,7 @@ import { TrialService } from '../service/trial.service';
     AgentComponent,
   ],
   providers: [
-    HistorianService,
-    TrialService
+    HistorianService
   ]
 })
 export class AgentModule { }

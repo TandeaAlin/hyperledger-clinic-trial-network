@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import 'rxjs/Rx';
-import { Researcher, Agent, Supplier } from '../model/ro.utcluj.clinictrial.base';
+import { Researcher, Agent, Supplier, Administrator } from '../model/ro.utcluj.clinictrial.base';
 import { AccountType, AuthenticationVO } from '../model/ro.utcluj.vo';
 import { IdProviderService } from '../utils/id-provider.service';
 import { Utils } from '../utils/utils';
@@ -11,6 +11,7 @@ import { ResearcherService } from './researcher.service';
 import { Router } from '@angular/router';
 import { AgentService } from './Agent.service';
 import { SupplierService } from './Supplier.service';
+import { AdministratorService } from './administrator.service';
 
 
 
@@ -31,6 +32,7 @@ export class AuthService {
     private RESEARCHER_NAMESPACE = "ro.utcluj.clinictrial.base.Researcher#";
     private AGENT_NAMESPACE = "ro.utcluj.clinictrial.base.Agent#";
     private SUPPLIER_NAMESPACE = "ro.utcluj.clinictrial.base.Supplier#";
+    private ADMIN_NAMESPACE = "ro.utcluj.clinictrial.base.Administrator#";
 
     private user: AuthenticationVO;
 
@@ -41,7 +43,8 @@ export class AuthService {
         private _researcherService: ResearcherService,
         private _agentService: AgentService,
         private _sponsorService: SupplierService,
-        private _router: Router
+        private _router: Router,
+        private _administratorService: AdministratorService
 
     ) {
         this.actionUrl = _configuration.AdminServerWithApiUrl;
@@ -70,6 +73,7 @@ export class AuthService {
 
 
     storeUserInfo(user: string) {
+        console.log(user);
         if (user.includes('Researcher')) {
             localStorage.setItem(Utils.USER_ROLE, AccountType.RESEARCHER.toLocaleString())
             var uid = user.replace(this.RESEARCHER_NAMESPACE, "");
@@ -102,7 +106,17 @@ export class AuthService {
                     localStorage.setItem(Utils.USERNAME, displayName);
                 }
             )
-
+        } else if (user.includes('Administrator')) {
+            localStorage.setItem(Utils.USER_ROLE, AccountType.ADMIN.toLocaleString())
+            console.log(AccountType.ADMIN.toLocaleString())
+            var uid = user.replace(this.ADMIN_NAMESPACE, "");
+            localStorage.setItem(Utils.UID, uid)
+            this._administratorService.getparticipant(uid).subscribe(
+                (res: Administrator) => {
+                    var displayName = res.person.firstName + " " + res.person.lastName;
+                    localStorage.setItem(Utils.USERNAME, displayName);
+                }
+            )
         }
     }
 

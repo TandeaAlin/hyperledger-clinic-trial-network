@@ -16,15 +16,15 @@ export class SponsorComponent implements OnInit {
 
     myControl = new FormControl();
 
-    private isInitialised = false;
-    private allHistory: HistorianRecord[] = [];
-    private allProcessedHistory: HistorianVO[] = [];
-    private filteredHistory: HistorianVO[] = [];
-    private trials: Trial[] = [];
-    private historyDataSource: MatTableDataSource<HistorianVO>;
-    private trialInput = "";
+    isInitialised = false;
+    allHistory: HistorianRecord[] = [];
+    allProcessedHistory: HistorianVO[] = [];
+    filteredHistory: HistorianVO[] = [];
+    trials: Trial[] = [];
+    historyDataSource: MatTableDataSource<HistorianVO>;
+    trialInput = "";
     filteredOptions: Observable<Trial[]>;
-    private trialFilteredHistory: HistorianVO[] = [];
+    trialFilteredHistory: HistorianVO[] = [];
 
     selectedTransaction = 'None';
     transactionTypes = [
@@ -122,7 +122,7 @@ export class SponsorComponent implements OnInit {
         return splitString[splitString.length - 1];
     }
 
-    private onTransactionSelect() {
+    onTransactionSelect() {
         if (this.selectedTransaction == 'None') {
             alert("Please select a transaction type");
         } else {
@@ -133,11 +133,11 @@ export class SponsorComponent implements OnInit {
         }
     }
 
-    private onTrialSelect(){   
+    onTrialSelect() {
         this.trialFilteredHistory = this.allProcessedHistory.filter(
-            (entry) => 
+            (entry) =>
                 entry.trial == this.myControl.value.idTrial
-            )
+        )
         console.log(this.trialFilteredHistory);
     }
 

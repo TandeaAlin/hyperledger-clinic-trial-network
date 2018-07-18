@@ -15,6 +15,18 @@ export class NavbarComponent {
   ){
   }
 
+  getUsername(){
+    return this._authService.getUser();
+  }
+
+  logout(){
+    this._authService.logout();
+  }
+
+  isAdmin(){
+    return this._authService.getRole() == AccountType.ADMIN.toLocaleString();
+  }
+
   isAgent(){
     return this._authService.getRole() == AccountType.AGENT.toLocaleString();
   }

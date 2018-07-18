@@ -8,6 +8,7 @@ import { TransactionService } from '../../service/transaction-service';
 import { IdProviderService } from '../../utils/id-provider.service';
 import { ResourceProvider } from '../../utils/resource-provider';
 import { FormValueService } from '../../service/FormValue.service';
+import { LoaderService } from '../loader/loader.service';
 
 @Component({
     selector: 'custom-form',
@@ -31,7 +32,8 @@ export class FormComponent implements OnInit, OnChanges {
         private formBuilder: FormBuilder,
         private _transactionSevice: TransactionService,
         private _idProvider: IdProviderService,
-        private _formValueService: FormValueService
+        private _formValueService: FormValueService,
+        private _loaderService: LoaderService
     ) {
 
     }
@@ -79,6 +81,7 @@ export class FormComponent implements OnInit, OnChanges {
     }
 
     save() {
+        this._loaderService.show();
         var tx: AddFormData = new AddFormData();
         tx.formMeta = this.customForm.formMeta;
         tx.idFormData = this._idProvider.generateID();
@@ -88,7 +91,11 @@ export class FormComponent implements OnInit, OnChanges {
             .subscribe(
                 (res) => {
                     this._router.navigate([this._router.url]);
+                },
+                (err)=>{
+                    this._router.navigate([this._router.url]);
                 }
+
             )
 
     }

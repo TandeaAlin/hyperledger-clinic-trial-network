@@ -20,30 +20,30 @@ import { Router } from '@angular/router';
 export class HistoryTable implements OnInit, OnChanges {
 
     constructor(
-        private _router : Router
-    ){
+        private _router: Router
+    ) {
 
     }
 
     @Input() historyData: HistorianVO[];
 
-    private displayTable = false;
-    private tableColumns = ['TransactionType', 'Date', 'InvokingUserID', 'Trial'];
+    displayTable = false;
+    tableColumns = ['TransactionType', 'Date', 'InvokingUserID', 'Trial'];
     isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
     expandedElement: any;
-    private historyDataSource;
+    historyDataSource;
     ngOnInit() {
         this.historyDataSource = new HistoryDataSource(this.historyData);
         this.displayTable = true;
     }
 
-    ngOnChanges(){
+    ngOnChanges() {
         this.historyDataSource = new HistoryDataSource(this.historyData);
-        
+
     }
 
     expand(row) {
-    
+
         if (this.expandedElement && this.expandedElement === row) {
             this.expandedElement = null;
         } else {
@@ -52,7 +52,7 @@ export class HistoryTable implements OnInit, OnChanges {
 
     }
 
-    viewTrial(idTrial){
+    viewTrial(idTrial) {
         this._router.navigateByUrl('/trial/view/' + idTrial);
     }
 

@@ -4,7 +4,7 @@ import { AuthService } from '../auth.service';
 import { AccountType } from '../../model/ro.utcluj.vo';
 
 @Injectable()
-export class ResearcherAuthGuard implements CanActivate {
+export class DefaultAuthGuard implements CanActivate {
     private accType;
     constructor(
         private _router: Router,
@@ -17,7 +17,7 @@ export class ResearcherAuthGuard implements CanActivate {
         var role = this._authService.getRole();
         console.log(user)
         console.log(role)
-        if (user && (this._authService.getRole() != AccountType.ADMIN.toLocaleString())) {
+        if (user && role) {
             return true;
         }
         this._router.navigateByUrl('/login');

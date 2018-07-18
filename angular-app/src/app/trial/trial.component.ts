@@ -18,24 +18,18 @@ export class TrialComponent implements OnInit {
     allTrialsDataSource: MatTableDataSource<Trial>;
     constructor(
         private _trialService: TrialService,
-        private _loaderService: LoaderService,
-        private _historianService: HistorianService
+        private _loaderService: LoaderService
     ) {
-        _loaderService.show();
     }
 
     ngOnInit() {
+        this._loaderService.show(); 
         this.loadAll();
         console.log(this.trials);
     }
 
     loadAll() {
         let tempList = [];
-        this._historianService.getAll().subscribe(
-            (res) =>{
-                console.log(res);
-            }
-        )
         this._trialService.getAll().subscribe(
             (result) => {
                 this.errorMessage = null;
@@ -44,8 +38,9 @@ export class TrialComponent implements OnInit {
                     tempList.push(asset);
                 });
                 this.trials = tempList;
-                this.allTrialsDataSource = new MatTableDataSource(this.trials);
                 this._loaderService.hide();
+                this.allTrialsDataSource = new MatTableDataSource(this.trials);
+                
             },
 
             (error) => {

@@ -64,7 +64,7 @@ export class PatientPageComponent implements OnInit, OnChanges {
                     } else {
                         filteredPatients = filteredPatients.filter(
                             (patient) => {
-                                let name = patient.person.firstName + patient.person.lastName;
+                                let name = patient.person.firstName + " " + patient.person.lastName;
                                 return name.toLowerCase().trim().includes(this.searchQuery.toLowerCase().trim())
                             }
                         )

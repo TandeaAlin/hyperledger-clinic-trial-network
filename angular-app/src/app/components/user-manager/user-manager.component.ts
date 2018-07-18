@@ -13,11 +13,11 @@ import { Router, NavigationEnd } from '@angular/router';
 export class UserManagerComponent implements OnInit {
 
     @Input() idTrial;
-    private trial: Trial;
-    private usersDataSource: MatTableDataSource<Researcher>;
-    private displayTable: boolean;
-    private searchQuery = "";
-    private allUsersDataSource: MatTableDataSource<Researcher>;
+    trial: Trial;
+    usersDataSource: MatTableDataSource<Researcher>;
+    displayTable: boolean;
+    searchQuery = "";
+    allUsersDataSource: MatTableDataSource<Researcher>;
     navigationSubscription;
 
     constructor(
@@ -33,6 +33,7 @@ export class UserManagerComponent implements OnInit {
                     (res) => {
                         this.trial = res;
                         this.usersDataSource = new MatTableDataSource<Researcher>(this.trial.responsibles);
+                        this.search();
                         this.displayTable = true;
                     }
                 )
@@ -46,6 +47,7 @@ export class UserManagerComponent implements OnInit {
             (res) => {
                 this.trial = res;
                 this.usersDataSource = new MatTableDataSource<Researcher>(this.trial.responsibles);
+                this.search();
                 this.displayTable = true;
             }
         )

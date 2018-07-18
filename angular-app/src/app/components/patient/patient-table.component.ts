@@ -9,6 +9,7 @@ import { ResourceProvider } from '../../utils/resource-provider';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormQueryService } from '../../service/queries/forms-query-service';
 import { Utils } from '../../utils/utils';
+import { LoaderService } from '../loader/loader.service';
 
 @Component({
     selector: 'patient-table',
@@ -40,7 +41,8 @@ export class PatientTableComponent implements OnInit {
         private _route: ActivatedRoute,
         private _transactionService: TransactionService,
         private dialog: MatDialog,
-        private _formQueryService: FormQueryService
+        private _formQueryService: FormQueryService,
+        private _loaderService: LoaderService
     ) {
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
             // If it is a NavigationEnd event re-initalise the component
@@ -71,7 +73,7 @@ export class PatientTableComponent implements OnInit {
         }
     }
 
-    formatDate(date){
+    formatDate(date) {
         return Utils.formatDate(date);
     }
 
@@ -84,12 +86,16 @@ export class PatientTableComponent implements OnInit {
     }
 
     enrollPatient(patient: Patient) {
-        this.enrolPatientTransaction = new EnrolPatientTransaction();
-        this.enrolPatientTransaction.patient = ResourceProvider.newPatientResource(patient.idPatient);
-        this.enrolPatientTransaction.trial = ResourceProvider.newTrialResource(this.idTrial);
-        this._transactionService.enrolPatientTransaction(this.enrolPatientTransaction).subscribe(
-            (res) => this._router.navigate([this._router.url])
-        )
+        if (confirm("Are you sure you want to enrol patient with ID = " + patient.idPatient + " into trial with ID = " + this.idTrial + " ?")) {
+            this._loaderService.show();
+            this.enrolPatientTransaction = new EnrolPatientTransaction();
+            this.enrolPatientTransaction.patient = ResourceProvider.newPatientResource(patient.idPatient);
+            this.enrolPatientTransaction.trial = ResourceProvider.newTrialResource(this.idTrial);
+            this._transactionService.enrolPatientTransaction(this.enrolPatientTransaction).subscribe(
+                (res) => this._router.navigate([this._router.url]),
+                (err) => this._router.navigate([this._router.url])
+            )
+        }
     }
 
     deletePatient(patient) {

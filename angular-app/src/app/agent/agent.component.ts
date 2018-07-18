@@ -7,6 +7,7 @@ import { HistorianRecord } from '../model/org.hyperledger.composer.system';
 import { Trial } from '../model/ro.utcluj.clinictrial.trial';
 import { HistorianService } from '../service/historian.service';
 import { TrialService } from '../service/trial.service';
+import { LoaderService } from '../components/loader/loader.service';
 
 @Component({
     selector: 'agent',
@@ -30,12 +31,16 @@ export class AgentComponent implements OnInit {
     transactionTypes = [
         'CreateCustomForm',
         'AddResearcherToTrial',
-        'RemoveResearcherFromTrial'
+        'RemoveResearcherFromTrial',
+        'AddFormData',
+        'RegisterTrialTransaction'
+
     ]
 
     constructor(
         private _historianService: HistorianService,
-        private _trialService: TrialService
+        private _trialService: TrialService,
+        private _loaderService: LoaderService
     ) {
         this.isInitialised = false;
     }
@@ -58,6 +63,7 @@ export class AgentComponent implements OnInit {
                 console.log(res);
                 this.allHistory = res;
                 this.processHistorian(this.allHistory);
+                this._loaderService.hide();
             }
         )
         this._trialService.getAll().subscribe(

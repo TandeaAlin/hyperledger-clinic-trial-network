@@ -13,12 +13,12 @@ export class PatientViewComponent implements OnInit {
 
     @Input() idTrial: string;
 
-    private idPatient: string;
-    private patient: Patient;
-    private isInitialised = false;
-    private formattedBirthdate: Date;
-    private age;
-    private formValues: FormValue[] = [];
+    idPatient: string;
+    patient: Patient;
+    isInitialised = false;
+    formattedBirthdate: Date;
+    age;
+    formValues: FormValue[] = [];
     constructor(
         private _patientService: PatientService,
         private _router: Router,
@@ -42,12 +42,12 @@ export class PatientViewComponent implements OnInit {
                             console.log(this.formattedBirthdate);
                             this.age = this.getAge(this.formattedBirthdate);
                             this._dataQueryService.selectDataForPatient(this.patient.idPatient).subscribe(
-                                (values)=>{
+                                (values) => {
                                     console.log(values);
                                     this.formValues = values;
                                 }
                             )
-                            
+
                             this.isInitialised = true;
                             console.log(this.patient);
 

@@ -144,7 +144,7 @@ export class AgentFormComponent implements OnInit {
       },
       //error - notify user
       (err) => {
-        alert("Error while saving. Please try again.")
+        this._router.navigate(['administration'])
       }
     );
   }

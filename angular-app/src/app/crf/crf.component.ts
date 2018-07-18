@@ -10,6 +10,7 @@ import { CustomFormService } from '../service/CustomForm.service';
 import { TransactionService } from '../service/transaction-service';
 import { IdProviderService } from '../utils/id-provider.service';
 import { ResourceProvider } from '../utils/resource-provider';
+import { LoaderService } from '../components/loader/loader.service';
 
 @Component({
   selector: 'crf-component',
@@ -48,7 +49,8 @@ export class CRFComponent implements OnInit {
     private _route: ActivatedRoute,
     private _location: Location,
     private _formBuilder: FormBuilder,
-    private _transactionService: TransactionService
+    private _transactionService: TransactionService,
+    private _loaderService: LoaderService
   ) {
     var id = this._route.params
       .subscribe(params => {
@@ -99,7 +101,7 @@ export class CRFComponent implements OnInit {
     this.hideInputs();
     console.log(this.formFields);
   }
-  removeField(formEntry:FormVO){
+  removeField(formEntry: FormVO) {
     var index = this.formFields.indexOf(formEntry);
     this.formFields.splice(index, 1);
   }
@@ -122,7 +124,7 @@ export class CRFComponent implements OnInit {
   }
 
   saveForm() {
-
+    this._loaderService.show();
     var formEntries: any[] = [];
     for (let entry of this.formFields) {
       formEntries.push(entry);
@@ -137,6 +139,9 @@ export class CRFComponent implements OnInit {
     this._transactionService.createCustomForm(this.createFormTransaction)
       .subscribe(
         (res) => {
+          this._router.navigate([this._router.url]);
+        },
+        (err) =>{
           this._router.navigate([this._router.url]);
         }
       )

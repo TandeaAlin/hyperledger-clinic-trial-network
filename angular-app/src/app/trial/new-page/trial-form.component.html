@@ -1,4 +1,10 @@
-<h3>{{title}}</h3>
+<div class="center-div">
+    <mat-card class="description-card">
+        <mat-card-header>
+            <h2 class="marginAutoLR">Create a new trial</h2>
+        </mat-card-header>
+    </mat-card>
+</div>
 <div *ngIf="isInitialised">
     <form [formGroup]="trialForm">
         <mat-form-field style="width: 75%">
@@ -51,8 +57,10 @@
         <h3>Selected sponsors:</h3>
         <ul>
             <li *ngFor="let sponsor of selectedSponsors">
-                <h4>{{sponsor.orgName}} &nbsp;<button mat-raised-button (click)="removeSponsor(sponsor)">Remove</button></h4>
-                
+                <h4>{{sponsor.orgName}} &nbsp;
+                    <button mat-raised-button (click)="removeSponsor(sponsor)">Remove</button>
+                </h4>
+
             </li>
         </ul>
 
@@ -66,7 +74,7 @@
 
         <!--Submit button-->
         <div style="margin-bottom: 1em">
-            <button type="submit" style="float: left, down;"  (click)="onSubmit()" mat-raised-button class="btn btn-success" [disabled]="trialForm.valid">Save</button>
+            <button type="submit" style="float: left, down;" (click)="onSubmit()" mat-raised-button class="btn btn-success" [disabled]="trialForm.valid">Save</button>
         </div>
     </form>
 </div>
